@@ -6,5 +6,3 @@ class easypme_notes(osv.osv):
 	_columns = {
 		'notes': fields.text('Notes')
 	}
-	
-easypme_notes()
