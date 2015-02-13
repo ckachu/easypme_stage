@@ -4,14 +4,14 @@
 		<record id="hr_evaluation_plan_manager_polyevaluationplan0" model="hr_evaluation.plan">
 			<field eval="1" name="active"/>
 			<field eval="6" name="month_next"/>
-			<field name="name">Manager's Appraisal Polymtl Plan</field>
+			<field name="name">Mid internship evaluation Plan Polymtl</field>
 			<field eval="3" name="month_first"/>
 			<field name="company_id" ref="base.main_company"/> 
 		</record>
 
 		<record id="hr_evaluation_plan_phase_poly_sendtoemployee0" model="hr_evaluation.plan.phase">
 			<field name="plan_id" ref="hr_evaluation_plan_manager_polyevaluationplan0"/>
-			<field name="name">Send to Employee Easy</field>
+			<field name="name">Send to supervisor</field>
 			<field eval="0" name="send_anonymous_manager"/>
 			<field eval="1" name="sequence"/>
 			<field name="company_id" ref="base.main_company"/> 

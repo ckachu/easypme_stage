@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 8.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-02-13 05:39+0000\n"
-"PO-Revision-Date: 2015-02-13 05:39+0000\n"
+"POT-Creation-Date: 2015-02-13 07:40+0000\n"
+"PO-Revision-Date: 2015-02-13 07:40+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -17,7 +17,7 @@ msgstr ""
 
 #. module: hr_evaluation_polymtl
 #: model:survey.page,description:hr_evaluation_polymtl.appraisal_polymtl_1
-msgid "<h2>Supervisor's Appraisal - Polytechnique Montreal</h2>\n"
+msgid "<h2>Polytechnique Montreal</h2>\n"
 "			<ul> <li> The objective of this evaluation is to give the student intern concrete feedback \n"
 "			on his/her performance so that he/she can apply it in the new workplace, and on ways to improve, if any.</li>\n"
 "			<li>Following discussion with the intern, please provide him/her with a copy.</li> </ul>\n"
@@ -25,6 +25,7 @@ msgid "<h2>Supervisor's Appraisal - Polytechnique Montreal</h2>\n"
 msgstr ""
 
 #. module: hr_evaluation_polymtl
+#: model:survey.page,description:hr_evaluation_polymtl.appraisal_polymtl_2
 #: model:survey.survey,description:hr_evaluation_polymtl.appraisal_polymtl_form
 #: model:survey.survey,thank_you_message:hr_evaluation_polymtl.appraisal_polymtl_form
 msgid "<p> </p>"
@@ -32,7 +33,17 @@ msgstr ""
 
 #. module: hr_evaluation_polymtl
 #: model:survey.page,description:hr_evaluation_polymtl.appraisal_polymtl_2
-msgid "<p>Up to now, the student has shown that he/she is able too:</p>\n"
+msgid "<p>NA: Not applicable NO: Not observed</p>"
+msgstr ""
+
+#. module: hr_evaluation_polymtl
+#: model:survey.page,description:hr_evaluation_polymtl.appraisal_polymtl_4
+msgid "<ul>\n"
+"			<li>If you check \"Very satisfact\", \"Satisfact\" or \"Acceptable\": Give a signed copy\n"
+"			to the intern, who will file it into Moodle Web site.</li>\n"
+"			<li>If you check \"Unacceptable/Immediate action required\": Call 514-340-4730 to report \n"
+"			the case to the Internship and Placement Office.\n"
+"			</li></ul>\n"
 "			"
 msgstr ""
 
@@ -113,9 +124,9 @@ msgid "Intership start date"
 msgstr ""
 
 #. module: hr_evaluation_polymtl
-#: model:survey.page,title:hr_evaluation_polymtl.appraisal_polymtl_3
-#: model:survey.page,title:hr_evaluation_polymtl.appraisal_polymtl_4
-msgid "Manager Appraisal Polymtl Form"
+#: model:survey.page,title:hr_evaluation_polymtl.appraisal_polymtl_1
+#: model:survey.survey,title:hr_evaluation_polymtl.appraisal_polymtl_form
+msgid "Mid internship evaluation sheet (Supervisor version)"
 msgstr ""
 
 #. module: hr_evaluation_polymtl
@@ -132,6 +143,11 @@ msgstr ""
 #. module: hr_evaluation_polymtl
 #: model:survey.label,value:hr_evaluation_polymtl.arow_poly_2_1_3
 msgid "Organize him/herself by establishing priorities and schedules"
+msgstr ""
+
+#. module: hr_evaluation_polymtl
+#: model:survey.page,title:hr_evaluation_polymtl.appraisal_polymtl_4
+msgid "Overall assessment"
 msgstr ""
 
 #. module: hr_evaluation_polymtl
@@ -187,14 +203,13 @@ msgid "Strengths"
 msgstr ""
 
 #. module: hr_evaluation_polymtl
-#: model:survey.question,question:hr_evaluation_polymtl.appraisal_polymtl_1_4
-msgid "Superisor's name"
+#: model:survey.page,title:hr_evaluation_polymtl.appraisal_polymtl_3
+msgid "Strengths and improvements"
 msgstr ""
 
 #. module: hr_evaluation_polymtl
-#: model:survey.page,title:hr_evaluation_polymtl.appraisal_polymtl_1
-#: model:survey.survey,title:hr_evaluation_polymtl.appraisal_polymtl_form
-msgid "Supervisor Appraisal Polymtl Form"
+#: model:survey.question,question:hr_evaluation_polymtl.appraisal_polymtl_1_4
+msgid "Supervisor's name"
 msgstr ""
 
 #. module: hr_evaluation_polymtl

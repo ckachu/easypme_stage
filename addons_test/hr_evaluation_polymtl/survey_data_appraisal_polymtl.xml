@@ -2,7 +2,7 @@
 <openerp>
 	<data>
 		<record model="survey.survey" id="appraisal_polymtl_form">
-			<field name="title">Supervisor Appraisal Polymtl Form</field>
+			<field name="title">Mid internship evaluation sheet (Supervisor version)</field>
 			<field name="stage_id" ref="survey.stage_permanent"/>
 			<field name="res_model">hr_evaluation</field>
 			<field name="auth_required" eval="True"/>
@@ -13,10 +13,10 @@
 		
 		<!-- Page 1 -->
 		<record model="survey.page" id="appraisal_polymtl_1">
-			<field name="title">Supervisor Appraisal Polymtl Form</field>
+			<field name="title">Mid internship evaluation sheet (Supervisor version)</field>
 			<field name="survey_id" ref="appraisal_polymtl_form"/>
 			<field name="sequence">1</field>
-			<field name="description">&lt;h2&gt;Supervisor's Appraisal - Polytechnique Montreal&lt;/h2&gt;
+			<field name="description">&lt;h2&gt;Polytechnique Montreal&lt;/h2&gt;
 			&lt;ul&gt; &lt;li&gt; The objective of this evaluation is to give the student intern concrete feedback 
 			on his/her performance so that he/she can apply it in the new workplace, and on ways to improve, if any.&lt;/li&gt;
 			&lt;li&gt;Following discussion with the intern, please provide him/her with a copy.&lt;/li&gt; &lt;/ul&gt;
@@ -49,7 +49,7 @@
 		<record model="survey.question" id="appraisal_polymtl_1_4">
 			<field name="page_id" ref="appraisal_polymtl_1"/>
 			<field name="sequence">4</field>
-			<field name="question">Superisor's name</field>
+			<field name="question">Supervisor's name</field>
 			<field name="type">textbox</field>
 			<field name="constr_mandatory" eval="True"/>
 		</record>
@@ -75,6 +75,7 @@
 			<field name="title">STUDENT INTERN'S EVALUATION</field> 
 			<field name="survey_id" ref="appraisal_polymtl_form"/>
 			<field name="sequence">2</field>
+			<field name="description">&lt;p&gt;NA: Not applicable NO: Not observed&lt;/p&gt;</field>
 		</record>
 		
 		<record model="survey.question" id="appraisal_polymtl_2_1">
@@ -204,7 +205,7 @@
 			
 		<!-- Page 3 -->
 		<record model="survey.page" id="appraisal_polymtl_3">
-			<field name="title">Manager Appraisal Polymtl Form</field>
+			<field name="title">Strengths and improvements</field>
 			<field name="survey_id" ref="appraisal_polymtl_form"/>
 			<field name="sequence">3</field>
 		</record>
@@ -246,9 +247,17 @@
 			</record>
 		<!-- Page 4 -->
 		<record model="survey.page" id="appraisal_polymtl_4">
-			<field name="title">Manager Appraisal Polymtl Form</field> 
+			<field name="title">Overall assessment</field> 
 			<field name="survey_id" ref="appraisal_polymtl_form"/>
 			<field name="sequence">4</field>
+			<field name="description">
+			&lt;ul&gt;
+			&lt;li&gt;If you check "Very satisfact", "Satisfact" or "Acceptable": Give a signed copy
+			to the intern, who will file it into Moodle Web site.&lt;/li&gt;
+			&lt;li&gt;If you check "Unacceptable/Immediate action required": Call 514-340-4730 to report 
+			the case to the Internship and Placement Office.
+			&lt;/ul&gt;
+			</field>
 		</record>
 				<record model="survey.question" id="appraisal_polymtl_4_1">
 			<field name="page_id" ref="appraisal_polymtl_4"/>
