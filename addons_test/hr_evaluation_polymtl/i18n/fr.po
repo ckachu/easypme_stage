@@ -78,6 +78,11 @@ msgid "Ask questions in order to clarify the assigned mandates and tasks"
 msgstr "De poser des questions ain de clarifier les mandats/tâches confiées"
 
 #. module: hr_evaluation_polymtl
+#: model:survey.question,question:hr_evaluation_polymtl.appraisal_polymtl_4_1
+msgid "Assessment"
+msgstr "Appréciation"
+
+#. module: hr_evaluation_polymtl
 #: model:survey.question,question:hr_evaluation_polymtl.appraisal_polymtl_1_3
 msgid "Company name"
 msgstr "Nom de l'entreprise"
@@ -91,6 +96,11 @@ msgstr "De respecter les règles internes (ponctualité, assiduité, etc.)"
 #: model:survey.label,value:hr_evaluation_polymtl.arow_poly_2_1_5
 msgid "Create a network of internal contacts"
 msgstr "De se créer un réseau de contacts à l'interne"
+
+#. module: hr_evaluation_polymtl
+#: model:survey.question,question:hr_evaluation_polymtl.appraisal_polymtl_3_3
+msgid "Discussion"
+msgstr "Discussion"
 
 #. module: hr_evaluation_polymtl
 #: model:survey.label,value:hr_evaluation_polymtl.arow_poly_2_2_4

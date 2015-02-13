@@ -68,6 +68,11 @@ msgid "Ask questions in order to clarify the assigned mandates and tasks"
 msgstr ""
 
 #. module: hr_evaluation_polymtl
+#: model:survey.question,question:hr_evaluation_polymtl.appraisal_polymtl_4_1
+msgid "Assessment"
+msgstr ""
+
+#. module: hr_evaluation_polymtl
 #: model:survey.question,question:hr_evaluation_polymtl.appraisal_polymtl_1_3
 msgid "Company name"
 msgstr ""
@@ -80,6 +85,11 @@ msgstr ""
 #. module: hr_evaluation_polymtl
 #: model:survey.label,value:hr_evaluation_polymtl.arow_poly_2_1_5
 msgid "Create a network of internal contacts"
+msgstr ""
+
+#. module: hr_evaluation_polymtl
+#: model:survey.question,question:hr_evaluation_polymtl.appraisal_polymtl_3_3
+msgid "Discussion"
 msgstr ""
 
 #. module: hr_evaluation_polymtl

@@ -84,6 +84,7 @@
 			<field name="question">Up to now, the student has shown that he/she is able to:</field>
 			<field name="type">matrix</field>
 			<field name="matrix_subtype">simple</field>	
+			<field name="constr_mandatory" eval="True"/>	
 		</record>
 			<record model="survey.label" id="acol_poly_2_1_1">
 				<field name="question_id" ref="appraisal_polymtl_2_1"/>
@@ -156,6 +157,7 @@
 			<field name="question">Up to now, the student has shown:</field>
 			<field name="type">matrix</field>
 			<field name="matrix_subtype">simple</field>	
+			<field name="constr_mandatory" eval="True"/>
 		</record>
 			<record model="survey.label" id="acol_poly_2_2_1">
 				<field name="question_id" ref="appraisal_polymtl_2_2"/>
@@ -226,9 +228,10 @@
 		<record model="survey.question" id="appraisal_polymtl_3_3">
 			<field name="page_id" ref="appraisal_polymtl_3"/>
 			<field name="sequence">4</field>
-			<field name="question"> </field>
+			<field name="question">Discussion</field>
 			<field name="type">matrix</field>
 			<field name="matrix_subtype">simple</field>	
+			<field name="constr_mandatory" eval="True"/>	
 		</record>
 			<record model="survey.label" id="acol_poly_3_3_1">
 				<field name="question_id" ref="appraisal_polymtl_3_3"/>
@@ -259,13 +262,14 @@
 			&lt;/ul&gt;
 			</field>
 		</record>
-				<record model="survey.question" id="appraisal_polymtl_4_1">
-			<field name="page_id" ref="appraisal_polymtl_4"/>
-			<field name="sequence">1</field>
-			<field name="question"> </field>
-			<field name="type">matrix</field>
-			<field name="matrix_subtype">simple</field>	
-		</record>
+			<record model="survey.question" id="appraisal_polymtl_4_1">
+				<field name="page_id" ref="appraisal_polymtl_4"/>
+				<field name="sequence">1</field>
+				<field name="question">Assessment</field>
+				<field name="type">matrix</field>
+				<field name="matrix_subtype">simple</field>	
+				<field name="constr_mandatory" eval="True"/>	
+			</record>
 			<record model="survey.label" id="acol_poly_4_1_1">
 				<field name="question_id" ref="appraisal_polymtl_4_1"/>
 				<field name="sequence">1</field>
