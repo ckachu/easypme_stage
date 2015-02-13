@@ -1,0 +1,287 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+	<data>
+		<record model="survey.survey" id="appraisal_polymtl_form">
+			<field name="title">Supervisor Appraisal Polymtl Form</field>
+			<field name="stage_id" ref="survey.stage_permanent"/>
+			<field name="res_model">hr_evaluation</field>
+			<field name="auth_required" eval="True"/>
+			<field name="users_can_go_back" eval="True"/>
+			<field name="description">&lt;p&gt; &lt;/p&gt;</field>
+			<field name="thank_you_message">&lt;p&gt; &lt;/p&gt;</field>
+		</record>
+		
+		<!-- Page 1 -->
+		<record model="survey.page" id="appraisal_polymtl_1">
+			<field name="title">Supervisor Appraisal Polymtl Form</field>
+			<field name="survey_id" ref="appraisal_polymtl_form"/>
+			<field name="sequence">1</field>
+			<field name="description">&lt;h2&gt;Supervisor's Appraisal - Polytechnique Montreal&lt;/h2&gt;
+			&lt;ul&gt; &lt;li&gt; The objective of this evaluation is to give the student intern concrete feedback 
+			on his/her performance so that he/she can apply it in the new workplace, and on ways to improve, if any.&lt;/li&gt;
+			&lt;li&gt;Following discussion with the intern, please provide him/her with a copy.&lt;/li&gt; &lt;/ul&gt;
+			</field>
+		</record>
+		<record model="survey.question" id="appraisal_polymtl_1_1">
+			<field name="page_id" ref="appraisal_polymtl_1"/>
+			<field name="sequence">1</field>
+			<field name="question">Intern's name</field>
+			<field name="type">textbox</field>
+			<field name="constr_mandatory" eval="True"/>
+		</record>
+
+		<record model="survey.question" id="appraisal_polymtl_1_2">
+			<field name="page_id" ref="appraisal_polymtl_1"/>
+			<field name="sequence">2</field>
+			<field name="question">School ID</field>
+			<field name="type">textbox</field>
+			<field name="constr_mandatory" eval="True"/>
+		</record>
+
+		<record model="survey.question" id="appraisal_polymtl_1_3">
+			<field name="page_id" ref="appraisal_polymtl_1"/>
+			<field name="sequence">3</field>
+			<field name="question">Company name</field>
+			<field name="type">textbox</field>
+			<field name="constr_mandatory" eval="True"/>
+		</record>
+
+		<record model="survey.question" id="appraisal_polymtl_1_4">
+			<field name="page_id" ref="appraisal_polymtl_1"/>
+			<field name="sequence">4</field>
+			<field name="question">Superisor's name</field>
+			<field name="type">textbox</field>
+			<field name="constr_mandatory" eval="True"/>
+		</record>
+		
+		<record model="survey.question" id="appraisal_polymtl_1_5">
+			<field name="page_id" ref="appraisal_polymtl_1"/>
+			<field name="sequence">5</field>
+			<field name="question">Telephone (office)</field>
+			<field name="type">textbox</field>
+			<field name="constr_mandatory" eval="True"/>
+		</record>
+ 
+		<record model="survey.question" id="appraisal_polymtl_1_6">
+			<field name="page_id" ref="appraisal_polymtl_1"/>
+			<field name="sequence">6</field>
+			<field name="question">Intership start date</field>
+			<field name="type">textbox</field>
+			<field name="constr_mandatory" eval="True"/>
+		</record>
+		
+		<!-- Page 2 -->
+		<record model="survey.page" id="appraisal_polymtl_2">
+			<field name="title">STUDENT INTERN'S EVALUATION</field> 
+			<field name="survey_id" ref="appraisal_polymtl_form"/>
+			<field name="sequence">2</field>
+		</record>
+		
+		<record model="survey.question" id="appraisal_polymtl_2_1">
+			<field name="page_id" ref="appraisal_polymtl_2"/>
+			<field name="sequence">1</field>
+			<field name="question">Up to now, the student has shown that he/she is able to:</field>
+			<field name="type">matrix</field>
+			<field name="matrix_subtype">simple</field>	
+		</record>
+			<record model="survey.label" id="acol_poly_2_1_1">
+				<field name="question_id" ref="appraisal_polymtl_2_1"/>
+				<field name="sequence">1</field>
+				<field name="value">Totally agree</field>
+			</record>
+			<record model="survey.label" id="acol_poly_2_1_2">
+				<field name="question_id" ref="appraisal_polymtl_2_1"/>
+				<field name="sequence">2</field>
+				<field name="value">Somewhat agree</field>
+			</record>
+			<record model="survey.label" id="acol_poly_2_1_3">
+				<field name="question_id" ref="appraisal_polymtl_2_1"/>
+				<field name="sequence">3</field>
+				<field name="value">Somewhat disagree</field>
+			</record>
+			<record model="survey.label" id="acol_poly_2_1_4">
+				<field name="question_id" ref="appraisal_polymtl_2_1"/>
+				<field name="sequence">4</field>
+				<field name="value">Totally disagree</field>
+			</record>
+			<record model="survey.label" id="acol_poly_2_1_5">
+				<field name="question_id" ref="appraisal_polymtl_2_1"/>
+				<field name="sequence">5</field>
+				<field name="value">NA or NO</field>
+			</record>
+			<record model="survey.label" id="arow_poly_2_1_1">
+				<field name="question_id_2" ref="appraisal_polymtl_2_1"/>
+				<field name="sequence">1</field>
+				<field name="value">Handle the responsibilities of the job</field>
+			</record>
+			<record model="survey.label" id="arow_poly_2_1_2">
+				<field name="question_id_2" ref="appraisal_polymtl_2_1"/>
+				<field name="sequence">2</field>
+				<field name="value">Ask questions in order to clarify the assigned mandates and tasks</field>
+			</record>
+			<record model="survey.label" id="arow_poly_2_1_3">
+				<field name="question_id_2" ref="appraisal_polymtl_2_1"/>
+				<field name="sequence">3</field>
+				<field name="value">Organize him/herself by establishing priorities and schedules</field>
+			</record>
+			<record model="survey.label" id="arow_poly_2_1_4">
+				<field name="question_id_2" ref="appraisal_polymtl_2_1"/>
+				<field name="sequence">4</field>
+				<field name="value">Show initiative (actions, suggestions, ideas, etc.)</field>
+			</record>
+			<record model="survey.label" id="arow_poly_2_1_5">
+				<field name="question_id_2" ref="appraisal_polymtl_2_1"/>
+				<field name="sequence">5</field>
+				<field name="value">Create a network of internal contacts</field>
+			</record>
+			<record model="survey.label" id="arow_poly_2_1_6">
+				<field name="question_id_2" ref="appraisal_polymtl_2_1"/>
+				<field name="sequence">6</field>
+				<field name="value">Seek help when needed</field>
+			</record>
+			<record model="survey.label" id="arow_poly_2_1_7">
+				<field name="question_id_2" ref="appraisal_polymtl_2_1"/>
+				<field name="sequence">7</field>
+				<field name="value">Comply with internal rules (punctuality, attendance, etc.)</field>
+			</record>
+			<record model="survey.label" id="arow_poly_2_1_8">
+				<field name="question_id_2" ref="appraisal_polymtl_2_1"/>
+				<field name="sequence">8</field>
+				<field name="value">Regularly communicate on the progress of his/her projects</field>
+			</record>
+		<record model="survey.question" id="appraisal_polymtl_2_2">
+			<field name="page_id" ref="appraisal_polymtl_2"/>
+			<field name="sequence">2</field>
+			<field name="question">Up to now, the student has shown:</field>
+			<field name="type">matrix</field>
+			<field name="matrix_subtype">simple</field>	
+		</record>
+			<record model="survey.label" id="acol_poly_2_2_1">
+				<field name="question_id" ref="appraisal_polymtl_2_2"/>
+				<field name="sequence">1</field>
+				<field name="value">Totally agree</field>
+			</record>
+			<record model="survey.label" id="acol_poly_2_2_2">
+				<field name="question_id" ref="appraisal_polymtl_2_2"/>
+				<field name="sequence">2</field>
+				<field name="value">Somewhat agree</field>
+			</record>
+			<record model="survey.label" id="acol_poly_2_2_3">
+				<field name="question_id" ref="appraisal_polymtl_2_2"/>
+				<field name="sequence">3</field>
+				<field name="value">Somewhat disagree</field>
+			</record>
+			<record model="survey.label" id="acol_poly_2_2_4">
+				<field name="question_id" ref="appraisal_polymtl_2_2"/>
+				<field name="sequence">4</field>
+				<field name="value">Totally disagree</field>
+			</record>
+			<record model="survey.label" id="acol_poly_2_2_5">
+				<field name="question_id" ref="appraisal_polymtl_2_2"/>
+				<field name="sequence">5</field>
+				<field name="value">NA or NO</field>
+			</record>
+			<record model="survey.label" id="arow_poly_2_2_1">
+				<field name="question_id_2" ref="appraisal_polymtl_2_2"/>
+				<field name="sequence">1</field>
+				<field name="value">Adequate interest in, and motivation for his/her work</field>
+			</record>
+			<record model="survey.label" id="arow_poly_2_2_2">
+				<field name="question_id_2" ref="appraisal_polymtl_2_2"/>
+				<field name="sequence">2</field>
+				<field name="value">The ability to establish good relations with others</field>
+			</record>
+			<record model="survey.label" id="arow_poly_2_2_3">
+				<field name="question_id_2" ref="appraisal_polymtl_2_2"/>
+				<field name="sequence">3</field>
+				<field name="value">The ability to adapt to different situations</field>
+			</record>
+			<record model="survey.label" id="arow_poly_2_2_4">
+				<field name="question_id_2" ref="appraisal_polymtl_2_2"/>
+				<field name="sequence">4</field>
+				<field name="value">Effectiveness in his/her communications in general</field>
+			</record>
+			
+		<!-- Page 3 -->
+		<record model="survey.page" id="appraisal_polymtl_3">
+			<field name="title">Manager Appraisal Polymtl Form</field>
+			<field name="survey_id" ref="appraisal_polymtl_form"/>
+			<field name="sequence">3</field>
+		</record>
+		<record model="survey.question" id="appraisal_polymtl_3_1">
+			<field name="page_id" ref="appraisal_polymtl_3"/>
+			<field name="sequence">1</field>
+			<field name="question">Strengths</field>
+			<field name="type">free_text</field>
+			<field name="constr_mandatory" eval="True"/>
+		</record>
+		<record model="survey.question" id="appraisal_polymtl_3_2">
+			<field name="page_id" ref="appraisal_polymtl_3"/>
+			<field name="sequence">2</field>
+			<field name="question">Areas for improvement</field>
+			<field name="type">free_text</field>
+			<field name="constr_mandatory" eval="True"/>
+		</record>
+		<record model="survey.question" id="appraisal_polymtl_3_3">
+			<field name="page_id" ref="appraisal_polymtl_3"/>
+			<field name="sequence">4</field>
+			<field name="question"> </field>
+			<field name="type">matrix</field>
+			<field name="matrix_subtype">simple</field>	
+		</record>
+			<record model="survey.label" id="acol_poly_3_3_1">
+				<field name="question_id" ref="appraisal_polymtl_3_3"/>
+				<field name="sequence">1</field>
+				<field name="value">Yes</field>
+			</record>
+			<record model="survey.label" id="acol_poly_3_3_2">
+				<field name="question_id" ref="appraisal_polymtl_3_3"/>
+				<field name="sequence">2</field>
+				<field name="value">No, not yet</field>
+			</record>
+			<record model="survey.label" id="arow_poly_3_3_1">
+				<field name="question_id_2" ref="appraisal_polymtl_3_3"/>
+				<field name="sequence">1</field>
+				<field name="value">Have you discussed this evaluation with the student?</field>
+			</record>
+		<!-- Page 4 -->
+		<record model="survey.page" id="appraisal_polymtl_4">
+			<field name="title">Manager Appraisal Polymtl Form</field> 
+			<field name="survey_id" ref="appraisal_polymtl_form"/>
+			<field name="sequence">4</field>
+		</record>
+				<record model="survey.question" id="appraisal_polymtl_4_1">
+			<field name="page_id" ref="appraisal_polymtl_4"/>
+			<field name="sequence">1</field>
+			<field name="question"> </field>
+			<field name="type">matrix</field>
+			<field name="matrix_subtype">simple</field>	
+		</record>
+			<record model="survey.label" id="acol_poly_4_1_1">
+				<field name="question_id" ref="appraisal_polymtl_4_1"/>
+				<field name="sequence">1</field>
+				<field name="value">Very satisfacte</field>
+			</record>
+			<record model="survey.label" id="acol_poly_4_1_2">
+				<field name="question_id" ref="appraisal_polymtl_4_1"/>
+				<field name="sequence">2</field>
+				<field name="value">Satisfacte</field>
+			</record>
+			<record model="survey.label" id="acol_poly_4_1_3">
+				<field name="question_id" ref="appraisal_polymtl_4_1"/>
+				<field name="sequence">3</field>
+				<field name="value">Acceptable</field>
+			</record>
+			<record model="survey.label" id="acol_poly_4_1_4">
+				<field name="question_id" ref="appraisal_polymtl_4_1"/>
+				<field name="sequence">4</field>
+				<field name="value">Unacceptable/Immediate action required</field>
+			</record>
+			<record model="survey.label" id="arow_poly_4_1_3">
+				<field name="question_id_2" ref="appraisal_polymtl_4_1"/>
+				<field name="sequence">1</field>
+				<field name="value">Overall assessment of the intern up to now:</field>
+			</record>
+		
+	</data>
+</openerp>
