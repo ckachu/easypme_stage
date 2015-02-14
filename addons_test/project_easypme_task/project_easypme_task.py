@@ -18,3 +18,9 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
+from openerp.osv import fields, osv
+
+class project_easypme_task(osv.osv):
+	_inherit = "project.task"
+	_order = "priority desc, date_deadline"
+

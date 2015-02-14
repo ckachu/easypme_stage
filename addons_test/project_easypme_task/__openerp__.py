@@ -19,7 +19,7 @@
 #
 ##############################################################################
 {
-    'name': "project_easypme_task",
+    'name': "EasyPME Order Task",
 
     'description': """
         Order the tasks by date deadline
