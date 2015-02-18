@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+hr_evaluation.access_hr_evaluation_evaluation_employee,hr_evaluation_easypme.evaluation.employee,hr_evaluation.model_hr_evaluation_evaluation,base.group_user,1,0,0,0
+hr_evaluation.access_hr_evaluation_interview_employee,hr_evaluation_easypme.interview.employee,hr_evaluation.model_hr_evaluation_interview,base.group_user,1,0,1,0
