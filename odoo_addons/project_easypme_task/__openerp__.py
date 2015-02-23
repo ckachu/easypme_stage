@@ -40,7 +40,7 @@
     # always loaded
     'data': [
         # 'security/ir.model.access.csv',
-        'project_easypme_task_view.xml'
+        #'project_easypme_task_view.xml'
     ],
     # only loaded in demonstration mode
     'demo': [
