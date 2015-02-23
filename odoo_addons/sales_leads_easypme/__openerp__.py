@@ -3,15 +3,14 @@
     'name': "sales_leads_easypme",
 
     'summary': """
-        Short (1 phrase/line) summary of the module's purpose, used as
-        subtitle on modules listing or apps.openerp.com""",
+        No summary""",
 
     'description': """
-        Long description of module's purpose
+        Ajoute le champ Vendeur à la vue List des Pistes
     """,
 
-    'author': "Your Company",
-    'website': "http://www.yourcompany.com",
+    'author': "EasyPME",
+    'website': "http://www.easypme.com",
 
     # Categories can be used to filter modules in modules listing
     # Check https://github.com/odoo/odoo/blob/master/openerp/addons/base/module/module_data.xml
