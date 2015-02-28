@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+
+
+	<data noupdate="0">
+		
+		<!-- L'employé peut seulement consulter son évaluation 
+		sans effectuer de modification -->
+		<record id="easypme_employee_can_only_read" model="ir.rule">
+			<field name="name">Easypme employee can only read Evaluation</field>
+			<field name="model_id" ref="hr_evaluation.model_hr_evaluation_evaluation"/>
+			<field name="domain_force">[('employee_id.user_id.id','=',user.id)]</field>
+			<field eval="False" name="global"/>
+			<field name="groups" eval="[(4, ref('base.group_user'))]"/>
+		</record>
+		
+		<record id="hr_employee_easypme_evaluation_hr" model="ir.rule">
+			<field name="name">Easypme HR access team evaluation</field>
+			<field name="model_id" ref="hr_evaluation.model_hr_evaluation_evaluation"/>
+			<field name="domain_force">[('employee_id.department_id.id','=',user.employee_ids.department_id.id)]</field>
+			<field eval="False" name="global"/>
+			<field name="groups" eval="[(4, ref('base.group_hr_user'))]"/>
+		</record>
+		
+		
+		
+	
+	</data>
+
+</openerp>
