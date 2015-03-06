@@ -5,6 +5,8 @@ from openerp.osv import fields, osv
 class res_company(osv.osv):
 	_inherit = "res.company"
 	_columns = {
+		'bp': fields.char('BP'),
+		'city_zip': fields.char('City Zip'),	
 		'activity': fields.char('Company activity'),
 		'regime_vat': fields.selection([('deposit','Deposit in simplified regime'),('annual','Annual in simplified regime'),('real','Real regime')], 'Regime Vat'),
 		'type_vat': fields.selection([('cashing','Cashing vat'),('bills','Bills vat')],'Type vat'),

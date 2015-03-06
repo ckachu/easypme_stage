@@ -22,12 +22,16 @@ class l10n_pf_account_vat_declaration(osv.osv):
 	#	ids2 = self.search(cr, uid, [('parent_id', 'child_of', ids)], context=context)
 	#	return ids2
 	
-	#def _compute_balance(self, cr, uid, ids, field_names, arg=None, context=None):
-	
-	
+		
+		
+		
+		
+		
 	_columns = {
-		#'toto': fields.function(account_id.__compute, string="Toto test"),
-		'name_declaration': fields.char('Declaration name'),
+		#'toto': fields.function(_compute_test, string="Toto test"),
+		
+		
+		'name': fields.char('Declaration name'),
 		'date_declaration': fields.date('Declaration date'),
 		
 		'account_id': fields.many2one('account.account', 'Account'),
@@ -41,6 +45,7 @@ class l10n_pf_account_vat_declaration(osv.osv):
 		'company_country': fields.char('Country'),
 		'company_email': fields.char('Email'),
 		'company_zip': fields.char('ZIP'),
+		'company_bp': fields.char('BP'),
 		'city_zip': fields.char('City ZIP'),
 		'company_regime': fields.selection([('deposit','Deposit in simplified regime'),('annual','Annual in simplified regime'),('real','Real regime')], 'Regime'),
 		'company_vat_type': fields.selection([('cashing','Cashing vat'),('bills','Bills vat')],'Type VAT'),
@@ -135,10 +140,22 @@ class l10n_pf_account_vat_declaration(osv.osv):
 				'company_country': company.country_id.name,
 				'company_email': company.email,
 				'company_zip': company.zip,
+				'company_bp': company.bp,
+				'city_zip': company.city_zip,
 				'company_regime': company.regime_vat,
 				'company_vat_type': company.type_vat,
 			}
 		return {'value':values}
+	
+	
+	
+	#def action_fill_declaration(self, cr, uid, ids, context=None):
+	#	""" Cette méthode remplit les champs du formulaire.
+	#	Pour cela, elle doit d'abord appeler une fonction qui calcule les balances
+	#	dont on a besoin puis les met dans les champs correspondants.
+	#	Par la suite, elle effectue les calculs des champs restants.
+	#	"""
+		
 		
 	#def on_change_account_id(self, cr, uid, ids, account_id, context=None):
 	#	values = {}

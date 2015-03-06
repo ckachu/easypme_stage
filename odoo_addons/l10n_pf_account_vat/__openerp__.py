@@ -23,7 +23,13 @@
     'data': [
         # 'security/ir.model.access.csv',
         'l10n_pf_account_vat_view.xml',
-        'res_company_view.xml'
+        'res_company_view.xml',
+        'l10n_pf_account_vat_report.xml',
+        'views/l10n_pf_account_vat.xml',
+        'views/report_deposit_l10n_pf_account_vat.xml',
+        'report_annual_l10n_pf_account_vat.xml',
+        'report_real_l10n_pf_account_vat.xml',
+        'res_config_view.xml'
     ],
     # only loaded in demonstration mode
     'demo': [
