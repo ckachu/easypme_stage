@@ -7,29 +7,64 @@ from dateutil.relativedelta import relativedelta
 from openerp.osv import fields, osv
 
 
+class account_account(osv.osv):
+	_inherit = 'account.account'
+	
+	_columns = {
+		'exports_id': fields.many2one('account.account', 'Exports'),
+		'others_id': fields.many2one('account.account', 'Others' ),
+		'reduced_rate_id': fields.many2one('account.account', 'Reduced rate'),
+		'intermediate_rate_id': fields.many2one('account.account', 'Intermediate rate'),
+		'normal_rate_id': fields.many2one('account.account', 'Normal rate'),
+		'immo_id': fields.many2one('account.account', 'Immo id'),
+		'others_goods_services_id': fields.many2one('account.account', 'Goods and services'),
+		'customers_id': fields.many2one('account.account', 'Customers'),
+		'turnover_id': fields.many2one('account.account', 'Turnover')
+	}
+
 class l10n_pf_account_vat_declaration(osv.osv):
 	_name = 'l10n.pf.account.vat.declaration'
 	_description = 'Vat declaration'
 	
 	_inherit = 'account.chart','account.account'
 	
-	#def _get_test(self, cr, uid, ids, field_names, arg=None, context=None):
-	#	res = {}
-	#	return res
+	#def action_fill_declaration(self, cr, uid, ids, context=None):
+		#import pdb
+		#pdb.set_trace()
+		#self.pool.get('account.chart').account_chart_open_window(cr, uid, ids, context)
 	
-	#def _get_all_children(self, cr, uid, ids, account_id='445660', context=None):
-		#account = self.pool.get('account.account').browse(cr, uid, account_id, context=context)
-	#	ids2 = self.search(cr, uid, [('parent_id', 'child_of', ids)], context=context)
-	#	return ids2
+	#def _get_balance(self, cr, uid, id, field_names, args, context=None):
+		#account_obj = self.pool.get('account.account')
+		#res = {}
+		#for report in self.browse(cr, uid, ids, context=context):
+			#if report.id in res:
+				#continue
+			#res[report.id] = dict((fn, 0.0) for fn in field_names)
+			#if report.type == 'accounts':
+				#for a in report.account_ids:
+					#for field in field_names:
+						#res[report.id][field] += getattr(a, field)
+			#elif report.type == 'account_type':
+				#report_types = [x.id for x in report.account_type_ids]
+				#account_ids = account_obj.search(cr, uid, [('user_type','in',report_types), ('type','!=','view')], context=context)
+				#for a in account_obj.browse(cr, uid, account_ids, context=context):
+					#for field in field_names:
+						#res[report.id][field] += getattr(a, field)
+			#elif report.type == 'account_report' and report.account_report_id:
+				#res2 = self._get_balance(cr, uid, [report.account_report_id.id], field_names, False, context=context)
+				#for key, value in res2.items():
+					#for field in field_names:
+						#res[report.id][field] += value[field]
+			#elif report.type == 'sum':
+				#res2 = self._get_balance(cr, uid, [rec.id for rec in report.children_ids], field_names, False, context=context)
+				#for key, value in res2.items():
+					#for field in field_names:
+						#res[report.id][field] += value[field]
 	
-		
-		
-		
-		
-		
+						
 	_columns = {
-		#'toto': fields.function(_compute_test, string="Toto test"),
-		
+
+		#'toto': fields.function(tutu, 'Toto'),
 		
 		'name': fields.char('Declaration name'),
 		'date_declaration': fields.date('Declaration date'),
@@ -147,7 +182,22 @@ class l10n_pf_account_vat_declaration(osv.osv):
 			}
 		return {'value':values}
 	
+	#def action_fill_declaration(self, cr, uid, ids, context=None):
+		#import pdb
+		#pdb.set_trace()
+		#self.pool.get('account.chart').account_chart_open_window(cr, uid, ids, context)
+		
+		
 	
+	
+	
+	#def on_change_company_id(self, cr, uid, ids, company_id, context=None):
+		#if company_id:
+			#company = self.pool.get('res.company').browse(cr, uid, company_id, context=context)
+			#return {'value':{
+				#'company_regime':company.regime_vat,
+				#'company_vat_type':company.type_vat}}
+		#return {'value':{}}
 	
 	#def action_fill_declaration(self, cr, uid, ids, context=None):
 	#	""" Cette méthode remplit les champs du formulaire.
@@ -157,27 +207,6 @@ class l10n_pf_account_vat_declaration(osv.osv):
 	#	"""
 		
 		
-	#def on_change_account_id(self, cr, uid, ids, account_id, context=None):
-	#	values = {}
-	#	if account_id:
-	#		account = self.pool.get('account.account').browse(cr, uid, account_id, context=context)
-	#		
-	#		values = {
-	#			'vat_credit': account.balance
-	#		}
-	#	return {'value':values}
 	
-	## Cette méthode récupère tous les enfants du compte désiré
-	## cf. account.account::_get_children_and_consol()
-	# def _get_children_and_consol_vat(self, cr, uid, ids, context=None):
-	
-	
-	## Cette méthode calcule la balance pour les champs nécessaires
-	## Il existe une méthode qui effectue ce calcul account.account::__compute()
-	# def __compute_balance(self,cr, uid, ids, field_names, arg, context=None):
-	
-	
-	## Cette méthode remplit les champs de la déclaration
-	# def action_fill_declaration(self, cr, uid, ids, context=None):
 	
 	

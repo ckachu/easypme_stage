@@ -80,6 +80,7 @@
 								</h2>
 								<group>
 									<group>
+										<!--<field name="toto" />-->
 										<!-- Deposit simplified regime -->
 										<field name="excluding_vat_sales" attrs="{'invisible':['|',('company_regime','=','annual'),('company_regime','=','real')]}"/>
 										<field name="excluding_vat_services" attrs="{'invisible':['|',('company_regime','=','annual'),('company_regime','=','real')]}"/>

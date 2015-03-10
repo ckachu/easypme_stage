@@ -11,49 +11,55 @@
 					<group>
 						<label for="id" string="Options"/>
 						<div name="account_vat_config">
+							<h3><label style="font-weight:bold;" string="OPERATIONS REALISEES"/></h3>
+
 							<div>
-								<label for="account_exports"/>
-								<field name="account_exports" class="oe_inline" 
+								<label for="account_exports" string="Add all accounts for exports"/>
+								<field name="account_exports" widget="many2many_tags"
 										help='Ici, vous devez choisir tous les comptes qui correspondent aux exportations.'/>
 							</div>
+
 							<div>
-								<label for="account_others"/>
-								<field name="account_others" class="oe_inline"
+								<label for="account_others" string="Add all accounts for other non-taxables transactions"/>
+								<field name="account_others" widget="many2many_tags"
 										help='Ici, vous devez choisir tous les comptes qui correspondent aux autres opérations non taxables.'/>
 							</div>
+							<h3><label style="font-weight:bold;" string="TVA EXIGIBLE"/></h3>
 							<div>
-								<label for="account_reduced_rate"/>
-								<field name="account_reduced_rate" class="oe_inline"
+								<label for="account_reduced_rate" string="Add all accounts for reduced rate"/> 
+								<field name="account_reduced_rate" widget="many2many_tags"
 										help='Ici, vous devez choisir tous les comptes qui correspondent au taux réduit.'/>
 							</div>
 							<div>
-								<label for="account_intermediate_rate"/>
-								<field name="account_intermediate_rate" class="oe_inline"
+								<label for="account_intermediate_rate" string="Add all accounts for intermediate rate"/>
+								<field name="account_intermediate_rate" widget="many2many_tags"
 										help='Ici, vous devez choisir tous les comptes qui correspondent au taux intermédiaire.'/>
 							</div>
 							<div>
-								<label for="account_normal_rate"/>
-								<field name="account_normal_rate" class="oe_inline"
+								<label for="account_normal_rate" string="Add all accounts for normal rate"/>
+								<field name="account_normal_rate" widget="many2many_tags"
 										help='Ici, vous devez choisir tous les comptes qui correspondent au taux normal.'/>
 							</div>
+							<h3><label style="font-weight:bold;" string="TVA DEDUCTIBLE"/></h3>
 							<div>
-								<label for="account_immo"/>
-								<field name="account_immo" class="oe_inline"
+								<label for="account_immo" string="Add all accounts for VAT on goods constituting fixed assets"/>
+								<field name="account_immo" widget="many2many_tags"
 										help='Ici, vous devez choisir tous les comptes qui correspondent à la TVA sur biens constituant des immobilisations.'/>
 							</div>
 							<div>
-								<label for="account_others_goods_services"/>
-								<field name="account_others_goods_services" class="oe_inline"
+								<label for="account_others_goods_services" string="Add all accounts for VAT on other goods and services"/>
+								<field name="account_others_goods_services" widget="many2many_tags"
 										help='Ici, vous devez choisir tous les comptes qui correspondent à la TVA sur autres biens et services.'/>
 							</div>
+							<h3><label style="font-weight:bold;" string="TVA SUR ENCAISSEMENTS"/></h3>
 							<div>
-								<label for="account_customers"/>
-								<field name="account_customers" class="oe_inline"
+								<label for="account_customers" string="Add all accounts for customers"/>
+								<field name="account_customers" widget="many2many_tags"
 										help='Ici, vous devez choisir tous les comptes clients.'/>
 							</div>
 							<div>
-								<label for="account_turnover"/>
-								<field name="account_turnover" class="oe_inline"
+								<label for="account_turnover" string="Add all accounts for turnover"/>
+								<field name="account_turnover" widget="many2many_tags"
 										help='Ici, vous devez choisir tous les comptes permettant d avoir le chiffre d affaires des prestations de services.'/>
 							</div>
 						</div>
