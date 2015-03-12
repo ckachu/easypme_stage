@@ -22,5 +22,5 @@ from openerp.osv import fields, osv
 
 class project_easypme_task(osv.osv):
 	_inherit = "project.task"
-	_order = "priority desc, date_deadline"
+	_order = "priority desc, date_deadline, sequence"
 
