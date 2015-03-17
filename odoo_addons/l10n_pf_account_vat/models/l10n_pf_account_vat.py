@@ -4,7 +4,10 @@ import time
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
 
+import openerp.addons.decimal_precision as dp
+
 from openerp.osv import fields, osv
+from openerp import models, api, _
 
 class l10n_pf_account_vat_declaration(osv.osv):
 	_name = 'l10n.pf.account.vat.declaration'
@@ -37,6 +40,91 @@ class l10n_pf_account_vat_declaration(osv.osv):
 			result['name'] += ':' + fy_obj.read(cr, uid, [fiscalyear_id], context=context)[0]['code']
 		return result
 	
+	
+	# Cette fonction calcule le montant des bases hors TVA
+	@api.one
+	@api.depends('vat_due_reduced_rate','vat_due_intermediate_rate','vat_due_normal_rate','company_id','company_vat_type')
+	def _compute_amount_base(self):
+		if self.company_vat_type == 'cashing':
+			self.base_reduced_rate = 0.0
+			self.base_intermediate_rate = self.vat_due_intermediate_rate / (self.company_id.intermediate_rate / 100)
+			self.base_normal_rate = 0.0
+		else:
+			self.base_reduced_rate = self.vat_due_reduced_rate / (self.company_id.reduced_rate / 100.0)
+			self.base_intermediate_rate = self.vat_due_intermediate_rate / (self.company_id.intermediate_rate / 100)
+			self.base_normal_rate = self.vat_due_normal_rate / (self.company_id.normal_rate / 100)	
+				
+	# Cette fonction calcule le total de la TVA exigible des régimes annuel simplifié et réel selon le type de TVA
+	@api.one
+	@api.depends('vat_due_reduced_rate','vat_due_intermediate_rate','vat_due_normal_rate','vat_due_regularization_to_donate','company_vat_type')
+	def _compute_total_due(self):
+		if self.company_vat_type == 'cashing':
+			self.total_vat_payable = self.vat_due_intermediate_rate + self.vat_due_regularization_to_donate 
+		else:
+			self.total_vat_payable = self.vat_due_reduced_rate + self.vat_due_intermediate_rate + self.vat_due_normal_rate + self.vat_due_regularization_to_donate
+	
+	# Cette fonction calcule le total de la taxe due de l'acompte en régime simplifié
+	@api.one
+	@api.depends('tax_due_sales','tax_due_services')
+	def _compute_total_taxe_due(self):
+		self.total_tax_payable = self.tax_due_sales + self.tax_due_services
+	
+	# Cette fonction calcule le total de la TVA déductible selon le type de régime
+	@api.one
+	@api.depends('company_regime','vat_immobilization','vat_other_goods_services','vat_regularization','defferal_credit')
+	def _compute_total_deductible(self):
+		if self.company_regime == 'deposit':
+			self.total_vat_deductible = self.vat_immobilization + self.defferal_credit
+		else:
+			self.total_vat_deductible = self.vat_immobilization + self.vat_other_goods_services + self.vat_regularization + self.defferal_credit
+	
+	# Cette fonction calcule le montant de la TVA ou du crédit de TVA selon les cas
+	@api.one
+	@api.depends('total_vat_payable','total_vat_deductible','total_tax_payable','company_regime')
+	def _compute_amount_vat(self):
+		diff1 = self.total_tax_payable - self.total_vat_deductible
+		diff2 = self.total_vat_payable - self.total_vat_deductible
+		
+		if self.company_regime == 'deposit':
+			if diff1 > 0:
+				self.net_vat_due = self.total_tax_payable - self.total_vat_deductible
+				self.vat_credit = 0.0
+			else:
+				self.vat_credit = self.total_vat_deductible - self.total_tax_payable
+				self.net_vat_due = 0.0
+		else:
+			if diff2 > 0:
+				self.net_vat_due = self.total_vat_payable - self.total_vat_deductible
+				self.vat_credit = 0.0
+			else:
+				self.vat_credit = self.total_vat_deductible - self.total_vat_payable
+				self.net_vat_due = 0.0
+	
+	# Cette fonction calcule le montant du crédit à reporter
+	@api.one
+	@api.depends('vat_credit','reimbursement','surplus','company_regime')
+	def _compute_credit_to_reported(self):
+		if self.company_regime == 'annual':
+			self.credit_to_be_transferred = self.surplus - self.reimbursement
+		else:
+			self.credit_to_be_transferred = self.vat_credit - self.reimbursement
+	
+	# Régime annuel simplifié
+	@api.one
+	@api.depends('total_vat_payable','total_vat_deductible','deposit','obtained_reimbursement')
+	def _compute_total_difference(self):
+		self.difference_deductible_payable = self.total_vat_payable - self.total_vat_deductible
+		self.difference_payable_deductible = self.total_vat_deductible - self.total_vat_payable
+		self.total_difference_deposit = self.difference_deductible_payable + self.deposit
+		self.total_difference_reimbursement = self.difference_payable_deductible + self.reimbursement
+	
+	# Régime annuel simplifié
+	@api.one
+	@api.depends('total_difference_deposit','total_difference_reimbursement')
+	def _compute_surplus_net(self):
+		self.surplus = self.total_difference_deposit - self.total_difference_reimbursement
+		self.net_to_pay = self.total_difference_reimbursement - self.total_difference_deposit
+	
 	_columns = {
 		'name': fields.char('Declaration name'),
 		'date_declaration': fields.date('Declaration date'),
@@ -64,43 +152,43 @@ class l10n_pf_account_vat_declaration(osv.osv):
 		'account_exports': fields.float('Exports'),
 		'account_other': fields.float('Other'),
 		
-		'base_reduced_rate': fields.float('Base reduced rate'),
-		'base_intermediate_rate': fields.float('Base intermediate rate'),
-		'base_normal_rate': fields.float('Base normal rate'),
+		'base_reduced_rate': fields.float('Base reduced rate', store=True, compute='_compute_amount_base'),
+		'base_intermediate_rate': fields.float('Base intermediate rate', store=True, compute='_compute_amount_base'),
+		'base_normal_rate': fields.float('Base normal rate', store=True, compute='_compute_amount_base'),
 		'base_regularization_to_donate': fields.float('Base regularization to donate'),
 		
 		'vat_due_reduced_rate': fields.float('Vat due reduced rate'),
 		'vat_due_intermediate_rate': fields.float('Vat due intermediate rate'),
 		'vat_due_normal_rate': fields.float('Vat due normal rate'),
 		'vat_due_regularization_to_donate': fields.float('Vat due regularization to donate'),
-		'total_vat_payable': fields.float('Total vat payable'),
+		'total_vat_payable': fields.float('Total vat payable', store=True, compute='_compute_total_due'),
 		
 		'vat_immobilization': fields.float('Vat immobilization'),
 		'vat_other_goods_services': fields.float('Vat other goods and services'),
 		'vat_regularization': fields.float('Regularization'),
 		'defferal_credit': fields.float('Defferal credit'),
-		'total_vat_deductible': fields.float('Total vat deductible'),
+		'total_vat_deductible': fields.float('Total vat deductible', store=True, compute='_compute_total_deductible'),
 		
-		'vat_credit': fields.float('Vat credit'),
+		'vat_credit': fields.float('Vat credit', store=True, compute='_compute_amount_vat'),
 		'reimbursement': fields.float('Reimbursement'),
-		'credit_to_be_transferred': fields.float('Credit to be transferred'),
+		'credit_to_be_transferred': fields.float('Credit to be transferred', store=True, compute='_compute_credit_to_reported'),
 		'net_vat_due': fields.float('Net vat due'),
 		
 		'excluding_vat_sales': fields.float('Excluding vat sales'),
 		'excluding_vat_services': fields.float('Excluding vat services'),
 		'tax_due_sales': fields.float('Tax due sales'),
 		'tax_due_services': fields.float('Tax due services'),
-		'total_tax_payable': fields.float('Total tax payable'),
+		'total_tax_payable': fields.float('Total tax payable', store=True, compute='_compute_total_taxe_due'),
 		
-		'difference_deductible_payable': fields.float('Difference'),
+		'difference_deductible_payable': fields.float('Difference', store=True, compute='_compute_total_difference'),
 		'deposit': fields.float('Deposit'),
-		'total_difference_deposit': fields.float('Total'),
-		'surplus': fields.float('Surplus'),
-		'difference_payable_deductible': fields.float('Difference'),
+		'total_difference_deposit': fields.float('Total', store=True, compute='_compute_total_difference'),
+		'surplus': fields.float('Surplus', store=True, compute='_compute_surplus_net'),
+		'difference_payable_deductible': fields.float('Difference', store=True, compute='_compute_total_difference'),
 		'obtained_reimbursement': fields.float('Reimbursement obtained'),
-		'total_difference_reimbursement': fields.float('Total'),
+		'total_difference_reimbursement': fields.float('Total', store=True, compute='_compute_total_difference'),
 		
-		'net_to_pay': fields.float('Net to pay'),
+		'net_to_pay': fields.float('Net to pay', store=True, compute='_compute_surplus_net'),
 		
 		'date': fields.date('Signature Date', required=True),
 		'place': fields.char('Signature Place', required=True),

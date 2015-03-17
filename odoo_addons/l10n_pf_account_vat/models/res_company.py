@@ -18,5 +18,13 @@ class res_company(osv.osv):
 		'immo_ids': fields.one2many('account.account', 'immo_id', 'Immo accounts'),
 		'others_goods_services_ids': fields.one2many('account.account', 'others_goods_services_id', 'Others goods and services accounts'),
 		'customers_ids': fields.one2many('account.account', 'customers_id', 'Customers accounts'),
-		'turnover_ids': fields.one2many('account.account', 'turnover_id', 'Turnover accounts')
+		'turnover_ids': fields.one2many('account.account', 'turnover_id', 'Turnover accounts'),
+		'reduced_rate': fields.float('Reduced rate'),
+		'intermediate_rate': fields.float('Intermediate rate'),
+		'normal_rate': fields.float('Normal rate')
+	}
+	_defaults = {
+		'reduced_rate': 5.0,
+		'intermediate_rate': 13.0,
+		'normal_rate': 16.0
 	}

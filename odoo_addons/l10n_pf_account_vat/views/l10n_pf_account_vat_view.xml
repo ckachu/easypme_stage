@@ -119,7 +119,7 @@
 								<group>
 									<group>
 										<!-- Credit -->
-										<field name="vat_credit"/>
+										<field name="vat_credit" attrs="{'invisible':['|',('company_regime','=','annual')]}"/>
 										<!-- Annual SR -->
 										<field name="difference_deductible_payable" attrs="{'invisible':['|',('company_regime','=','deposit'),('company_regime','=','real')]}"/>
 										<field name="deposit" attrs="{'invisible':['|',('company_regime','=','deposit'),('company_regime','=','real')]}"/>

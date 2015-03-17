@@ -18,6 +18,20 @@
 							<field name="regime_vat" string="Regime VAT"/>
 						<label for="type_vat" string="VAT Company type"/>	
 							<field name="type_vat" string="Type VAT" attrs="{'invisible':[('regime_vat','=','deposit')]}"/>
+						<separator string="Valeurs des taux"/>
+						<group>
+							<div>
+								<div>
+									<label for="reduced_rate" string="Reduced rate (%)"/>
+									<field name="reduced_rate" attrs="{'invisible':[('type_vat','=','cashing')]}"/>
+									<label for="intermediate_rate" string="Intermediate rate (%)"/>
+									<field name="intermediate_rate"/>
+									<label for="normal_rate" string="Normal rate (%)"/>
+									<field name="normal_rate" attrs="{'invisible':[('type_vat','=','cashing')]}"/>
+								</div>
+							</div>
+						</group>
+						
 						<separator string="Comptes utilisés"/>
 						<group>
 							<div>
