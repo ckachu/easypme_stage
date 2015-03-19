@@ -14,6 +14,7 @@
 						<button states="simulate" string="Show journal items" type="object"/>
 						<button name="validate" states="simulate" string="Validate" type="object"/>
 						<button name="set_to_draft" states="simulate" string="Back to draft" type="object"/>
+						<button name="set_to_draft" states="done" string="Cancel" type="object"  groups="account.group_account_manager"/> 
 						<field name="state" widget="statusbar" statusbar_visible="draft,simulate,done"/>
 					</header>
 					<sheet>
@@ -60,9 +61,7 @@
 							</page>
 							<page string="Declaration">
 								<!-- Operations realisees -->
-								<h2>
-									<label string="OPERATIONS PERFORMED" attrs="{'invisible':[('company_regime','=','deposit')]}"/>
-								</h2>
+								<separator string="OPERATIONS PERFORMED" attrs="{'invisible':[('company_regime','=','deposit')]}"/>
 								<group>
 									<group>
 										<field name="account_sales" attrs="{'invisible':[('company_regime','=','deposit')]}"/>
@@ -74,9 +73,7 @@
 									</group>
 								</group>
 								<!-- TVA exigible -->
-								<h2>
-									<label string="VAT DUE"/>
-								</h2>
+								<separator string="VAT DUE"/>
 								<group>
 									<group>
 										<!--<field name="toto" />-->
@@ -103,9 +100,7 @@
 									</group>
 								</group>
 								<!-- TVA deductible -->
-								<h2>
-									<label string="VAT DEDUCTIBLE"/>
-								</h2>
+								<separator string="VAT DEDUCTIBLE"/>
 								<group>
 									<group>
 										<field name="vat_immobilization"/>
@@ -116,6 +111,7 @@
 									</group>
 								</group>
 								<!-- Credit et TVA -->
+								<separator string="CREDIT/VAT"/>
 								<group>
 									<group>
 										<!-- Credit -->

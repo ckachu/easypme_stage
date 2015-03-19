@@ -21,13 +21,14 @@
 
     # always loaded
     'data': [
+		#'security/l10n_pf_account_vat_security.xml',
         'security/ir.model.access.csv',
         'views/l10n_pf_account_vat_view.xml',
         'views/res_company_view.xml',
-        'l10n_pf_account_vat_report.xml',
-        'report_deposit_l10n_pf_account_vat.xml',
-        'report_annual_l10n_pf_account_vat.xml',
-        'report_real_l10n_pf_account_vat.xml',
+        'report/l10n_pf_account_vat_report.xml',
+        'report/report_deposit_l10n_pf_account_vat.xml',
+        'report/report_annual_l10n_pf_account_vat.xml',
+        'report/report_real_l10n_pf_account_vat.xml',
         
     ],
     # only loaded in demonstration mode

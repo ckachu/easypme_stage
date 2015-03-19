@@ -11,23 +11,35 @@
 					<field name="city_zip"/>
 				</xpath>	
 				<notebook position="inside">
-					<page string="Informations VAT" position="inside">
-						<label for="activity" string="Company activity"/>
-							<field name="activity" string="Company activity" placeholder="Activity"/>
-						<label for="regime_vat" string="VAT Company regime"/>	
-							<field name="regime_vat" string="Regime VAT"/>
-						<label for="type_vat" string="VAT Company type"/>	
-							<field name="type_vat" string="Type VAT" attrs="{'invisible':[('regime_vat','=','deposit')]}"/>
+					<page string="Informations TVA" position="inside">
+						<separator string="Informations sur l'entreprise"/>
+						<group>
+							<div>
+								<div>
+									<label for="activity" string="Company activity"/>
+									<field name="activity" string="Company activity" placeholder="Activity"
+										help='Mettez l activité exercée par l entreprise'/>
+									<label for="regime_vat" string="VAT Company regime"/>	
+									<field name="regime_vat" string="Regime VAT"
+										help='Choisissez le régime de l entreprise'/>
+									<label for="type_vat" string="VAT Company type"/>	
+									<field name="type_vat" string="Type VAT" attrs="{'invisible':[('regime_vat','=','deposit')]}"
+										help='Choisissez le type de TVA de l entreprise'/>
+								</div>
+							</div>
+						</group>
 						<separator string="Valeurs des taux"/>
 						<group>
 							<div>
 								<div>
-									<label for="reduced_rate" string="Reduced rate (%)"/>
-									<field name="reduced_rate" attrs="{'invisible':[('type_vat','=','cashing')]}"/>
+									<label for="reduced_rate" string="Reduced rate (%)" attrs="{'invisible':[('type_vat','=','cashing')]}"/>
+									<field name="reduced_rate" attrs="{'invisible':[('type_vat','=','cashing')]}"
+										help='Taux réduit actuel'/>
 									<label for="intermediate_rate" string="Intermediate rate (%)"/>
-									<field name="intermediate_rate"/>
-									<label for="normal_rate" string="Normal rate (%)"/>
-									<field name="normal_rate" attrs="{'invisible':[('type_vat','=','cashing')]}"/>
+									<field name="intermediate_rate" help='Taux intermédiaire actuel'/>
+									<label for="normal_rate" string="Normal rate (%)" attrs="{'invisible':[('type_vat','=','cashing')]}"/>
+									<field name="normal_rate" attrs="{'invisible':[('type_vat','=','cashing')]}"
+										help='Taux normal actuel'/>
 								</div>
 							</div>
 						</group>
@@ -37,56 +49,111 @@
 							<div>
 								<div attrs="{'invisible':[('regime_vat','=','deposit')]}">
 									<label for="exports_ids" string="Add all accounts for exports"/>
-									<field name="exports_ids" widget="many2many_tags"
-										help='Choisissez tous les comptes pour les exportations'/>
+									<field name="exports_ids" domain="[('type','!=','view')]" widget="many2many"
+										help='Choisissez tous les comptes pour les exportations'>
+										<tree>
+											<field name='code'/>
+											<field name='name'/>
+											<field name='type'/>
+										</tree>
+									</field>
+										
 								</div>
 								
 								<div attrs="{'invisible':[('regime_vat','=','deposit')]}">
 									<label for="others_ids" string="Add all accounts for other non-taxables transactions"/>
-									<field name="others_ids" widget="many2many_tags"
-										help='Choisissez tous les comptes pour les autres opérations non taxables'/>										
+									<field name="others_ids" domain="[('type','!=','view')]" widget="many2many"
+										help='Choisissez tous les comptes pour les autres opérations non taxables'>
+										<tree>
+											<field name='code'/>
+											<field name='name'/>
+											<field name='type'/>
+										</tree>
+									</field>										
 								</div>
 								
 								<div attrs="{'invisible':[('regime_vat','=','deposit')]}">
 									<label for="reduced_rate_ids" string="Add all accounts for reduced rate"/>
-									<field name="reduced_rate_ids" widget="many2many_tags"
-										help='Choisissez tous les comptes pour le taux réduit'/>
+									<field name="reduced_rate_ids" domain="[('type','!=','view')]" widget="many2many"
+										help='Choisissez tous les comptes pour le taux réduit'>
+										<tree>
+											<field name='code'/>
+											<field name='name'/>
+											<field name='type'/>
+										</tree>
+									</field>
 								</div>
 								
 								<div attrs="{'invisible':[('regime_vat','=','deposit')]}">
 									<label for="intermediate_rate_ids" string="Add all accounts for intermediate rate"/>
-									<field name="intermediate_rate_ids" widget="many2many_tags"
-										help='Choisissez tous les comptes pour le taux intermédiaire'/>
+									<field name="intermediate_rate_ids" domain="[('type','!=','view')]" widget="many2many"
+										help='Choisissez tous les comptes pour le taux intermédiaire'>
+										<tree>
+											<field name='code'/>
+											<field name='name'/>
+											<field name='type'/>
+										</tree>
+									</field>
 								</div>
 								
 								<div attrs="{'invisible':[('regime_vat','=','deposit')]}">
 									<label for="normal_rate_ids" string="Add all accounts for normal rate"/>
-									<field name="normal_rate_ids" widget="many2many_tags"
-										help='Choisissez tous les comptes pour le taux normal'/>
+									<field name="normal_rate_ids" domain="[('type','!=','view')]" widget="many2many"
+										help='Choisissez tous les comptes pour le taux normal'>
+										<tree>
+											<field name='code'/>
+											<field name='name'/>
+											<field name='type'/>
+										</tree>
+									</field>
 								</div>
 								
 								<div>
 									<label for="immo_ids" string="Add all accounts for immobilization"/>
-									<field name="immo_ids" widget="many2many_tags"
-										help='Choisissez tous les comptes pour les immobilisations'/>
+									<field name="immo_ids" domain="[('type','!=','view')]" widget="many2many"
+										help='Choisissez tous les comptes pour les immobilisations'>
+										<tree>
+											<field name='code'/>
+											<field name='name'/>
+											<field name='type'/>
+										</tree>
+									</field>
 								</div>
 								
 								<div>
 									<label for="others_goods_services_ids" string="Add all accounts for others goods and services"/>
-									<field name="others_goods_services_ids" widget="many2many_tags"
-										help='Choisissez tous les comptes pour les autres biens et services'/>
+									<field name="others_goods_services_ids" domain="[('type','!=','view')]" widget="many2many"
+										help='Choisissez tous les comptes pour les autres biens et services'>
+										<tree>
+											<field name='code'/>
+											<field name='name'/>
+											<field name='type'/>
+										</tree>
+									</field>
 								</div>
 								
 								<div attrs="{'invisible':[('type_vat','=','bills')]}">
 									<label for="customers_ids" string="Add all accounts for customers"/>
-									<field name="customers_ids" widget="many2many_tags"
-										help='Choisissez tous les comptes clients'/>
+									<field name="customers_ids" domain="[('type','!=','view')]" widget="many2many"
+										help='Choisissez tous les comptes clients'>
+										<tree>
+											<field name='code'/>
+											<field name='name'/>
+											<field name='type'/>
+										</tree>
+									</field>
 								</div>
 								
 								<div attrs="{'invisible':[('type_vat','=','bills')]}">
 									<label for="turnover_ids" string="Add all accounts for turnover"/>
-									<field name="turnover_ids" widget="many2many_tags"
-										help='Choisissez tous les comptes du chiffre d affaires'/>
+									<field name="turnover_ids" domain="[('type','!=','view')]" widget="many2many"
+										help='Choisissez tous les comptes du chiffre d affaires'>
+										<tree>
+											<field name='code'/>
+											<field name='name'/>
+											<field name='type'/>
+										</tree>
+									</field>
 								</div>
 							</div>
 						</group>
