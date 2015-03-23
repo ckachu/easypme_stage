@@ -18,6 +18,7 @@ class l10n_pf_account_vat_declaration(osv.osv):
 	def _get_fiscalyear(self, cr, uid, context=None):
 		return self.pool.get('account.fiscalyear').find(cr, uid, context=context)
 
+
 	def account_chart_open_window(self, cr, uid, ids, context=None):
 		import pdb
 		pdb.set_trace()
@@ -60,96 +61,96 @@ class l10n_pf_account_vat_declaration(osv.osv):
 		print ids1
 		
             
-	## Cette méthode récupère les comptes des exportations
-	def _get_exports_ids(self, cr, uid, ids, context=None):
-		import pdb
-		pdb.set_trace()
-		company = self.pool.get('res.company')
-		ids1 = []
-		for ei in company.browse(cr, uid, uid, context=context).exports_ids:
-			ids1 = ids1 + list(ei)
-		print ids1
-		return ids1
+	### Cette méthode récupère les comptes des exportations
+	#def _get_exports_ids(self, cr, uid, ids, context=None):
+		#import pdb
+		#pdb.set_trace()
+		#company = self.pool.get('res.company')
+		#ids1 = []
+		#for ei in company.browse(cr, uid, uid, context=context).exports_ids:
+			#ids1 = ids1 + list(ei)
+		#print ids1
+		#return ids1
 
-	## Cette méthode récupère les comptes des autres opérations non taxables
-	def _get_others_ids(self, cr, uid, ids, context=None):
-		import pdb
-		pdb.set_trace()
-		company = self.pool.get('res.company')
-		ids1 = []
-		for oi in company.browse(cr, uid, uid, context=context).others_ids:
-			ids1 = ids1 + list(oi)
-		return ids1
+	### Cette méthode récupère les comptes des autres opérations non taxables
+	#def _get_others_ids(self, cr, uid, ids, context=None):
+		#import pdb
+		#pdb.set_trace()
+		#company = self.pool.get('res.company')
+		#ids1 = []
+		#for oi in company.browse(cr, uid, uid, context=context).others_ids:
+			#ids1 = ids1 + list(oi)
+		#return ids1
 
-	## Cette méthode récupère les comptes du taux réduit
-	def _get_reduced_rate_ids(self, cr, uid, ids, context=None):
-		import pdb
-		pdb.set_trace()
-		company = self.pool.get('res.company')
-		ids1 = []
-		for ri in company.browse(cr, uid, uid, context=context).reduced_rate_ids:
-			ids1 = ids1 + list(ri)
-		return ids1
+	### Cette méthode récupère les comptes du taux réduit
+	#def _get_reduced_rate_ids(self, cr, uid, ids, context=None):
+		#import pdb
+		#pdb.set_trace()
+		#company = self.pool.get('res.company')
+		#ids1 = []
+		#for ri in company.browse(cr, uid, uid, context=context).reduced_rate_ids:
+			#ids1 = ids1 + list(ri)
+		#return ids1
 
-	## Cette méthode récupère les comptes du taux intermédiaire
-	def _get_intermediate_rate_ids(self, cr, uid, ids, context=None):
-		import pdb
-		pdb.set_trace()
-		company = self.pool.get('res.company')
-		ids1 = []
-		for ii in company.browse(cr, uid, uid, context=context).intermediate_rate_ids:
-			ids1 = ids1 + list(ii)
-		return ids1
+	### Cette méthode récupère les comptes du taux intermédiaire
+	#def _get_intermediate_rate_ids(self, cr, uid, ids, context=None):
+		#import pdb
+		#pdb.set_trace()
+		#company = self.pool.get('res.company')
+		#ids1 = []
+		#for ii in company.browse(cr, uid, uid, context=context).intermediate_rate_ids:
+			#ids1 = ids1 + list(ii)
+		#return ids1
 
-	## Cette méthode récupère les comptes du taux normal
-	def _get_normal_rate_ids(self, cr, uid, ids, context=None):
-		import pdb
-		pdb.set_trace()
-		company = self.pool.get('res.company')
-		ids1 = []
-		for ni in company.browse(cr, uid, uid, context=context).normal_rate_ids:
-			ids1 = ids1 + list(ni)
-		return ids1
+	### Cette méthode récupère les comptes du taux normal
+	#def _get_normal_rate_ids(self, cr, uid, ids, context=None):
+		#import pdb
+		#pdb.set_trace()
+		#company = self.pool.get('res.company')
+		#ids1 = []
+		#for ni in company.browse(cr, uid, uid, context=context).normal_rate_ids:
+			#ids1 = ids1 + list(ni)
+		#return ids1
 
-	## Cette méthode récupère les comptes des immobilisations
-	def _get_immo_ids(self, cr, uid, ids, context=None):
-		import pdb
-		pdb.set_trace()
-		company = self.pool.get('res.company')
-		ids1 = []
-		for im in company.browse(cr, uid, uid, context=context).immo_ids:
-			ids1 = ids1 + list(im)
-		return ids1
+	### Cette méthode récupère les comptes des immobilisations
+	#def _get_immo_ids(self, cr, uid, ids, context=None):
+		#import pdb
+		#pdb.set_trace()
+		#company = self.pool.get('res.company')
+		#ids1 = []
+		#for im in company.browse(cr, uid, uid, context=context).immo_ids:
+			#ids1 = ids1 + list(im)
+		#return ids1
 
-	## Cette méthode récupère les comptes des autres biens et services
-	def _get_others_goods_services_ids(self, cr, uid, ids, context=None):
-		import pdb
-		pdb.set_trace()
-		company = self.pool.get('res.company')
-		ids1 = []
-		for gs in company.browse(cr, uid, uid, context=context).others_goods_services_ids:
-			ids1 = ids1 + list(gs)
-		return ids1
+	### Cette méthode récupère les comptes des autres biens et services
+	#def _get_others_goods_services_ids(self, cr, uid, ids, context=None):
+		#import pdb
+		#pdb.set_trace()
+		#company = self.pool.get('res.company')
+		#ids1 = []
+		#for gs in company.browse(cr, uid, uid, context=context).others_goods_services_ids:
+			#ids1 = ids1 + list(gs)
+		#return ids1
 
-	## Cette méthode récupère les comptes clients
-	def _get_customers_ids(self, cr, uid, ids, context=None):
-		import pdb
-		pdb.set_trace()
-		company = self.pool.get('res.company')
-		ids1 = []
-		for ci in company.browse(cr, uid, uid, context=context).customers_ids:
-			ids1 = ids1 + list(ci)
-		return ids1
+	### Cette méthode récupère les comptes clients
+	#def _get_customers_ids(self, cr, uid, ids, context=None):
+		#import pdb
+		#pdb.set_trace()
+		#company = self.pool.get('res.company')
+		#ids1 = []
+		#for ci in company.browse(cr, uid, uid, context=context).customers_ids:
+			#ids1 = ids1 + list(ci)
+		#return ids1
 
-	## Cette méthode récupère les comptes du chiffre d'affaires
-	def _get_turnover_ids(self, cr, uid, ids, context=None):
-		import pdb
-		pdb.set_trace()
-		company = self.pool.get('res.company')
-		ids1 = []
-		for ti in company.browse(cr, uid, uid, context=context).turnover_ids:
-			ids1 = ids1 + list(ti)
-		return ids1
+	### Cette méthode récupère les comptes du chiffre d'affaires
+	#def _get_turnover_ids(self, cr, uid, ids, context=None):
+		#import pdb
+		#pdb.set_trace()
+		#company = self.pool.get('res.company')
+		#ids1 = []
+		#for ti in company.browse(cr, uid, uid, context=context).turnover_ids:
+			#ids1 = ids1 + list(ti)
+		#return ids1
 
 	## Cette fonction calcule le montant des bases hors TVA
 	@api.one
@@ -357,4 +358,32 @@ class l10n_pf_account_vat_declaration(osv.osv):
 				'company_vat_type': company.type_vat,
 			}
 		return {'value':values}
-
+	
+	def on_change_fiscalyear(self, cr, uid, ids, fiscalyear_id=False, context=None):
+		res = {}
+		if fiscalyear_id:
+			start_period = end_period = False
+			cr.execute('''
+				SELECT * FROM (SELECT p.id
+							   FROM account_period p
+							   LEFT JOIN account_fiscalyear f ON (p.fiscalyear_id = f.id)
+							   WHERE f.id = %s
+							   ORDER BY p.date_start ASC, p.special DESC
+							   LIMIT 1) AS period_start
+				UNION ALL
+				SELECT * FROM (SELECT p.id
+							   FROM account_period p
+							   LEFT JOIN account_fiscalyear f ON (p.fiscalyear_id = f.id)
+							   WHERE f.id = %s
+							   AND p.date_start < NOW()
+							   ORDER BY p.date_stop DESC
+							   LIMIT 1) AS period_stop''', (fiscalyear_id, fiscalyear_id))
+			periods =  [i[0] for i in cr.fetchall()]
+			if periods:
+				start_period = periods[0]
+				if len(periods) > 1:
+					end_period = periods[1]
+			res['value'] = {'period_from': start_period, 'period_to': end_period}
+		else:
+			res['value'] = {'period_from': False, 'period_to': False}
+		return res

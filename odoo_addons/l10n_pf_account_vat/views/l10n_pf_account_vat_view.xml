@@ -53,7 +53,7 @@
 										<field name="city_zip"/>
 										
 										
-										<field name="fiscalyear" class="oe_inline"/>
+										<field name="fiscalyear" class="oe_inline" on_change="on_change_fiscalyear(fiscalyear)"/>
 										<field name="period_from" class="oe_inline"/>
 										<field name="period_to" class="oe_inline"/>
 									</group>
@@ -144,6 +144,7 @@
 									<field name="means_of_payment"/>
 								</group>
 								<button name="action_fill_declaration" states="draft" string="Fill declaration" type="object"/>
+								<button name="%(action_l10n_pf_account_vat_fill)d" states="draft" string="Fill" type="action"/>
 							</page>
 						</notebook>
 					</sheet>

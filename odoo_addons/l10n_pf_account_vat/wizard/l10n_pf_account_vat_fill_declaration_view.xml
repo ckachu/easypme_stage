@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+	<data>
+		<record model="ir.ui.view" id="declaration_fill_form">
+			<field name="name">wizard.declaration.fill.form</field>
+			<field name="model">l10n.pf.account.vat.declaration</field>
+			<field name="arch" type="xml">
+				<form>
+					<group string="Periods">
+						<group colspan="2" col="2">
+							<field name="fiscalyear"/>
+							<field name="target_move"/>
+						</group>
+						<group colspan="2" col="2">
+							<field name="period_from"/>
+							<field name="period_to"/>
+						</group>
+					</group>
+					<footer>
+						<button name="fill" string="Fill" type="object"/>
+						or
+						<button string="Cancel" class="oe_link" special="cancel"/>
+					</footer>
+				</form>
+			</field>
+		</record>
+		
+		<record id="action_declaration_fill" model="ir.actions.act_window">
+			<field name="name">Fill declaration</field>
+			<field name="res_model">l10n.pf.account.vat.declaration</field>
+			<field name="type">ir.actions.act_window</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">tree,form</field>
+			<field name="view_id" ref="declaration_fill_form"/>
+			<field name="target">new</field>
+		</record>
+	</data>
+</openerp>
+ 
