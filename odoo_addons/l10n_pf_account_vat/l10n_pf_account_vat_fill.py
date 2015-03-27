@@ -3,6 +3,7 @@ from openerp.osv import fields, osv
 
 class l10n_pf_account_vat_fill(osv.osv_memory):
 	_name = "l10n.pf.account.vat.fill"
+	#_inherit = "account.account"
 	
 	def _get_account(self, cr, uid, context=None):
 		user = self.pool.get('res.users').browse(cr, uid, uid, context=context)
@@ -10,31 +11,36 @@ class l10n_pf_account_vat_fill(osv.osv_memory):
 		return accounts and accounts[0] or False
 	
 	_columns = {
-		'chart_account_id': fields.many2one('account.account', 'Chart of Account', required=True),
-		'fiscalyear': fields.many2one('account.fiscalyear', 'Fiscal year'),
-		'target_move': fields.selection([('posted', 'All Posted Entries'),('all','All Entries')], 'Target Moves', required=True),
+		'chart_account_id': fields.many2one('account.account', 'Chart of Account'),
+		'fiscalyear_id': fields.many2one('account.fiscalyear', 'Fiscal year'),
+		'target_move': fields.selection([('posted', 'All Posted Entries'),('all','All Entries')], 'Target Moves'),
 		'period_from': fields.many2one('account.period', 'Start Period'),
 		'period_to': fields.many2one('account.period', 'End Period'),
 		'regime_vat': fields.selection([('deposit','Deposit in simplified regime'),('annual','Annual in simplified regime'),('real','Real regime')], 'Regime Vat'),
 		'type_vat': fields.selection([('cashing','Cashing vat'),('bills','Bills vat')],'Type vat'),
-		'exports_ids': fields.many2many('account.account', 'account_account_exports', 'exports_id', 'account_id', 'Exports accounts'),
-		'others_ids': fields.many2many('account.account', 'account_account_others', 'others_id', 'account_id', 'Others accounts'),
-		'reduced_rate_ids': fields.many2many('account.account', 'account_account_reduced', 'reduced_rate_id', 'account_id', 'Reduced rate accounts'),
-		'intermediate_rate_ids': fields.many2many('account.account', 'account_account_intermediate', 'intermediate_rate_id', 'account_id', 'Intermediate rate accounts'),
-		'normal_rate_ids': fields.many2many('account.account', 'account_account_normal', 'normal_rate_id', 'account_id', 'Normal rate accounts'),
-		'immo_ids': fields.many2many('account.account', 'account_account_immo', 'immo_id', 'account_id', 'Immo accounts'),
-		'others_goods_services_ids': fields.many2many('account.account', 'account_account_goods_services', 'others_goods_services_id', 'account_id', 'Others goods and services accounts'),
-		'customers_ids': fields.many2many('account.account', 'account_account_customers', 'customers_id', 'account_id', 'Customers accounts'),
-		'turnover_ids': fields.many2many('account.account', 'account_account_turnover', 'turnover_id', 'account_id', 'Turnover accounts'),
+		'exports_ids': fields.many2many('account.account', string='Exports accounts'),
+		'others_ids': fields.many2many('account.account', string='Others accounts'),
+		'reduced_rate_ids': fields.many2many('account.account', string='Reduced rate accounts'),
+		'intermediate_rate_ids': fields.many2many('account.account', string='Intermediate rate accounts'),
+		'normal_rate_ids': fields.many2many('account.account', string='Normal rate accounts'),
+		'immo_ids': fields.many2many('account.account', string='Immo accounts'),
+		'others_goods_services_ids': fields.many2many('account.account', string='Others goods and services accounts'),
+		'customers_ids': fields.many2many('account.account', string='Customers accounts'),
+		'turnover_ids': fields.many2many('account.account', string='Turnover accounts'),
+		'journal_ids': fields.many2many('account.journal', string='Journals'),
 	}
 	
+	def _get_all_journal(self, cr, uid, context=None):
+		return self.pool.get('account.journal').search(cr, uid, [])
+	
 	_defaults = {
+		'journal_ids': _get_all_journal,
 		'chart_account_id': _get_account,
 	}
 	
 	def default_get(self, cr, uid, fields, context=None):
-		import pdb
-		pdb.set_trace()
+		#import pdb
+		#pdb.set_trace()
 		if not context:
 			context = {}
 		declaration_obj = self.pool.get('l10n.pf.account.vat.declaration')
@@ -47,8 +53,8 @@ class l10n_pf_account_vat_fill(osv.osv_memory):
 			res.update({'regime_vat': declaration.company_regime})
 		if 'type_vat' in fields:
 			res.update({'type_vat': declaration.company_vat_type})
-		if 'fiscalyear' in fields:
-			res.update({'fiscalyear': declaration.fiscalyear.id})
+		if 'fiscalyear_id' in fields:
+			res.update({'fiscalyear_id': declaration.fiscalyear.id})
 		if 'period_from' in fields:
 			res.update({'period_from': declaration.period_from.id})
 		if 'period_to' in fields:
@@ -72,27 +78,118 @@ class l10n_pf_account_vat_fill(osv.osv_memory):
 		if 'turnover_ids' in fields:
 			res.update({'turnover_ids': [(6, 0, [ti.id for ti in declaration.company_id.turnover_ids])]})
 		return res
-	
-	#def _build_contexts(self, cr, uid, ids, data, context=None):
-		#if context is None:
-			#context = {}
-		#result = {}
-		#result['fiscalyear'] = 'fiscalyear' in data['form'] and	data['form']['fiscalyear'] or False
-		#result['chart_account_id'] = 'chart_account_id' in data['form'] and data['form']['chart_account_id'] or False
-		#return result
+
+	def fill_declaration(self, cr, uid, ids, context=None):
+		import pdb
+		pdb.set_trace()
+		if context is None:
+			context = {}
+		ac_obj = self.pool.get('l10n.pf.account.vat.declaration')
+		declaration_id = context.get('active_id', False)
+		declaration = ac_obj.browse(cr, uid, declaration_id, context=context)
 		
-	#def fill_declaration(self, cr, uid, ids, context=None):
-		#import pdb
-		#pdb.set_trace()
-		#if context is None:
-			#context = {}
-		#data = {}
-		#data['ids'] = context.get('active_ids', [])
-		#data['model'] = context.get('active_model', 'ir.ui.menu')
-		#data['form'] = self.read(cr, uid, ids, ['chart_account_id', 'fiscalyear', 'target_move', 'period_from', 'period_to', 'regime_vat', 'type_vat', 'exports_ids', 'others_ids', 'reduced_rate_ids', 'intermediate_rate_ids', 'normal_rate_ids', 'immo_ids', 'other_goods_services_ids', 'customers_ids', 'turnover_ids'])
-		#for field in ['fiscalyear', 'chart_account_id', 'period_from', 'period_to']:
-			#if isinstance(data['form'][field], tuple):
-				#data['form'][field] = data['form'][field][0]
-		#used_context = self._build_contexts(cr, uid, ids, data, context=context)
-		#data['form']['periods'] = used_context.get('periods', False) and used_context['periods'] or []
-		#data['form']['used_context'] = dict(used_context, lang=context.get('lang', 'en_US'))
+		for field in ['exports_ids', 'others_ids', 'reduced_rate_ids', 'intermediate_rate_ids', 'normal_rate_ids', 'immo_ids', 'others_goods_services_ids', 'sales_ids', 'services_ids', 'credit_ids']:
+			res = 0.0
+			if declaration.company_regime == 'deposit':
+				if field == 'sales_ids':
+					for i in declaration.company_id.sales_ids:
+						res = res + i.balance
+						print res
+					declaration.update({'excluding_vat_sales': res})
+				elif field == 'services_ids':
+					for i in declaration.company_id.services_ids:
+						res = res + i.balance
+						print res
+					declaration.update({'excluding_vat_services': res})
+				elif field == 'immo_ids':
+					for i in declaration.company_id.immo_ids:
+						res = res + i.balance
+						print res
+					declaration.update({'vat_immobilization': res})
+				#elif field == 'credit_ids':
+					#for i in declaration.company_id.credit_ids:
+						#res = res + i.balance
+						#print res
+					#declaration.update({'defferal_credit': res})
+			elif (declaration.company_regime == 'annual' or (declaration.company_regime == 'real' and declaration.company_vat_type == 'bills')):
+				if field == 'exports_ids':
+					for i in  declaration.company_id.exports_ids:
+						res = res + i.balance
+						print res
+					declaration.update({'account_exports': res})
+				elif field == 'others_ids':
+					for i in declaration.company_id.others_ids:
+						res = res + i.balance
+						print res
+					declaration.update({'account_other': res})
+				elif field == 'reduced_rate_ids':
+					for i in declaration.company_id.reduced_rate_ids:
+						res = res + i.balance
+						print res
+					declaration.update({'vat_due_reduced_rate': res})
+				elif field == 'intermediate_rate_ids':
+					for i in declaration.company_id.intermediate_rate_ids:
+						res = res + i.balance
+						print res
+					declaration.update({'vat_due_intermediate_rate': res})
+				elif field == 'normal_rate_ids':
+					for i in declaration.company_id.normal_rate_ids:
+						res = res + i.balance
+						print res
+					declaration.update({'vat_due_normal_rate': res})
+				elif field == 'immo_ids':
+					for i in declaration.company_id.immo_ids:
+						res = res + i.balance
+						print res
+					declaration.update({'vat_immobilization': res})
+				elif field == 'others_goods_services_ids':
+					for i in declaration.company_id.others_goods_services_ids:
+						res = res + i.balance
+						print res
+					declaration.update({'vat_other_goods_services': res})
+				#elif field == 'credit_ids':
+					#for i in declaration.company_id.credit_ids:
+						#res = res + i.balance
+						#print res
+					#declaration.update({'defferal_credit': res})
+			elif (declaration.company_regime == 'real' and declaration.company_vat_type == 'cashing'):
+				if field == 'exports_ids':
+					for i in  declaration.company_id.exports_ids:
+						res = res + i.balance
+						print res
+					declaration.update({'account_exports': res})
+				elif field == 'others_ids':
+					for i in declaration.company_id.others_ids:
+						res = res + i.balance
+						print res
+					declaration.update({'account_other': res})
+				elif field == 'intermediate_rate_ids':
+					for i in declaration.company_id.intermediate_rate_ids:
+						res = res + i.balance
+						print res
+					declaration.update({'vat_due_intermediate_rate': res})
+				elif field == 'immo_ids':
+					for i in declaration.company_id.immo_ids:
+						res = res + i.balance
+						print res
+					declaration.update({'vat_immobilization': res})
+				elif field == 'others_goods_services_ids':
+					for i in declaration.company_id.others_goods_services_ids:
+						res = res + i.balance
+						print res
+					declaration.update({'vat_other_goods_services': res})
+				elif field == 'sales_ids':
+					for i in declaration.company_id.sales_ids:
+						res = res + i.balance
+						print res
+					declaration.update({'excluding_vat_sales': res})
+				elif field == 'services_ids':
+					for i in declaration.company_id.services_ids:
+						res = res + i.balance
+						print res
+					declaration.update({'excluding_vat_services': res})
+				#elif field == 'credit_ids':
+					#for i in declaration.company_id.credit_ids:
+						#res = res + i.balance
+						#print res
+		return declaration

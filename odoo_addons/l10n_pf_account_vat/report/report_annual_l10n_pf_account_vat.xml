@@ -9,6 +9,12 @@
 					<div class="header">
 						<div class="row">
 							
+							<div class="col-xs-3 pull-left">
+								<img src="/l10n_pf_account_vat/static/src/img/logo.png" style="height:100px;width:200px;"/>
+								<p style="text-align:center;color:blue;font-size:16pt;font-weight:bold;">Recette des Impôts</p>
+								<hr style="text-align:center;border:1px dashed blue;width:100px"/>
+							</div>
+							
 							<!-- Période de déclaration -->
 							<div class="col-xs-3 pull-right">
 								<table style="border:1px solid black;width:250px;height:80px;">
@@ -26,13 +32,10 @@
 							
 							
 							<div class="text-center" style="width:500px;height:40px;margin-left:350px;">
-								<p>TAXE SUR LA VALEUR AJOUTEE<br/>Régime simplifié</p>
+								<p style="font-size:20px;font-weight:bold;">TAXE SUR LA VALEUR AJOUTEE<br/>Régime simplifié</p>
 								<hr style="border:1px solid black;width:200px;"/>
-								<p>(Déclaration récapitulative annuelle)<br/>à déposer au plus tard le 31 mars de l'année suivante</p>
+								<p style="font-size:16px;font-weight:bold;">(Déclaration récapitulative annuelle)<br/>à déposer au plus tard le 31 mars de l'année suivante</p>
 							</div>
-							
-							
-							
 							
 						</div>
 					</div>

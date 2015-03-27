@@ -23,7 +23,7 @@
 									<field name="regime_vat" string="Regime VAT"
 										help='Choisissez le régime de l entreprise'/>
 									<label for="type_vat" string="VAT Company type"/>	
-									<field name="type_vat" string="Type VAT" attrs="{'invisible':[('regime_vat','=','deposit')]}"
+									<field name="type_vat" string="Type VAT" attrs="{'invisible':['|',('regime_vat','=','deposit'),('regime_vat','=','annual')]}"
 										help='Choisissez le type de TVA de l entreprise'/>
 								</div>
 							</div>
@@ -47,6 +47,30 @@
 						<separator string="Comptes utilisés"/>
 						<group>
 							<div>
+								<div attrs="{'invisible':['|',('regime_vat','=','annual'),('regime_vat','=','real')]}">
+									<label for="sales_ids" string="Add all accounts for sales"/>
+									<field name="sales_ids" domain="[('type','!=','view')]" widget="many2many"
+										help='Choisissez tous les comptes du chiffre d affaires des ventes'>
+										<tree>
+											<field name='code'/>
+											<field name='name'/>
+											<field name='type'/>
+										</tree>
+									</field>
+								</div>
+								
+								<div attrs="{'invisible':['|',('regime_vat','=','annual'),('regime_vat','=','real')]}">
+									<label for="services_ids" string="Add all accounts for services"/>
+									<field name="services_ids" domain="[('type','!=','view')]" widget="many2many"
+										help='Choisissez tous les comptes du chiffre d affaires des prestations de services'>
+										<tree>
+											<field name='code'/>
+											<field name='name'/>
+											<field name='type'/>
+										</tree>
+									</field>
+								</div>
+								
 								<div attrs="{'invisible':[('regime_vat','=','deposit')]}">
 									<label for="exports_ids" string="Add all accounts for exports"/>
 									<field name="exports_ids" domain="[('type','!=','view')]" widget="many2many"
@@ -72,7 +96,7 @@
 									</field>										
 								</div>
 								
-								<div attrs="{'invisible':[('regime_vat','=','deposit')]}">
+								<div attrs="{'invisible':['|',('regime_vat','=','deposit'),('type_vat','=','cashing')]}">
 									<label for="reduced_rate_ids" string="Add all accounts for reduced rate"/>
 									<field name="reduced_rate_ids" domain="[('type','!=','view')]" widget="many2many"
 										help='Choisissez tous les comptes pour le taux réduit'>
@@ -96,7 +120,7 @@
 									</field>
 								</div>
 								
-								<div attrs="{'invisible':[('regime_vat','=','deposit')]}">
+								<div attrs="{'invisible':['|',('regime_vat','=','deposit'),('type_vat','=','cashing')]}">
 									<label for="normal_rate_ids" string="Add all accounts for normal rate"/>
 									<field name="normal_rate_ids" domain="[('type','!=','view')]" widget="many2many"
 										help='Choisissez tous les comptes pour le taux normal'>
@@ -120,7 +144,7 @@
 									</field>
 								</div>
 								
-								<div>
+								<div attrs="{'invisible':[('regime_vat','=','deposit')]}">
 									<label for="others_goods_services_ids" string="Add all accounts for others goods and services"/>
 									<field name="others_goods_services_ids" domain="[('type','!=','view')]" widget="many2many"
 										help='Choisissez tous les comptes pour les autres biens et services'>
@@ -132,7 +156,7 @@
 									</field>
 								</div>
 								
-								<div attrs="{'invisible':[('type_vat','=','bills')]}">
+								<div attrs="{'invisible':['|',('regime_vat','in',('annual','deposit')),('type_vat','=','bills')]}">
 									<label for="customers_ids" string="Add all accounts for customers"/>
 									<field name="customers_ids" domain="[('type','!=','view')]" widget="many2many"
 										help='Choisissez tous les comptes clients'>
@@ -144,7 +168,7 @@
 									</field>
 								</div>
 								
-								<div attrs="{'invisible':[('type_vat','=','bills')]}">
+								<div attrs="{'invisible':['|',('regime_vat','in',('annual','deposit')),('type_vat','=','bills')]}">
 									<label for="turnover_ids" string="Add all accounts for turnover"/>
 									<field name="turnover_ids" domain="[('type','!=','view')]" widget="many2many"
 										help='Choisissez tous les comptes du chiffre d affaires'>
@@ -155,6 +179,19 @@
 										</tree>
 									</field>
 								</div>
+								
+								<div>
+									<label for="credit_ids" string="Add all accounts for credit"/>
+									<field name="credit_ids" domain="[('type','!=','view')]" widget="many2many"
+										help='Choisissez tous les comptes du credit à reporter'>
+										<tree>
+											<field name='code'/>
+											<field name='name'/>
+											<field name='type'/>
+										</tree>
+									</field>
+								</div>
+								
 							</div>
 						</group>
 					</page>

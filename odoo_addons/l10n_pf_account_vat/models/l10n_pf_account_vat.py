@@ -44,21 +44,27 @@ class l10n_pf_account_vat_declaration(osv.osv):
 			result['name'] += ':' + fy_obj.read(cr, uid, [fiscalyear_id], context=context)[0]['code']
 		return result
 
-	def __compute(self, cr, uid, ids, field_names, arg=None, context=None, query='', query_params=()):
-		import pdb
-		pdb.set_trace()
-		#children_and_consolidated = self._get_exports_ids(cr, uid, ids, context=context)
-		#return super(account_account, self).__compute(cr, uid, ids, field_names, arg, context, query, query_params)
+	def action_fill_declaration(self, cr, uid, ids, context=None):
+		if not context:
+			context = {}
+		
+		
+		
+	#def __compute(self, cr, uid, ids, field_names, arg=None, context=None, query='', query_params=()):
+		#import pdb
+		#pdb.set_trace()
+		##children_and_consolidated = self._get_exports_ids(cr, uid, ids, context=context)
+		##return super(account_account, self).__compute(cr, uid, ids, field_names, arg, context, query, query_params)
 		
 
-	def action_fill_declaration(self, cr, uid, ids, context=None):
-		import pdb
-		pdb.set_trace()
-		company = self.pool.get('res.company')
-		ids1 = []
-		for ei in company.browse(cr, uid, uid, context=context).intermediate_rate_ids:
-			ids1 = ids1 + list(ei)
-		print ids1
+	#def action_fill_declaration(self, cr, uid, ids, context=None):
+		#import pdb
+		#pdb.set_trace()
+		#company = self.pool.get('res.company')
+		#ids1 = []
+		#for ei in company.browse(cr, uid, uid, context=context).intermediate_rate_ids:
+			#ids1 = ids1 + list(ei)
+		#print ids1
 		
             
 	### Cette méthode récupère les comptes des exportations
@@ -236,10 +242,24 @@ class l10n_pf_account_vat_declaration(osv.osv):
 		self.surplus = self.total_difference_deposit - self.total_difference_reimbursement
 		self.net_to_pay = self.total_difference_reimbursement - self.total_difference_deposit
 
+	@api.one
+	@api.depends('excluding_vat_sales','excluding_vat_services')
+	def _compute_tax_due(self):
+		self.tax_due_sales = self.excluding_vat_sales / 0.05
+		self.tax_due_services = self.excluding_vat_services / 0.05
+
+	@api.one
+	@api.depends('base_reduced_rate', 'base_intermediate_rate', 'base_normal_rate', 'base_regularization_to_donate', 'company_vat_type', 'company_regime')
+	def _compute_amount_transaction(self):
+		if self.company_vat_type == 'cashing' and self.company_regime == 'real':
+			self.account_services = self.base_intermediate_rate
+		elif self.company_regime == 'annual' or (self.company_regime == 'real' and self.company_vat_type == 'bills'):
+			self.account_sales = self.base_reduced_rate + self.base_normal_rate
+			self.account_services = self.base_intermediate_rate
+		
 	_columns = {
 		'name': fields.char('Declaration name', required=True, states={'done':[('readonly',True)]}),
 		'date_declaration': fields.date('Declaration date', states={'done':[('readonly',True)]}),
-
 		'account_id': fields.many2one('account.account', 'Account'),
 
 		'no_tahiti': fields.char('No Tahiti', states={'done':[('readonly',True)]}),
@@ -258,8 +278,8 @@ class l10n_pf_account_vat_declaration(osv.osv):
 
 		'user_id': fields.many2one('res.users','Responsible',required=True, states={'done':[('readonly',True)]}),
 
-		'account_sales': fields.float('Sales', states={'done':[('readonly',True)]}),
-		'account_services': fields.float('Services', states={'done':[('readonly',True)]}),
+		'account_sales': fields.float('Sales', store=True, compute='_compute_amount_transaction', states={'done':[('readonly',True)]}),
+		'account_services': fields.float('Services', store=True, compute='_compute_amount_transaction', states={'done':[('readonly',True)]}),
 		'account_exports': fields.float('Exports', states={'done':[('readonly',True)]}),
 		'account_other': fields.float('Other', states={'done':[('readonly',True)]}),
 
@@ -287,8 +307,8 @@ class l10n_pf_account_vat_declaration(osv.osv):
 
 		'excluding_vat_sales': fields.float('Excluding vat sales', states={'done':[('readonly',True)]}),
 		'excluding_vat_services': fields.float('Excluding vat services', states={'done':[('readonly',True)]}),
-		'tax_due_sales': fields.float('Tax due sales', states={'done':[('readonly',True)]}),
-		'tax_due_services': fields.float('Tax due services', states={'done':[('readonly',True)]}),
+		'tax_due_sales': fields.float('Tax due sales', store=True, compute='_compute_tax_due', states={'done':[('readonly',True)]}),
+		'tax_due_services': fields.float('Tax due services', store=True, compute='_compute_tax_due', states={'done':[('readonly',True)]}),
 		'total_tax_payable': fields.float('Total tax payable', store=True, compute='_compute_total_taxe_due', states={'done':[('readonly',True)]}),
 
 		'difference_deductible_payable': fields.float('Difference', store=True, compute='_compute_total_difference', states={'done':[('readonly',True)]}),

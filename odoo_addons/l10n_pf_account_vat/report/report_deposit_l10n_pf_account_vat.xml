@@ -30,9 +30,9 @@
 							
 							
 							<div class="text-center" style="width:500px;height:40px;margin-left:350px;">
-								<p>TAXE SUR LA VALEUR AJOUTEE<br/>Régime simplifié</p>
+								<p style="font-size:20px;font-weight:bold;">TAXE SUR LA VALEUR AJOUTEE<br/>Régime simplifié</p>
 								<hr style="border:1px solid black;width:200px;"/>
-								<p>(Déclaration d'acompte)<br/>à déposer au plus tard le 30 septembre de l'année</p>
+								<p style="font-size:16px;font-weight:bold;">(Déclaration d'acompte)<br/>à déposer au plus tard le 30 septembre de l'année</p>
 							</div>
 							
 						</div>

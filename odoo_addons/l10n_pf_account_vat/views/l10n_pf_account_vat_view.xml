@@ -143,8 +143,8 @@
 								<group>
 									<field name="means_of_payment"/>
 								</group>
-								<button name="action_fill_declaration" states="draft" string="Fill declaration" type="object"/>
-								<button name="%(action_l10n_pf_account_vat_fill)d" states="draft" string="Fill" type="action"/>
+								<button name="action_fill_declaration" states="draft" string="Fill declaration" type="object" context="{'fiscalyear':fiscalyear, 'period_from': period_from, 'period_to': period_to}"/>
+								<button name="%(action_l10n_pf_account_vat_fill)d" states="draft" string="Fill" type="action" context="{'fiscalyear':fiscalyear, 'period_from': period_from, 'period_to': period_to}"/>
 							</page>
 						</notebook>
 					</sheet>

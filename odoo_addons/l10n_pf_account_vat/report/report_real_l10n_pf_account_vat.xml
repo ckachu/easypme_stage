@@ -15,11 +15,6 @@
 								<hr style="text-align:center;border:1px dashed blue;width:100px"/>
 							</div>
 							
-							<div class="text-center" style="width:60%;height:80px;">
-								<p>TAXE SUR LA VALEUR AJOUTEE<br/>Régime réel</p>
-							</div>
-							
-							
 							<!-- Période de déclaration -->
 							<div class="col-xs-3 pull-right">
 								<table style="border:1px solid black;width:250px;height:80px;">
@@ -36,11 +31,10 @@
 							</div>
 							
 							
-							
-							
-							
-							
-							
+							<div class="text-center" style="width:60%;height:80px;font-size:20px;font-weight:bold;">
+								<p>TAXE SUR LA VALEUR AJOUTEE<br/>Régime réel</p>
+							</div>
+
 						</div>
 					</div>
 					
