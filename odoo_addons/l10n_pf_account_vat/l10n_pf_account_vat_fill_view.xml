@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+	<data>
+		<record id="l10n_pf_account_vat_fill_view" model="ir.ui.view">
+			<field name="name">L10n pf account vat fill</field>
+			<field name="model">l10n.pf.account.vat.fill</field>
+			<field name="arch" type="xml">
+				<form>
+					<group>
+						<field name="chart_account_id"/>
+						<field name="fiscalyear_id"/>
+						<field name="target_move"/>
+						<field name="period_from"/>
+						<field name="period_to"/>
+						<field name="regime_vat"/>
+						<field name="type_vat"/>
+					</group>
+<!--
+					<notebook>
+						<page string="Journals" name="journal_ids">
+							<field name="journal_ids"/>
+						</page>
+
+						<page string="Exports" name="exports_ids">
+							<field name="exports_ids">
+								<tree>
+									<field name="code"/>
+									<field name="name"/>
+								</tree>
+							</field>
+						</page>
+						<page string="Others" name="others_ids">
+							<field name="others_ids">
+								<tree>
+									<field name="code"/>
+									<field name="name"/>
+								</tree>
+							</field>
+						</page>
+						<page string="Reduced rate" name="reduced_rate_ids">
+							<field name="reduced_rate_ids">
+								<tree>
+									<field name="code"/>
+									<field name="name"/>
+								</tree>
+							</field>
+						</page>
+						<page string="Intermediate rate" name="intermediate_rate_ids">
+							<field name="intermediate_rate_ids">
+								<tree>
+									<field name="code"/>
+									<field name="name"/>
+								</tree>
+							</field>
+						</page>
+						<page string="Normal rate" name="normal_rate_ids">
+							<field name="normal_rate_ids">
+								<tree>
+									<field name="code"/>
+									<field name="name"/>
+								</tree>
+							</field>
+						</page>
+						<page string="Immobilization" name="immo_ids">
+							<field name="immo_ids">
+								<tree>
+									<field name="code"/>
+									<field name="name"/>
+								</tree>
+							</field>
+						</page>
+						<page string="Other goods and services" name="others_goods_services_ids">
+							<field name="others_goods_services_ids">
+								<tree>
+									<field name="code"/>
+									<field name="name"/>
+								</tree>
+							</field>
+						</page>
+						<page string="Customers" name="customers_ids">
+							<field name="customers_ids">
+								<tree>
+									<field name="code"/>
+									<field name="name"/>
+								</tree>
+							</field>
+						</page>
+						<page string="Turnover" name="turnover_ids">
+							<field name="turnover_ids">
+								<tree>
+									<field name="code"/>
+									<field name="name"/>
+								</tree>
+							</field>
+						</page>
+					</notebook>
+-->
+					<footer>
+						<button name="fill_declaration" string="Fill" type="object" class="oe_highlight"/>
+						or
+						<button string="Cancel" class="oe_link" special="cancel"/>
+					</footer>
+				</form>
+			</field>		
+		</record>
+		
+		<record id="action_l10n_pf_account_vat_fill" model="ir.actions.act_window">
+			<field name="name">L10n pf account vat fill</field>
+			<field name="res_model">l10n.pf.account.vat.fill</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">form</field>
+			<field name="view_id" ref="l10n_pf_account_vat_fill_view"/>
+			<field name="target">new</field>
+		</record>
+	</data>
+</openerp>
