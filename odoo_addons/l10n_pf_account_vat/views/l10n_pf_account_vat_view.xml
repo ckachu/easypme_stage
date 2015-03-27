@@ -157,7 +157,8 @@
 			<field name="name">l10n.pf.account.vat.declaration.tree</field>
 			<field name="model">l10n.pf.account.vat.declaration</field>
 			<field name="arch" type="xml">
-				<tree string="Declaration">
+				<tree colors="blue:state == 'draft';black:state == 'simulate';gray:state == 'done'" string="Declaration">
+					<field name="date_declaration"/>
 					<field name="name"/>
 					<field name="company_vat_type"/>
 					<field name="company_regime"/>

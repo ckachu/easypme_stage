@@ -13,8 +13,6 @@ class l10n_pf_account_vat_declaration(osv.osv):
 	_name = 'l10n.pf.account.vat.declaration'
 	_description = 'Vat declaration'
 
-	#_inherit = 'account.chart'
-
 	def _get_fiscalyear(self, cr, uid, context=None):
 		return self.pool.get('account.fiscalyear').find(cr, uid, context=context)
 
@@ -47,116 +45,6 @@ class l10n_pf_account_vat_declaration(osv.osv):
 	def action_fill_declaration(self, cr, uid, ids, context=None):
 		if not context:
 			context = {}
-		
-		
-		
-	#def __compute(self, cr, uid, ids, field_names, arg=None, context=None, query='', query_params=()):
-		#import pdb
-		#pdb.set_trace()
-		##children_and_consolidated = self._get_exports_ids(cr, uid, ids, context=context)
-		##return super(account_account, self).__compute(cr, uid, ids, field_names, arg, context, query, query_params)
-		
-
-	#def action_fill_declaration(self, cr, uid, ids, context=None):
-		#import pdb
-		#pdb.set_trace()
-		#company = self.pool.get('res.company')
-		#ids1 = []
-		#for ei in company.browse(cr, uid, uid, context=context).intermediate_rate_ids:
-			#ids1 = ids1 + list(ei)
-		#print ids1
-		
-            
-	### Cette méthode récupère les comptes des exportations
-	#def _get_exports_ids(self, cr, uid, ids, context=None):
-		#import pdb
-		#pdb.set_trace()
-		#company = self.pool.get('res.company')
-		#ids1 = []
-		#for ei in company.browse(cr, uid, uid, context=context).exports_ids:
-			#ids1 = ids1 + list(ei)
-		#print ids1
-		#return ids1
-
-	### Cette méthode récupère les comptes des autres opérations non taxables
-	#def _get_others_ids(self, cr, uid, ids, context=None):
-		#import pdb
-		#pdb.set_trace()
-		#company = self.pool.get('res.company')
-		#ids1 = []
-		#for oi in company.browse(cr, uid, uid, context=context).others_ids:
-			#ids1 = ids1 + list(oi)
-		#return ids1
-
-	### Cette méthode récupère les comptes du taux réduit
-	#def _get_reduced_rate_ids(self, cr, uid, ids, context=None):
-		#import pdb
-		#pdb.set_trace()
-		#company = self.pool.get('res.company')
-		#ids1 = []
-		#for ri in company.browse(cr, uid, uid, context=context).reduced_rate_ids:
-			#ids1 = ids1 + list(ri)
-		#return ids1
-
-	### Cette méthode récupère les comptes du taux intermédiaire
-	#def _get_intermediate_rate_ids(self, cr, uid, ids, context=None):
-		#import pdb
-		#pdb.set_trace()
-		#company = self.pool.get('res.company')
-		#ids1 = []
-		#for ii in company.browse(cr, uid, uid, context=context).intermediate_rate_ids:
-			#ids1 = ids1 + list(ii)
-		#return ids1
-
-	### Cette méthode récupère les comptes du taux normal
-	#def _get_normal_rate_ids(self, cr, uid, ids, context=None):
-		#import pdb
-		#pdb.set_trace()
-		#company = self.pool.get('res.company')
-		#ids1 = []
-		#for ni in company.browse(cr, uid, uid, context=context).normal_rate_ids:
-			#ids1 = ids1 + list(ni)
-		#return ids1
-
-	### Cette méthode récupère les comptes des immobilisations
-	#def _get_immo_ids(self, cr, uid, ids, context=None):
-		#import pdb
-		#pdb.set_trace()
-		#company = self.pool.get('res.company')
-		#ids1 = []
-		#for im in company.browse(cr, uid, uid, context=context).immo_ids:
-			#ids1 = ids1 + list(im)
-		#return ids1
-
-	### Cette méthode récupère les comptes des autres biens et services
-	#def _get_others_goods_services_ids(self, cr, uid, ids, context=None):
-		#import pdb
-		#pdb.set_trace()
-		#company = self.pool.get('res.company')
-		#ids1 = []
-		#for gs in company.browse(cr, uid, uid, context=context).others_goods_services_ids:
-			#ids1 = ids1 + list(gs)
-		#return ids1
-
-	### Cette méthode récupère les comptes clients
-	#def _get_customers_ids(self, cr, uid, ids, context=None):
-		#import pdb
-		#pdb.set_trace()
-		#company = self.pool.get('res.company')
-		#ids1 = []
-		#for ci in company.browse(cr, uid, uid, context=context).customers_ids:
-			#ids1 = ids1 + list(ci)
-		#return ids1
-
-	### Cette méthode récupère les comptes du chiffre d'affaires
-	#def _get_turnover_ids(self, cr, uid, ids, context=None):
-		#import pdb
-		#pdb.set_trace()
-		#company = self.pool.get('res.company')
-		#ids1 = []
-		#for ti in company.browse(cr, uid, uid, context=context).turnover_ids:
-			#ids1 = ids1 + list(ti)
-		#return ids1
 
 	## Cette fonction calcule le montant des bases hors TVA
 	@api.one
@@ -303,7 +191,7 @@ class l10n_pf_account_vat_declaration(osv.osv):
 		'vat_credit': fields.float('Vat credit', store=True, compute='_compute_amount_vat', states={'done':[('readonly',True)]}),
 		'reimbursement': fields.float('Reimbursement', states={'done':[('readonly',True)]}),
 		'credit_to_be_transferred': fields.float('Credit to be transferred', store=True, compute='_compute_credit_to_reported', states={'done':[('readonly',True)]}),
-		'net_vat_due': fields.float('Net vat due', states={'done':[('readonly',True)]}),
+		'net_vat_due': fields.float('Net vat due', store=True, compute='_compute_amount_vat',states={'done':[('readonly',True)]}),
 
 		'excluding_vat_sales': fields.float('Excluding vat sales', states={'done':[('readonly',True)]}),
 		'excluding_vat_services': fields.float('Excluding vat services', states={'done':[('readonly',True)]}),
@@ -333,6 +221,8 @@ class l10n_pf_account_vat_declaration(osv.osv):
 	}
 	_defaults = {
 		'date_declaration': lambda obj, cr, uid, context: time.strftime('%Y-%m-%d'),
+		'date': lambda obj, cr, uid, context: time.strftime('%Y-%m-%d'),
+		'place': 'Papeete',
 		'company_id': lambda self, cr, uid, context: self.pool.get('res.company')._company_default_get(cr, uid, 'l10n.pf.account.vat.declaration', context=context),
 		'means_of_payment': 'check',
 		'target_move': 'all',
@@ -342,6 +232,12 @@ class l10n_pf_account_vat_declaration(osv.osv):
 
 	## Cette méthode saisit les écritures comptables
 	#def enter_journal_items(self, cr, uid, ids, context=None):
+		#ac_mv_line_obj = self.pool.get('account.move.line')
+		#ac_mv_line_obj.write(cr, uid, ids, {
+			#'name':'TVA test',
+			#'account_id': 33,
+			#'}, context=context)
+		#return True
 		
 
 	## Cette méthode met l'état de la déclaration à "Simuler"

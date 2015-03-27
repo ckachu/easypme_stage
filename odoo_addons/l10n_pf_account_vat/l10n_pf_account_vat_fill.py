@@ -106,11 +106,13 @@ class l10n_pf_account_vat_fill(osv.osv_memory):
 						res = res + i.balance
 						print res
 					declaration.update({'vat_immobilization': res})
-				#elif field == 'credit_ids':
-					#for i in declaration.company_id.credit_ids:
-						#res = res + i.balance
-						#print res
-					#declaration.update({'defferal_credit': res})
+				elif field == 'credit_ids':
+					pdb.set_trace()
+					search_ids = self.pool.get("l10n.pf.account.vat.declaration").search(cr, uid, [])
+					for obj in ac_obj.browse(cr, uid, search_ids, context=context):
+						if (declaration.date_declaration > obj.date_declaration) and (obj.state == 'done') and (declaration.company_regime == obj.company_regime) and (declaration.company_vat_type == obj.company_vat_type):
+							declaration.update({'defferal_credit': obj.credit_to_be_transferred})
+							print obj.credit_to_be_transferred
 			elif (declaration.company_regime == 'annual' or (declaration.company_regime == 'real' and declaration.company_vat_type == 'bills')):
 				if field == 'exports_ids':
 					for i in  declaration.company_id.exports_ids:
@@ -147,11 +149,13 @@ class l10n_pf_account_vat_fill(osv.osv_memory):
 						res = res + i.balance
 						print res
 					declaration.update({'vat_other_goods_services': res})
-				#elif field == 'credit_ids':
-					#for i in declaration.company_id.credit_ids:
-						#res = res + i.balance
-						#print res
-					#declaration.update({'defferal_credit': res})
+				elif field == 'credit_ids':
+					pdb.set_trace()
+					search_ids = self.pool.get("l10n.pf.account.vat.declaration").search(cr, uid, [])
+					for obj in ac_obj.browse(cr, uid, search_ids, context=context):
+						if (declaration.date_declaration > obj.date_declaration) and (obj.state == 'done') and (declaration.company_regime == obj.company_regime) and (declaration.company_vat_type == obj.company_vat_type):
+							declaration.update({'defferal_credit': obj.credit_to_be_transferred})
+							print obj.credit_to_be_transferred
 			elif (declaration.company_regime == 'real' and declaration.company_vat_type == 'cashing'):
 				if field == 'exports_ids':
 					for i in  declaration.company_id.exports_ids:
@@ -188,8 +192,11 @@ class l10n_pf_account_vat_fill(osv.osv_memory):
 						res = res + i.balance
 						print res
 					declaration.update({'excluding_vat_services': res})
-				#elif field == 'credit_ids':
-					#for i in declaration.company_id.credit_ids:
-						#res = res + i.balance
-						#print res
+				elif field == 'credit_ids':
+					pdb.set_trace()
+					search_ids = self.pool.get("l10n.pf.account.vat.declaration").search(cr, uid, [])
+					for obj in ac_obj.browse(cr, uid, search_ids, context=context):
+						if (declaration.date_declaration > obj.date_declaration) and (obj.state == 'done') and (declaration.company_regime == obj.company_regime) and (declaration.company_vat_type == obj.company_vat_type):
+							declaration.update({'defferal_credit': obj.credit_to_be_transferred})
+							print obj.credit_to_be_transferred
 		return declaration
