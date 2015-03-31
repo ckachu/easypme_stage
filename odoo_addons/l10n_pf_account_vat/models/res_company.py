@@ -17,7 +17,8 @@ class res_company(osv.osv):
 		'sales_ids': fields.many2many('account.account', 'account_account_sales', 'sales_id', 'account_id', 'Sales accounts'),
 		'services_ids': fields.many2many('account.account', 'account_account_services', 'services_id', 'account_id', 'Services accounts'),
 		'credit_ids': fields.many2many('account.account', 'account_account_credit', 'credit_id', 'account_id', 'Credit accounts'),
-		
+		'vat_ids': fields.many2many('account.account', 'account_account_vat', 'vat_id', 'account_id', 'VAT accounts'),
+		'journal_id': fields.many2one('account.journal', 'Journal'),
 		'bp': fields.char('BP'),
 		'city_zip': fields.char('City Zip'),	
 		'activity': fields.char('Company activity'),

@@ -11,7 +11,7 @@
 					<header>
 						<button name="set_to_simulate" states="draft" string="Simulate declaration" type="object"/>
 						<button name="account_chart_open_window" states="simulate" string="Show account chart" type="object"/>
-						<button states="simulate" string="Show journal items" type="object"/>
+						<button name="enter_journal_items" states="simulate" string="Show journal items" type="object"/>
 						<button name="validate" states="simulate" string="Validate" type="object"/>
 						<button name="set_to_draft" states="simulate" string="Back to draft" type="object"/>
 						<button name="set_to_draft" states="done" string="Cancel" type="object"  groups="account.group_account_manager"/> 

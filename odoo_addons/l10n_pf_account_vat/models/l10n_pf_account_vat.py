@@ -231,13 +231,219 @@ class l10n_pf_account_vat_declaration(osv.osv):
 	}
 
 	## Cette méthode saisit les écritures comptables
-	#def enter_journal_items(self, cr, uid, ids, context=None):
-		#ac_mv_line_obj = self.pool.get('account.move.line')
-		#ac_mv_line_obj.write(cr, uid, ids, {
-			#'name':'TVA test',
-			#'account_id': 33,
-			#'}, context=context)
-		#return True
+	def enter_journal_items(self, cr, uid, ids, context=None):
+		ac_mv_line_obj = self.pool.get('account.move.line')
+		company_obj = self.pool.get('res.company')
+		for field in ['reduced_rate', 'intermediate_rate', 'normal_rate', 'regul_exigible', 'immo', 'goods_services', 'regul_deductible', 'report_credit', 'vat']:
+			# Ecritures comptables pour le cas du regime simplifie annuel
+			if (self.browse(cr, uid, ids, context=context).company_regime == 'annual') or ((self.browse(cr, uid, ids, context=context).company_regime == 'real') and (self.browse(cr, uid, ids, context=context).company_vat_type == 'cashing')):
+				if field == 'reduced_rate':
+					vals = {
+						'state': 'valid',
+						'journal_id': company_obj.browse(cr, uid, uid, context=context).journal_id.id,
+						'account_id': company_obj.browse(cr, uid, uid, context=context).reduced_rate_ids.id,
+						'debit': self.browse(cr, uid, ids, context=context).vat_due_reduced_rate,
+						'period_id': self.browse(cr, uid, ids, context=context).period_to.id,
+						'date': self.browse(cr, uid, ids, context=context).period_to.date_stop,
+						'name': 'TVA ' + str(self.browse(cr, uid, ids, context=context).fiscalyear.name) + ' Taux reduit' 
+					}
+					ac_mv_line_obj.create(cr, uid, vals, context=context, check=True)
+				elif field == 'intermediate_rate':
+					vals = {
+						'state': 'valid',
+						'journal_id': company_obj.browse(cr, uid, uid, context=context).journal_id.id,
+						'account_id': company_obj.browse(cr, uid, uid, context=context).intermediate_rate_ids.id,
+						'debit': self.browse(cr, uid, ids, context=context).vat_due_intermediate_rate,
+						'period_id': self.browse(cr, uid, ids, context=context).period_to.id,
+						'date': self.browse(cr, uid, ids, context=context).period_to.date_stop,
+						'name': 'TVA ' + str(self.browse(cr, uid, ids, context=context).fiscalyear.name) + ' Taux intermediaire'
+					}
+					ac_mv_line_obj.create(cr, uid, vals, context=context, check=True)
+				elif field == 'normal_rate':
+					vals = {
+						'state': 'valid',
+						'journal_id': company_obj.browse(cr, uid, uid, context=context).journal_id.id,
+						'account_id': company_obj.browse(cr, uid, uid, context=context).normal_rate_ids.id,
+						'debit': self.browse(cr, uid, ids, context=context).vat_due_normal_rate,
+						'period_id': self.browse(cr, uid, ids, context=context).period_to.id,
+						'date': self.browse(cr, uid, ids, context=context).period_to.date_stop,
+						'name': 'TVA ' + str(self.browse(cr, uid, ids, context=context).fiscalyear.name) + ' Taux normal'
+					}
+					ac_mv_line_obj.create(cr, uid, vals, context=context, check=True)
+				elif field == 'regul_exigible':
+					vals = {
+					}
+					ac_mv_line_obj.create(cr, uid, vals, context=context, check=True)
+				elif field == 'immo':
+					vals = {
+						'state': 'valid',
+						'journal_id': company_obj.browse(cr, uid, uid, context=context).journal_id.id,
+						'account_id': company_obj.browse(cr, uid, uid, context=context).immo_ids.id,
+						'credit': self.browse(cr, uid, ids, context=context).vat_immobilization,
+						'period_id': self.browse(cr, uid, ids, context=context).period_to.id,
+						'date': self.browse(cr, uid, ids, context=context).period_to.date_stop,
+						'name': 'TVA ' + str(self.browse(cr, uid, ids, context=context).fiscalyear.name) + ' Immo'
+					}
+					ac_mv_line_obj.create(cr, uid, vals, context=context, check=True)
+				elif field == 'goods_services':
+					vals = {
+						'state': 'valid',
+						'journal_id': company_obj.browse(cr, uid, uid, context=context).journal_id.id,
+						'account_id': company_obj.browse(cr, uid, uid, context=context).others_goods_services_ids.id,
+						'credit': self.browse(cr, uid, ids, context=context).vat_other_goods_services,
+						'period_id': self.browse(cr, uid, ids, context=context).period_to.id,
+						'date': self.browse(cr, uid, ids, context=context).period_to.date_stop,
+						'name': 'TVA ' + str(self.browse(cr, uid, ids, context=context).fiscalyear.name) + ' Autres biens et services' 
+					}
+					ac_mv_line_obj.create(cr, uid, vals, context=context, check=True)
+				elif field == 'regul_deductible':
+					vals = {
+						'state': 'valid',
+						'journal_id': company_obj.browse(cr, uid, uid, context=context).journal_id.id,
+						#'account_id': company_obj.browse(cr, uid, uid, context=context).
+						'credit': self.browse(cr, uid, ids, context=context).vat_regularization,
+						'period_id': self.browse(cr, uid, ids, context=context).period_to.id,
+						'date': self.browse(cr, uid, ids, context=context).period_to.date_stop,
+						'name': 'TVA ' + str(self.browse(cr, uid, ids, context=context).fiscalyear.name) + ' Regularisation'
+					}
+					ac_mv_line_obj.create(cr, uid, vals, context=context, check=True)
+				elif field == 'report_credit':
+					vals = {
+						'state': 'valid',
+						'journal_id': company_obj.browse(cr, uid, uid, context=context).journal_id.id,
+						'account_id': company_obj.browse(cr, uid, uid, context=context).credit_ids.id,
+						'credit': self.browse(cr, uid, ids, context=context).defferal_credit,
+						'period_id': self.browse(cr, uid, ids, context=context).period_to.id,
+						'date': self.browse(cr, uid, ids, context=context).period_to.date_stop,
+						'name': 'TVA ' + str(self.browse(cr, uid, ids, context=context).fiscalyear.name) + ' Report credit'
+					}
+					ac_mv_line_obj.create(cr, uid, vals, context=context, check=True)
+				elif field == 'vat':
+					difference = self.browse(cr, uid, ids, context=context).total_vat_payable - self.browse(cr, uid, ids, context=context).total_vat_deductible
+					# Cas du régime simplifie annuel
+					if self.browse(cr, uid, ids, context=context).company_regime == 'annual':
+						if difference > 0:
+							vals = {
+								'state': 'valid',
+								'journal_id': company_obj.browse(cr, uid, uid, context=context).journal_id.id,
+								'account_id': company_obj.browse(cr, uid, uid, context=context).vat_ids.id,
+								'debit': self.browse(cr, uid, ids, context=context).net_to_pay,
+								'period_id': self.browse(cr, uid, ids, context=context).period_to.id,
+								'date': self.browse(cr, uid, ids, context=context).period_to.date_stop,
+								'name': 'TVA ' + str(self.browse(cr, uid, ids, context=context).fiscalyear.name)
+							}
+							ac_mv_line_obj.create(cr, uid, vals, context=context, check=True)
+						else:
+							vals = {
+								'state': 'valid',
+								'journal_id': company_obj.browse(cr, uid, uid, context=context).journal_id.id,
+								'account_id': company_obj.browse(cr, uid, uid, context=context).vat_ids.id,
+								'credit': self.browse(cr, uid, ids, context=context).surplus,
+								'period_id': self.browse(cr, uid, ids, context=context).period_to.id,
+								'date': self.browse(cr, uid, ids, context=context).period_to.date_stop,
+								'name': 'TVA ' + str(self.browse(cr, uid, ids, context=context).fiscalyear.name)
+							}
+							ac_mv_line_obj.create(cr, uid, vals, context=context, check=True)
+					# Cas du régime réel sur les factures
+					else:
+						if difference > 0:
+							vals = {
+								'state': 'valid',
+								'journal_id': company_obj.browse(cr, uid, uid, context=context).journal_id.id,
+								'account_id': company_obj.browse(cr, uid, uid, context=context).vat_ids.id,
+								'debit': self.browse(cr, uid, ids, context=context).net_vat_due,
+								'period_id': self.browse(cr, uid, ids, context=context).period_to.id,
+								'date': self.browse(cr, uid, ids, context=context).period_to.date_stop,
+								'name': 'TVA ' + str(self.browse(cr, uid, ids, context=context).fiscalyear.name)
+							}
+							ac_mv_line_obj.create(cr, uid, vals, context=context, check=True)
+						else:
+							vals = {
+								'state': 'valid',
+								'journal_id': company_obj.browse(cr, uid, uid, context=context).journal_id.id,
+								'account_id': company_obj.browse(cr, uid, uid, context=context).vat_ids.id,
+								'credit': self.browse(cr, uid, ids, context=context).vat_credit,
+								'period_id': self.browse(cr, uid, ids, context=context).period_to.id,
+								'date': self.browse(cr, uid, ids, context=context).period_to.date_stop,
+								'name': 'TVA ' + str(self.browse(cr, uid, ids, context=context).fiscalyear.name)
+							}
+							ac_mv_line_obj.create(cr, uid, vals, context=context, check=True)
+			# Ecritures comptables pour le cas du regime reel sur les encaissements
+			elif (self.browse(cr, uid, ids, context=context).company_regime == 'real') and (self.browse(cr, uid, ids, context=context).company_vat_type == 'cashing'):
+				if field == 'intermediate_rate':
+					vals = {
+						'state': 'valid',
+						'journal_id': company_obj.browse(cr, uid, uid, context=context).journal_id.id,
+						'account_id': company_obj.browse(cr, uid, uid, context=context).intermediate_rate_ids.id,
+						'debit': self.browse(cr, uid, ids, context=context).vat_due_intermediate_rate + self.browse(cr, uid, ids, context=context).vat_due_regularization_to_donate,
+						'period_id': self.browse(cr, uid, ids, context=context).period_to.id,
+						'date': self.browse(cr, uid, ids, context=context).period_to.date_stop,
+						'name': 'TVA ' + str(self.browse(cr, uid, ids, context=context).fiscalyear.name) + ' Taux intermediaire'
+					}
+					ac_mv_line_obj.create(cr, uid, vals, context=context, check=True)
+				elif field == 'immo':
+					vals = {
+						'state': 'valid',
+						'journal_id': company_obj.browse(cr, uid, uid, context=context).journal_id.id,
+						'account_id': company_obj.browse(cr, uid, uid, context=context).immo_ids.id,
+						'credit': self.browse(cr, uid, ids, context=context).vat_immobilization,
+						'period_id': self.browse(cr, uid, ids, context=context).period_to.id,
+						'date': self.browse(cr, uid, ids, context=context).period_to.date_stop,
+						'name': 'TVA ' + str(self.browse(cr, uid, ids, context=context).fiscalyear.name) + ' Immobilisation'
+					}
+					ac_mv_line_obj.create(cr, uid, vals, context=context, check=True)
+				elif field == 'goods_services':
+					vals = {
+						'state': 'valid',
+						'journal_id': company_obj.browse(cr, uid, uid, context=context).journal_id.id,
+						'account_id': company_obj.browse(cr, uid, uid, context=context).others_goods_services_ids.id,
+						'credit': self.browse(cr, uid, ids, context=context).vat_other_goods_services,
+						'period_id': self.browse(cr, uid, ids, context=context).period_to.id,
+						'date': self.browse(cr, uid, ids, context=context).period_to.date_stop,
+						'name': 'TVA ' + str(self.browse(cr, uid, ids, context=context).fiscalyear.name) + ' Autres biens et services'
+					}
+					ac_mv_line_obj.create(cr, uid, vals, context=context, check=True)
+				elif field == 'regul_deductible':
+					vals = {
+					}
+					ac_mv_line_obj.create(cr, uid, vals, context=context, check=True)
+				elif field == 'report_credit':
+					vals = {
+						'state': 'valid',
+						'journal_id': company_obj.browse(cr, uid, uid, context=context).journal_id.id,
+						'account_id': company_obj.browse(cr, uid, uid, context=context).credit_ids.id,
+						'credit': self.browse(cr, uid, ids, context=context).credit_to_be_transferred,
+						'period_id': self.browse(cr, uid, ids, context=context).period_to.id,
+						'date': self.browse(cr, uid, ids, context=context).period_to.date_stop,
+						'name': 'TVA ' + str(self.browse(cr, uid, ids, context=context).fiscalyear.name) + ' Report de credit'
+					}
+					ac_mv_line_obj.create(cr, uid, vals, context=context, check=True)
+				elif field == 'vat':
+					difference = self.browse(cr, uid, ids, context=context).total_vat_payable - self.browse(cr, uid, ids, context=context).total_vat_deductible
+					if difference > 0:
+						vals = {
+							'state': 'valid',
+							'journal_id': company_obj.browse(cr, uid, uid, context=context).journal_id.id,
+							'account_id': company_obj.browse(cr, uid, uid, context=context).vat_ids.id,
+							'debit': self.browse(cr, uid, ids, context=context).net_vat_due,
+							'period_id': self.browse(cr, uid, ids, context=context).period_to.id,
+							'date': self.browse(cr, uid, ids, context=context).period_to.date_stop,
+							'name': 'TVA ' + str(self.browse(cr, uid, ids, context=context).fiscalyear.name)
+						}
+						ac_mv_line_obj.create(cr, uid, vals, context=context, check=True)
+					else:
+						vals = {
+							'state': 'valid',
+							'journal_id': company_obj.browse(cr, uid, uid, context=context).journal_id.id,
+							'account_id': company_obj.browse(cr, uid, uid, context=context).vat_ids.id,
+							'credit': self.browse(cr, uid, ids, context=context).net_vat_due,
+							'period_id': self.browse(cr, uid, ids, context=context).period_to.id,
+							'date': self.browse(cr, uid, ids, context=context).period_to.date_stop,
+							'name': 'TVA ' + str(self.browse(cr, uid, ids, context=context).fiscalyear.name)
+						}
+						ac_mv_line_obj.create(cr, uid, vals, context=context, check=True)
+						
+		return True
 		
 
 	## Cette méthode met l'état de la déclaration à "Simuler"

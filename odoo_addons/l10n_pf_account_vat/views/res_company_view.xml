@@ -44,6 +44,16 @@
 							</div>
 						</group>
 						
+						<separator string="Journal"/>
+						<group>
+							<div>
+								<div>
+									<label for="journal_id" string="Select journal"/>
+									<field name="journal_id"/>
+								</div>
+							</div>
+						</group>
+						
 						<separator string="Comptes utilisés"/>
 						<group>
 							<div>
@@ -192,6 +202,17 @@
 									</field>
 								</div>
 								
+								<div>
+									<label for="vat_ids" string="Add all accounts for vat"/>
+									<field name="vat_ids" domain="[('type','!=','view')]" widget="many2many"
+										help='Choisissez le compte pour la saisie de la TVA'>
+										<tree>
+											<field name='code'/>
+											<field name='name'/>
+											<field name='type'/>
+										</tree>
+									</field>
+								</div>
 							</div>
 						</group>
 					</page>

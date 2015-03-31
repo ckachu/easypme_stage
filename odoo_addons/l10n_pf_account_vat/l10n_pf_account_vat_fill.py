@@ -1,4 +1,7 @@
 # -*- coding: utf-8 -*-
+import time
+from datetime import datetime
+from dateutil.relativedelta import relativedelta
 from openerp.osv import fields, osv
 
 class l10n_pf_account_vat_fill(osv.osv_memory):
@@ -108,11 +111,13 @@ class l10n_pf_account_vat_fill(osv.osv_memory):
 					declaration.update({'vat_immobilization': res})
 				elif field == 'credit_ids':
 					pdb.set_trace()
-					search_ids = self.pool.get("l10n.pf.account.vat.declaration").search(cr, uid, [])
+					search_ids = self.pool.get("l10n.pf.account.vat.declaration").search(cr, uid, [('company_regime','=','deposit'),('state','=','done')])
 					for obj in ac_obj.browse(cr, uid, search_ids, context=context):
-						if (declaration.date_declaration > obj.date_declaration) and (obj.state == 'done') and (declaration.company_regime == obj.company_regime) and (declaration.company_vat_type == obj.company_vat_type):
-							declaration.update({'defferal_credit': obj.credit_to_be_transferred})
-							print obj.credit_to_be_transferred
+						d1 = datetime.strptime(declaration.date_declaration, '%Y-%m-%d')
+						d2 = datetime.strptime(obj.date_declaration, '%Y-%m-%d')
+						if (str(d1.year) == str(d2.year + 1)):
+							declaration.update({'defferal_credit': obj.vat_credit})
+							print obj.vat_credit
 			elif (declaration.company_regime == 'annual' or (declaration.company_regime == 'real' and declaration.company_vat_type == 'bills')):
 				if field == 'exports_ids':
 					for i in  declaration.company_id.exports_ids:
@@ -149,14 +154,48 @@ class l10n_pf_account_vat_fill(osv.osv_memory):
 						res = res + i.balance
 						print res
 					declaration.update({'vat_other_goods_services': res})
+				#elif field == 'deposit':
+					#search_ids = self.pool.get("l10n.pf.account.vat.declaration").search(cr, uid, ['declaration.company_id','=','deposit'])
 				elif field == 'credit_ids':
 					pdb.set_trace()
-					search_ids = self.pool.get("l10n.pf.account.vat.declaration").search(cr, uid, [])
+					search_ids = self.pool.get("l10n.pf.account.vat.declaration").search(cr, uid, [('company_regime', 'in', ('annual','real'))])
+					print search_ids
 					for obj in ac_obj.browse(cr, uid, search_ids, context=context):
-						if (declaration.date_declaration > obj.date_declaration) and (obj.state == 'done') and (declaration.company_regime == obj.company_regime) and (declaration.company_vat_type == obj.company_vat_type):
-							declaration.update({'defferal_credit': obj.credit_to_be_transferred})
-							print obj.credit_to_be_transferred
+						if declaration.company_regime == 'annual':
+							d1 = datetime.strptime(declaration.period_to.date_start, '%Y-%m-%d')
+							d2 = datetime.strptime(obj.period_to.date_start, '%Y-%m-%d')
+							if (str(d1.year) == str(d2.year + 1)) and (obj.state == 'done') and (declaration.company_regime == obj.company_regime):
+								declaration.update({'defferal_credit': obj.credit_to_be_transferred})
+								print obj.credit_to_be_transferred
+						elif (declaration.company_regime == 'real') and (declaration.company_vat_type == 'bills'):
+							d1 = datetime.strptime(declaration.period_to.date_start, '%Y-%m-%d')
+							d2 = datetime.strptime(obj.period_to.date_start, '%Y-%m-%d')
+							if str(d1.year) == str(d2.year + 1):
+								if ((str(d1.month) == str(d2.month - 11)) or (str(d1.month) == str(d2.month - 9))) and (obj.state == 'done') and (declaration.company_regime == obj.company_regime) and (declaration.company_vat_type == obj.company_vat_type):
+									declaration.update({'defferal_credit': obj.credit_to_be_transferred})
+									print obj.credit_to_be_transferred
+							else:
+								if ((str(d1.month - 1) == str(d2.month)) or (str(d1.month) == str(d2.month + 3))) and (obj.state == 'done') and (declaration.company_regime == obj.company_regime) and (declaration.company_vat_type == obj.company_vat_type):
+									declaration.update({'defferal_credit': obj.credit_to_be_transferred})
+									print obj.credit_to_be_transferred
 			elif (declaration.company_regime == 'real' and declaration.company_vat_type == 'cashing'):
+				compte_client_n = 0.0
+				chiffre_n = 0.0
+				taux_inter_n = 0.0
+				compte_client_n_1 = 0.0
+				deb = 0.0
+				cre = 0.0
+				
+				# on recupere le montant du 411 pour l'annee N
+				for i in declaration.company_id.customers_ids:
+					compte_client_n = compte_client_n + i.balance
+				# on recupere le montant du 706 pour l'annee N
+				for i in declaration.company_id.turnover_ids:
+					chiffre_n = chiffre_n + i.balance
+				# on  recupere le montant du taux intermédiaire pour l'annee N
+				for i in declaration.company_id.intermediate_rate_ids:
+					taux_inter_n = taux_inter_n + i.balance
+				# on recupere le credit et le debit du 411 dans la periode d'ouverture de l'annee N
 				if field == 'exports_ids':
 					for i in  declaration.company_id.exports_ids:
 						res = res + i.balance
@@ -166,7 +205,7 @@ class l10n_pf_account_vat_fill(osv.osv_memory):
 					for i in declaration.company_id.others_ids:
 						res = res + i.balance
 						print res
-					declaration.update({'account_other': res})
+					declaration.update({'account_other': res})	
 				elif field == 'intermediate_rate_ids':
 					for i in declaration.company_id.intermediate_rate_ids:
 						res = res + i.balance
@@ -194,9 +233,13 @@ class l10n_pf_account_vat_fill(osv.osv_memory):
 					declaration.update({'excluding_vat_services': res})
 				elif field == 'credit_ids':
 					pdb.set_trace()
-					search_ids = self.pool.get("l10n.pf.account.vat.declaration").search(cr, uid, [])
+					search_ids = self.pool.get("l10n.pf.account.vat.declaration").search(cr, uid, [('company_regime','=','real'),('company_vat_type','=','cashing')])
+					print search_ids
 					for obj in ac_obj.browse(cr, uid, search_ids, context=context):
-						if (declaration.date_declaration > obj.date_declaration) and (obj.state == 'done') and (declaration.company_regime == obj.company_regime) and (declaration.company_vat_type == obj.company_vat_type):
+						d1 = datetime.strptime(declaration.period_to.date_start, '%Y-%m-%d')
+						d2 = datetime.strptime(obj.period_to.date_start, '%Y-%m-%d')
+						if ((str(d1.month) == str(d2.month + 1)) or (str(d1.month) == str(d2.month + 3))) and (obj.state == 'done') and (declaration.company_regime == obj.company_regime) and (declaration.company_vat_type == obj.company_vat_type):
 							declaration.update({'defferal_credit': obj.credit_to_be_transferred})
 							print obj.credit_to_be_transferred
+							
 		return declaration

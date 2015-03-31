@@ -321,7 +321,7 @@
 										<p style="margin-left:5px;">Montant <span style="margin-left:5px;">:</span> <span style="margin-left:5px;">............................FCP</span></p>
 									</td>
 									<td style="width:33%;vertical-align:middle;"><span style="margin-left:5px;">N° déclaration: ............................</span></td>
-									<td rowspan="2" style="text-align:center;width:33%;text-decoration:underline;">Date de réception</td>
+									<td rowspan="2" style="text-align:center;width:33%;text-decoration:underline;vertical-align:top;">Date de réception</td>
 								</tr>
 								<tr style="height:35px;">
 									<td style="vertical-align:middle;"><span style="margin-left:5px;">Pénalités: ....................................</span></td>
