@@ -16,7 +16,6 @@ class l10n_pf_account_vat_declaration(osv.osv):
 	def _get_fiscalyear(self, cr, uid, context=None):
 		return self.pool.get('account.fiscalyear').find(cr, uid, context=context)
 
-
 	def account_chart_open_window(self, cr, uid, ids, context=None):
 		import pdb
 		pdb.set_trace()
@@ -167,26 +166,6 @@ class l10n_pf_account_vat_declaration(osv.osv):
 									self.browse(cr, uid, ids, context=context).update({'defferal_credit': obj.credit_to_be_transferred})
 									print obj.credit_to_be_transferred
 			elif (self.browse(cr, uid, ids, context=context).company_regime == 'real' and self.browse(cr, uid, ids, context=context).company_vat_type == 'cashing'):
-				compte_client_n = 0.0
-				chiffre_n = 0.0
-				taux_inter_n = 0.0
-				compte_client_n_1 = 0.0
-				deb = 0.0
-				cre = 0.0
-				
-				# on recupere le montant du 411 pour l'annee N
-				for i in self.browse(cr, uid, ids, context=context).company_id.customers_ids:
-					compte_client_n = compte_client_n + i.balance
-				# on recupere le montant du 706 pour l'annee N
-				for i in self.browse(cr, uid, ids, context=context).company_id.turnover_ids:
-					chiffre_n = chiffre_n + i.balance
-				# on  recupere le montant du taux intermédiaire pour l'annee N
-				for i in self.browse(cr, uid, ids, context=context).company_id.intermediate_rate_ids:
-					taux_inter_n = taux_inter_n + i.balance
-				# on recupere le credit et le debit du 411 dans la periode d'ouverture de l'annee N
-				for i in self.browse(cr, uid, ids, context=context).company_id.customers_ids:
-					
-				
 				if field == 'exports_ids':
 					for i in  self.browse(cr, uid, ids, context=context).company_id.exports_ids:
 						res = res + i.balance
@@ -204,13 +183,38 @@ class l10n_pf_account_vat_declaration(osv.osv):
 					else:
 						self.browse(cr, uid, ids, context=context).update({'account_other': -res})	
 				elif field == 'intermediate_rate_ids':
+					compte_client_n = 0.0
+					chiffre_n = 0.0
+					taux_inter_n = 0.0
+					compte_client_n_1 = 0.0					
+					# on recupere le montant du 411 pour l'annee N
+					for i in self.browse(cr, uid, ids, context=context).company_id.customers_ids:
+						compte_client_n = compte_client_n + i.balance
+					# on recupere le montant du 706 pour l'annee N
+					for i in self.browse(cr, uid, ids, context=context).company_id.turnover_ids:
+						chiffre_n = chiffre_n + i.balance
+					# on  recupere le montant du taux intermédiaire pour l'annee N
 					for i in self.browse(cr, uid, ids, context=context).company_id.intermediate_rate_ids:
-						res = res + i.balance
-						print res
-					if res >= 0:
-						self.browse(cr, uid, ids, context=context).update({'vat_due_intermediate_rate': res})
-					else:
-						self.browse(cr, uid, ids, context=context).update({'vat_due_intermediate_rate': -res})
+						taux_inter_n = taux_inter_n + i.balance
+					# on recupere la balance 411 dans la periode d'ouverture de l'annee N 
+					context_prev = {
+						'fiscalyear': self.browse(cr, uid, ids, context=context).fiscalyear.id,
+						'period_from': self.browse(cr, uid, ids, context=context).period_from.id,
+						'period_to': self.browse(cr, uid, ids, context=context).period_from.id,
+						'target_move': self.browse(cr, uid, ids, context=context).target_move
+					}
+					for i in self.browse(cr, uid, ids, context=context_prev).company_id.customers_ids:
+						compte_client_n_1 = compte_client_n_1 + i.balance
+					# Calcul du montant TTC
+					ttc = compte_client_n_1 + chiffre_n + taux_inter_n - compte_client_n
+					# Calcul du montant HT
+					ht = ttc / 1.13
+					# Calcul du montant de la prestation à déclarer
+					prestation = ht
+					self.browse(cr, uid, ids, context=context).update({'base_intermediate_rate': prestation})
+					# Calcul du montant de la TVA due de la prestation
+					res = ht * 0.13
+					self.browse(cr, uid, ids, context=context).update({'vat_due_intermediate_rate': res})
 				elif field == 'immo_ids':
 					for i in self.browse(cr, uid, ids, context=context).company_id.immo_ids:
 						res = res + i.balance
@@ -329,14 +333,6 @@ class l10n_pf_account_vat_declaration(osv.osv):
 			self.total_difference_reimbursement = self.difference_payable_deductible + self.obtained_reimbursement
 			self.surplus = self.total_difference_deposit - self.total_difference_reimbursement
 			self.net_to_pay = 0.0
-
-	## Régime annuel simplifié
-	#@api.one
-	#@api.depends('total_difference_deposit','total_difference_reimbursement')
-	#def _compute_surplus_net(self):
-		#if 
-		#self.surplus = self.total_difference_deposit - self.total_difference_reimbursement
-		#self.net_to_pay = self.total_difference_reimbursement - self.total_difference_deposit
 
 	@api.one
 	@api.depends('excluding_vat_sales','excluding_vat_services')
@@ -738,7 +734,6 @@ class l10n_pf_account_vat_declaration(osv.osv):
 						ac_mv_line_obj.create(cr, uid, vals, context=context, check=True)					
 		return True
 		
-
 	## Cette méthode met l'état de la déclaration à "Simuler"
 	def set_to_simulate(self, cr, uid, ids, context=None):
 		return self.write(cr, uid, ids, {'state':'simulate'}, context=context)
