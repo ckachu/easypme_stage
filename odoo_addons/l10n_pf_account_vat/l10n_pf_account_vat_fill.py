@@ -42,8 +42,6 @@ class l10n_pf_account_vat_fill(osv.osv_memory):
 	}
 	
 	def default_get(self, cr, uid, fields, context=None):
-		#import pdb
-		#pdb.set_trace()
 		if not context:
 			context = {}
 		declaration_obj = self.pool.get('l10n.pf.account.vat.declaration')
@@ -90,25 +88,33 @@ class l10n_pf_account_vat_fill(osv.osv_memory):
 		ac_obj = self.pool.get('l10n.pf.account.vat.declaration')
 		declaration_id = context.get('active_id', False)
 		declaration = ac_obj.browse(cr, uid, declaration_id, context=context)
-		
-		for field in ['exports_ids', 'others_ids', 'reduced_rate_ids', 'intermediate_rate_ids', 'normal_rate_ids', 'immo_ids', 'others_goods_services_ids', 'sales_ids', 'services_ids', 'credit_ids']:
+		for field in ['exports_ids', 'others_ids', 'reduced_rate_ids', 'intermediate_rate_ids', 'normal_rate_ids', 'immo_ids', 'others_goods_services_ids', 'sales_ids', 'services_ids', 'credit_ids', 'deposit']:
 			res = 0.0
 			if declaration.company_regime == 'deposit':
 				if field == 'sales_ids':
 					for i in declaration.company_id.sales_ids:
 						res = res + i.balance
 						print res
-					declaration.update({'excluding_vat_sales': res})
+					if res >= 0:
+						declaration.update({'excluding_vat_sales': res})
+					else:
+						declaration.update({'excluding_vat_sales': -res})
 				elif field == 'services_ids':
 					for i in declaration.company_id.services_ids:
 						res = res + i.balance
 						print res
-					declaration.update({'excluding_vat_services': res})
+					if res >= 0:
+						declaration.update({'excluding_vat_services': res})
+					else:
+						declaration.update({'excluding_vat_services': -res})
 				elif field == 'immo_ids':
 					for i in declaration.company_id.immo_ids:
 						res = res + i.balance
 						print res
-					declaration.update({'vat_immobilization': res})
+					if res >= 0:
+						declaration.update({'vat_immobilization': res})
+					else:
+						declaration.update({'vat_immobilization': -res})
 				elif field == 'credit_ids':
 					pdb.set_trace()
 					search_ids = self.pool.get("l10n.pf.account.vat.declaration").search(cr, uid, [('company_regime','=','deposit'),('state','=','done')])
@@ -123,39 +129,62 @@ class l10n_pf_account_vat_fill(osv.osv_memory):
 					for i in  declaration.company_id.exports_ids:
 						res = res + i.balance
 						print res
-					declaration.update({'account_exports': res})
+					if res >= 0:
+						declaration.update({'account_exports': res})
+					else:
+						declaration.update({'account_exports': -res})
 				elif field == 'others_ids':
 					for i in declaration.company_id.others_ids:
 						res = res + i.balance
 						print res
-					declaration.update({'account_other': res})
+					if res >= 0:
+						declaration.update({'account_other': res})
+					else:
+						declaration.update({'account_other': -res})
 				elif field == 'reduced_rate_ids':
 					for i in declaration.company_id.reduced_rate_ids:
 						res = res + i.balance
 						print res
-					declaration.update({'vat_due_reduced_rate': res})
+					if res >= 0:
+						declaration.update({'vat_due_reduced_rate': res})
+					else:
+						declaration.update({'vat_due_reduced_rate': -res})
 				elif field == 'intermediate_rate_ids':
 					for i in declaration.company_id.intermediate_rate_ids:
 						res = res + i.balance
 						print res
-					declaration.update({'vat_due_intermediate_rate': res})
+					if res >= 0:
+						declaration.update({'vat_due_intermediate_rate': res})
+					else:
+						declaration.update({'vat_due_intermediate_rate': -res})
 				elif field == 'normal_rate_ids':
 					for i in declaration.company_id.normal_rate_ids:
 						res = res + i.balance
 						print res
-					declaration.update({'vat_due_normal_rate': res})
+					if res >= 0:
+						declaration.update({'vat_due_normal_rate': res})
+					else:
+						declaration.update({'vat_due_normal_rate': -res})
 				elif field == 'immo_ids':
 					for i in declaration.company_id.immo_ids:
 						res = res + i.balance
 						print res
-					declaration.update({'vat_immobilization': res})
+					if res >= 0:
+						declaration.update({'vat_immobilization': res})
+					else:
+						declaration.update({'vat_immobilization': -res})
 				elif field == 'others_goods_services_ids':
 					for i in declaration.company_id.others_goods_services_ids:
 						res = res + i.balance
 						print res
-					declaration.update({'vat_other_goods_services': res})
-				#elif field == 'deposit':
-					#search_ids = self.pool.get("l10n.pf.account.vat.declaration").search(cr, uid, ['declaration.company_id','=','deposit'])
+					if res >= 0:
+						declaration.update({'vat_other_goods_services': res})
+					else:
+						declaration.update({'vat_other_goods_services': -res})
+				elif field == 'deposit':
+					pdb.set_trace()
+					search_ids = self.pool.get("l10n.pf.account.vat.declaration").search(cr, uid, [('company_regime','=','deposit')])
+					print search_ids
 				elif field == 'credit_ids':
 					pdb.set_trace()
 					search_ids = self.pool.get("l10n.pf.account.vat.declaration").search(cr, uid, [('company_regime', 'in', ('annual','real'))])
@@ -196,41 +225,48 @@ class l10n_pf_account_vat_fill(osv.osv_memory):
 				for i in declaration.company_id.intermediate_rate_ids:
 					taux_inter_n = taux_inter_n + i.balance
 				# on recupere le credit et le debit du 411 dans la periode d'ouverture de l'annee N
+					
+				
 				if field == 'exports_ids':
 					for i in  declaration.company_id.exports_ids:
 						res = res + i.balance
 						print res
-					declaration.update({'account_exports': res})
+					if res >= 0:
+						declaration.update({'account_exports': res})
+					else:
+						declaration.update({'account_exports': -res})
 				elif field == 'others_ids':
 					for i in declaration.company_id.others_ids:
 						res = res + i.balance
 						print res
-					declaration.update({'account_other': res})	
+					if res >= 0:
+						declaration.update({'account_other': res})
+					else:
+						declaration.update({'account_other': -res})	
 				elif field == 'intermediate_rate_ids':
 					for i in declaration.company_id.intermediate_rate_ids:
 						res = res + i.balance
 						print res
-					declaration.update({'vat_due_intermediate_rate': res})
+					if res >= 0:
+						declaration.update({'vat_due_intermediate_rate': res})
+					else:
+						declaration.update({'vat_due_intermediate_rate': -res})
 				elif field == 'immo_ids':
 					for i in declaration.company_id.immo_ids:
 						res = res + i.balance
 						print res
-					declaration.update({'vat_immobilization': res})
+					if res >= 0:
+						declaration.update({'vat_immobilization': res})
+					else:
+						declaration.update({'vat_immobilization': -res})
 				elif field == 'others_goods_services_ids':
 					for i in declaration.company_id.others_goods_services_ids:
 						res = res + i.balance
 						print res
-					declaration.update({'vat_other_goods_services': res})
-				elif field == 'sales_ids':
-					for i in declaration.company_id.sales_ids:
-						res = res + i.balance
-						print res
-					declaration.update({'excluding_vat_sales': res})
-				elif field == 'services_ids':
-					for i in declaration.company_id.services_ids:
-						res = res + i.balance
-						print res
-					declaration.update({'excluding_vat_services': res})
+					if res >= 0:
+						declaration.update({'vat_other_goods_services': res})
+					else:
+						declaration.update({'vat_other_goods_services': -res})
 				elif field == 'credit_ids':
 					pdb.set_trace()
 					search_ids = self.pool.get("l10n.pf.account.vat.declaration").search(cr, uid, [('company_regime','=','real'),('company_vat_type','=','cashing')])
