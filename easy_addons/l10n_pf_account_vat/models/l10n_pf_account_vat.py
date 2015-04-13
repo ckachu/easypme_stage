@@ -112,7 +112,7 @@ class l10n_pf_account_vat_declaration(osv.osv):
 							'target_move': decl.target_move
 						}
 						# On récupère tous les comptes qui se trouvent dans la Taxe
-						for i in self.browse(cr, uid, ids, context=ctx).company_id.reduced_rate_ids:
+						for i in self.browse(cr, uid, ids, context=ctx).company_id.tax_reduced_rate_ids:
 							my_list = my_list + list(i.account_collected_id) + list(i.account_paid_id)
 						# On supprime les doublons
 						my_list = list(set(my_list))
@@ -138,7 +138,7 @@ class l10n_pf_account_vat_declaration(osv.osv):
 							'target_move': decl.target_move
 						}
 						# On récupère tous les comptes qui se trouvent dans la Taxe
-						for i in self.browse(cr, uid, ids, context=ctx).company_id.intermediate_rate_ids:
+						for i in self.browse(cr, uid, ids, context=ctx).company_id.tax_intermediate_rate_ids:
 							my_list = my_list + list(i.account_collected_id) + list(i.account_paid_id)
 						# On supprime les doublons
 						my_list = list(set(my_list))
@@ -164,7 +164,7 @@ class l10n_pf_account_vat_declaration(osv.osv):
 							'target_move': decl.target_move
 						}
 						# On récupère tous les comptes qui se trouvent dans la Taxe
-						for i in self.browse(cr, uid, ids, context=ctx).company_id.normal_rate_ids:
+						for i in self.browse(cr, uid, ids, context=ctx).company_id.tax_normal_rate_ids:
 							my_list = my_list + list(i.account_collected_id) + list(i.account_paid_id)
 						# On supprime les doublons
 						my_list = list(set(my_list))
@@ -190,7 +190,7 @@ class l10n_pf_account_vat_declaration(osv.osv):
 							'target_move': decl.target_move
 						}
 						# On récupère tous les comptes qui se trouvent dans la Taxe
-						for i in self.browse(cr, uid, ids, context=ctx).company_id.immo_ids:
+						for i in self.browse(cr, uid, ids, context=ctx).company_id.tax_immo_ids:
 							my_list = my_list + list(i.account_collected_id) + list(i.account_paid_id)
 						# On supprime les doublons
 						my_list = list(set(my_list))
@@ -216,7 +216,7 @@ class l10n_pf_account_vat_declaration(osv.osv):
 							'target_move': decl.target_move
 						}
 						# On récupère tous les comptes qui se trouvent dans la Taxe
-						for i in self.browse(cr, uid, ids, context=ctx).company_id.others_goods_services_ids:
+						for i in self.browse(cr, uid, ids, context=ctx).company_id.tax_others_goods_services_ids:
 							my_list = my_list + list(i.account_collected_id) + list(i.account_paid_id)
 						# On supprime les doublons
 						my_list = list(set(my_list))
@@ -267,24 +267,12 @@ class l10n_pf_account_vat_declaration(osv.osv):
 							res = res + i.balance
 							print res
 						decl.update({'account_exports': res})
-						#if res >= 0:
-							#decl.update({'account_exports': res})
-						#else:
-							#decl.update({'account_exports': -res})
 					elif field == 'others_ids':
 						for i in decl.company_id.others_ids:
 							res = res + i.balance
 							print res
 						decl.update({'account_other': res})
-						#if res >= 0:
-							#decl.update({'account_other': res})
-						#else:
-							#decl.update({'account_other': -res})
-					elif field == 'reduced_rate_ids':
-						#for i in decl.company_id.reduced_rate_ids:
-							#res = res + i.balance
-							#print res
-						
+					elif field == 'reduced_rate_ids':						
 						my_list = []
 						# On définit un nouveau context avec FROM: Période d'ouverture et TO: Période de fin de la période actuelle
 						ctx = {
@@ -294,7 +282,7 @@ class l10n_pf_account_vat_declaration(osv.osv):
 							'target_move': decl.target_move
 						}
 						# On récupère tous les comptes qui se trouvent dans la Taxe
-						for i in self.browse(cr, uid, ids, context=ctx).company_id.reduced_rate_ids:
+						for i in self.browse(cr, uid, ids, context=ctx).company_id.tax_reduced_rate_ids:
 							my_list = my_list + list(i.account_collected_id) + list(i.account_paid_id)
 						# On supprime les doublons
 						my_list = list(set(my_list))
@@ -303,15 +291,7 @@ class l10n_pf_account_vat_declaration(osv.osv):
 							res = res + my_list[index].balance
 						
 						decl.update({'vat_due_reduced_rate': -res})
-						#if res >= 0:
-							#decl.update({'vat_due_reduced_rate': res})
-						#else:
-							#decl.update({'vat_due_reduced_rate': -res})
 					elif field == 'intermediate_rate_ids':
-						#for i in decl.company_id.intermediate_rate_ids:
-							#res = res + i.balance
-							#print res
-						
 						my_list = []
 						# On définit un nouveau context avec FROM: Période d'ouverture et TO: Période de fin de la période actuelle
 						ctx = {
@@ -321,7 +301,7 @@ class l10n_pf_account_vat_declaration(osv.osv):
 							'target_move': decl.target_move
 						}
 						# On récupère tous les comptes qui se trouvent dans la Taxe
-						for i in self.browse(cr, uid, ids, context=ctx).company_id.intermediate_rate_ids:
+						for i in self.browse(cr, uid, ids, context=ctx).company_id.tax_intermediate_rate_ids:
 							my_list = my_list + list(i.account_collected_id) + list(i.account_paid_id)
 						# On supprime les doublons
 						my_list = list(set(my_list))
@@ -330,15 +310,7 @@ class l10n_pf_account_vat_declaration(osv.osv):
 							res = res + my_list[index].balance
 						
 						decl.update({'vat_due_intermediate_rate': -res})
-						#if res >= 0:
-							#decl.update({'vat_due_intermediate_rate': res})
-						#else:
-							#decl.update({'vat_due_intermediate_rate': -res})
 					elif field == 'normal_rate_ids':
-						#for i in decl.company_id.normal_rate_ids:
-							#res = res + i.balance
-							#print res
-						
 						my_list = []
 						# On définit un nouveau context avec FROM: Période d'ouverture et TO: Période de fin de la période actuelle
 						ctx = {
@@ -348,7 +320,7 @@ class l10n_pf_account_vat_declaration(osv.osv):
 							'target_move': decl.target_move
 						}
 						# On récupère tous les comptes qui se trouvent dans la Taxe
-						for i in self.browse(cr, uid, ids, context=ctx).company_id.normal_rate_ids:
+						for i in self.browse(cr, uid, ids, context=ctx).company_id.tax_normal_rate_ids:
 							my_list = my_list + list(i.account_collected_id) + list(i.account_paid_id)
 						# On supprime les doublons
 						my_list = list(set(my_list))
@@ -357,15 +329,7 @@ class l10n_pf_account_vat_declaration(osv.osv):
 							res = res + my_list[index].balance
 						
 						decl.update({'vat_due_normal_rate': -res})
-						#if res >= 0:
-							#decl.update({'vat_due_normal_rate': res})
-						#else:
-							#decl.update({'vat_due_normal_rate': -res})
 					elif field == 'immo_ids':
-						#for i in decl.company_id.immo_ids:
-							#res = res + i.balance
-							#print res
-						
 						my_list = []
 						# On définit un nouveau context avec FROM: Période d'ouverture et TO: Période de fin de la période actuelle
 						ctx = {
@@ -375,7 +339,7 @@ class l10n_pf_account_vat_declaration(osv.osv):
 							'target_move': decl.target_move
 						}
 						# On récupère tous les comptes qui se trouvent dans la Taxe
-						for i in self.browse(cr, uid, ids, context=ctx).company_id.immo_ids:
+						for i in self.browse(cr, uid, ids, context=ctx).company_id.tax_immo_ids:
 							my_list = my_list + list(i.account_collected_id) + list(i.account_paid_id)
 						# On supprime les doublons
 						my_list = list(set(my_list))
@@ -384,15 +348,7 @@ class l10n_pf_account_vat_declaration(osv.osv):
 							res = res + my_list[index].balance
 						
 						decl.update({'vat_immobilization': res})
-						#if res >= 0:
-							#decl.update({'vat_immobilization': res})
-						#else:
-							#decl.update({'vat_immobilization': -res})
 					elif field == 'others_goods_services_ids':
-						#for i in decl.company_id.others_goods_services_ids:
-							#res = res + i.balance
-							#print res
-						
 						my_list = []
 						# On définit un nouveau context avec FROM: Période d'ouverture et TO: Période de fin de la période actuelle
 						ctx = {
@@ -402,7 +358,7 @@ class l10n_pf_account_vat_declaration(osv.osv):
 							'target_move': decl.target_move
 						}
 						# On récupère tous les comptes qui se trouvent dans la Taxe
-						for i in self.browse(cr, uid, ids, context=ctx).company_id.others_goods_services_ids:
+						for i in self.browse(cr, uid, ids, context=ctx).company_id.tax_others_goods_services_ids:
 							my_list = my_list + list(i.account_collected_id) + list(i.account_paid_id)
 						# On supprime les doublons
 						my_list = list(set(my_list))
@@ -411,17 +367,6 @@ class l10n_pf_account_vat_declaration(osv.osv):
 							res = res + my_list[index].balance
 						
 						decl.update({'vat_other_goods_services': res})
-						#if res >= 0:
-							#decl.update({'vat_other_goods_services': res})
-						#else:
-							#decl.update({'vat_other_goods_services': -res})
-					elif field == 'deposit':
-						#pdb.set_trace()
-						search_ids = self.search(cr, uid, [('company_regime','=','deposit')])
-						print search_ids
-						for obj in self.browse(cr, uid, search_ids, context=context):
-							if (decl.company_regime == 'annual') and (decl.fiscalyear.id == obj.fiscalyear.id) and (obj.state == 'done'):
-								decl.update({'deposit': obj.net_vat_due})
 					elif field == 'credit_ids':
 						#pdb.set_trace()
 						search_ids = self.search(cr, uid, [('company_regime', 'in', ('annual','real'))])
@@ -454,19 +399,11 @@ class l10n_pf_account_vat_declaration(osv.osv):
 							res = res + i.balance
 							print res
 						decl.update({'account_exports': res})
-						#if res >= 0:
-							#decl.update({'account_exports': res})
-						#else:
-							#decl.update({'account_exports': -res})
 					elif field == 'others_ids':
 						for i in decl.company_id.others_ids:
 							res = res + i.balance
 							print res
-						decl.update({'account_other': res})
-						#if res >= 0:
-							#decl.update({'account_other': res})
-						#else:
-							#decl.update({'account_other': -res})	
+						decl.update({'account_other': res})	
 					elif field == 'intermediate_rate_ids':
 						compte_client_n = 0.0
 						chiffre_n = 0.0
@@ -484,7 +421,7 @@ class l10n_pf_account_vat_declaration(osv.osv):
 						#	taux_inter_n = taux_inter_n + i.balance
 						my_list = []
 						# On récupère tous les comptes qui se trouvent dans la Taxe
-						for i in decl.company_id.intermediate_rate_ids:
+						for i in decl.company_id.tax_intermediate_rate_ids:
 							my_list = my_list + list(i.account_collected_id) + list(i.account_paid_id)	
 						print my_list
 						# On supprime les doublons
@@ -514,23 +451,16 @@ class l10n_pf_account_vat_declaration(osv.osv):
 						# Calcul du montant TTC
 						ttc = compte_client_n_1 + chiffre_n + taux_inter_n - compte_client_n
 						# Calcul du montant HT
-						ht = decl.company_id.currency_id.round(ttc / (1 + decl.company_id.intermediate_rate_vat.amount))
+						ht = decl.company_id.currency_id.round(ttc / (1 + decl.company_id.tax_intermediate_rate_ids[0].amount))
 						# Calcul du montant de la prestation à déclarer
 						prestation = ht - somme
 						# Calcul du montant de la TVA due de la prestation
-						res = decl.company_id.currency_id.round(prestation * decl.company_id.intermediate_rate_vat.amount)
+						res = decl.company_id.currency_id.round(prestation * decl.company_id.tax_intermediate_rate_ids[0].amount)
 						decl.update({'vat_due_intermediate_rate': -res})
-						#if res >= 0:
-							#decl.update({'vat_due_intermediate_rate': res})
-						#else:
-							#decl.update({'vat_due_intermediate_rate': -res})
 					elif field == 'immo_ids':
-						#for i in decl.company_id.immo_ids:
-							#res = res + i.balance
-							#print res
 						my_list = []
 						# On récupère tous les comptes qui se trouvent dans la Taxe
-						for i in decl.company_id.immo_ids:
+						for i in decl.company_id.tax_immo_ids:
 							my_list = my_list + list(i.account_collected_id) + list(i.account_paid_id)	
 						print my_list
 						# On supprime les doublons
@@ -540,17 +470,10 @@ class l10n_pf_account_vat_declaration(osv.osv):
 						for index,obj in enumerate(my_list):
 							res = res + my_list[index].balance
 						decl.update({'vat_immobilization': res})
-						#if res >= 0:
-							#decl.update({'vat_immobilization': res})
-						#else:
-							#decl.update({'vat_immobilization': -res})
 					elif field == 'others_goods_services_ids':
-						#for i in decl.company_id.others_goods_services_ids:
-							#res = res + i.balance
-							#print res
 						my_list = []
 						# On récupère tous les comptes qui se trouvent dans la Taxe
-						for i in decl.company_id.others_goods_services_ids:
+						for i in decl.company_id.tax_others_goods_services_ids:
 							my_list = my_list + list(i.account_collected_id) + list(i.account_paid_id)	
 						print my_list
 						# On supprime les doublons
@@ -560,10 +483,6 @@ class l10n_pf_account_vat_declaration(osv.osv):
 						for index,obj in enumerate(my_list):
 							res = res + my_list[index].balance
 						decl.update({'vat_other_goods_services': res})
-						#if res >= 0:
-							#decl.update({'vat_other_goods_services': res})
-						#else:
-							#decl.update({'vat_other_goods_services': -res})
 					elif field == 'credit_ids':
 						#import pdb
 						#pdb.set_trace()
@@ -585,9 +504,9 @@ class l10n_pf_account_vat_declaration(osv.osv):
 	@api.one
 	@api.depends('vat_due_reduced_rate','vat_due_intermediate_rate','vat_due_normal_rate','company_id','company_vat_type')
 	def _compute_amount_base(self):
-		self.base_reduced_rate = self.company_id.currency_id.round(self.vat_due_reduced_rate / self.company_id.reduced_rate_vat.amount)
-		self.base_intermediate_rate = self.company_id.currency_id.round(self.vat_due_intermediate_rate / self.company_id.intermediate_rate_vat.amount)
-		self.base_normal_rate = self.company_id.currency_id.round(self.vat_due_normal_rate / self.company_id.normal_rate_vat.amount)
+		self.base_reduced_rate = self.company_id.currency_id.round(self.vat_due_reduced_rate / self.company_id.tax_reduced_rate_ids[0].amount)
+		self.base_intermediate_rate = self.company_id.currency_id.round(self.vat_due_intermediate_rate / self.company_id.tax_intermediate_rate_ids[0].amount)
+		self.base_normal_rate = self.company_id.currency_id.round(self.vat_due_normal_rate / self.company_id.tax_normal_rate_ids[0].amount)
 
 	## Cette fonction calcule le total de la TVA exigible des régimes annuel simplifié et réel selon le type de TVA
 	@api.one
@@ -664,8 +583,8 @@ class l10n_pf_account_vat_declaration(osv.osv):
 	@api.one
 	@api.depends('excluding_vat_sales','excluding_vat_services','company_id')
 	def _compute_tax_due(self):
-		self.tax_due_sales = self.excluding_vat_sales * self.company_id.reduced_rate_vat.amount
-		self.tax_due_services = self.excluding_vat_services * self.company_id.reduced_rate_vat.amount
+		self.tax_due_sales = self.excluding_vat_sales * self.company_id.tax_reduced_rate_ids[0].amount
+		self.tax_due_services = self.excluding_vat_services * self.company_id.tax_reduced_rate_ids[0].amount
 
 	@api.one
 	@api.depends('base_reduced_rate', 'base_intermediate_rate', 'base_normal_rate', 'base_regularization_to_donate', 'company_vat_type', 'company_regime')
@@ -681,7 +600,7 @@ class l10n_pf_account_vat_declaration(osv.osv):
 		'date_declaration': fields.date('Declaration date', states={'done':[('readonly',True)]}),
 		'account_id': fields.many2one('account.account', 'Account'),
 
-		'no_tahiti': fields.char('No Tahiti', states={'done':[('readonly',True)]}),
+		'ntahiti': fields.char('No Tahiti', states={'done':[('readonly',True)]}),
 		'company_id': fields.many2one('res.company','Company',required=True, states={'done':[('readonly',True)]}),
 		'company_activity': fields.char('Activity', states={'done':[('readonly',True)]}),
 		'company_phone': fields.char('Telephone', states={'done':[('readonly',True)]}),
@@ -880,7 +799,7 @@ class l10n_pf_account_vat_declaration(osv.osv):
 						vals = {
 							'state': 'valid',
 							'journal_id': company_obj.browse(cr, uid, uid, context=context).journal_id.id,
-							'account_id': company_obj.browse(cr, uid, uid, context=context).reduced_rate_ids[0].account_collected_id.id,
+							'account_id': company_obj.browse(cr, uid, uid, context=context).tax_reduced_rate_ids[0].account_collected_id.id,
 							'debit': self.browse(cr, uid, ids, context=context).vat_due_reduced_rate,
 							'period_id': self.browse(cr, uid, ids, context=context).period_to.id,
 							'date': self.browse(cr, uid, ids, context=context).period_to.date_stop,
@@ -892,7 +811,7 @@ class l10n_pf_account_vat_declaration(osv.osv):
 						vals = {
 							'state': 'valid',
 							'journal_id': company_obj.browse(cr, uid, uid, context=context).journal_id.id,
-							'account_id': company_obj.browse(cr, uid, uid, context=context).reduced_rate_ids[0].account_collected_id.id,
+							'account_id': company_obj.browse(cr, uid, uid, context=context).tax_reduced_rate_ids[0].account_collected_id.id,
 							'credit': abs(self.browse(cr, uid, ids, context=context).vat_due_reduced_rate),
 							'period_id': self.browse(cr, uid, ids, context=context).period_to.id,
 							'date': self.browse(cr, uid, ids, context=context).period_to.date_stop,
@@ -907,7 +826,7 @@ class l10n_pf_account_vat_declaration(osv.osv):
 						vals = {
 							'state': 'valid',
 							'journal_id': company_obj.browse(cr, uid, uid, context=context).journal_id.id,
-							'account_id': company_obj.browse(cr, uid, uid, context=context).intermediate_rate_ids[0].account_collected_id.id,
+							'account_id': company_obj.browse(cr, uid, uid, context=context).tax_intermediate_rate_ids[0].account_collected_id.id,
 							'debit': self.browse(cr, uid, ids, context=context).vat_due_intermediate_rate,
 							'period_id': self.browse(cr, uid, ids, context=context).period_to.id,
 							'date': self.browse(cr, uid, ids, context=context).period_to.date_stop,
@@ -919,7 +838,7 @@ class l10n_pf_account_vat_declaration(osv.osv):
 						vals = {
 							'state': 'valid',
 							'journal_id': company_obj.browse(cr, uid, uid, context=context).journal_id.id,
-							'account_id': company_obj.browse(cr, uid, uid, context=context).intermediate_rate_ids[0].account_collected_id.id,
+							'account_id': company_obj.browse(cr, uid, uid, context=context).tax_intermediate_rate_ids[0].account_collected_id.id,
 							'credit': abs(self.browse(cr, uid, ids, context=context).vat_due_intermediate_rate),
 							'period_id': self.browse(cr, uid, ids, context=context).period_to.id,
 							'date': self.browse(cr, uid, ids, context=context).period_to.date_stop,
@@ -934,7 +853,7 @@ class l10n_pf_account_vat_declaration(osv.osv):
 						vals = {
 							'state': 'valid',
 							'journal_id': company_obj.browse(cr, uid, uid, context=context).journal_id.id,
-							'account_id': company_obj.browse(cr, uid, uid, context=context).normal_rate_ids[0].account_collected_id.id,
+							'account_id': company_obj.browse(cr, uid, uid, context=context).tax_normal_rate_ids[0].account_collected_id.id,
 							'debit': self.browse(cr, uid, ids, context=context).vat_due_normal_rate,
 							'period_id': self.browse(cr, uid, ids, context=context).period_to.id,
 							'date': self.browse(cr, uid, ids, context=context).period_to.date_stop,
@@ -946,7 +865,7 @@ class l10n_pf_account_vat_declaration(osv.osv):
 						vals = {
 							'state': 'valid',
 							'journal_id': company_obj.browse(cr, uid, uid, context=context).journal_id.id,
-							'account_id': company_obj.browse(cr, uid, uid, context=context).normal_rate_ids[0].account_collected_id.id,
+							'account_id': company_obj.browse(cr, uid, uid, context=context).tax_normal_rate_ids[0].account_collected_id.id,
 							'credit': abs(self.browse(cr, uid, ids, context=context).vat_due_normal_rate),
 							'period_id': self.browse(cr, uid, ids, context=context).period_to.id,
 							'date': self.browse(cr, uid, ids, context=context).period_to.date_stop,
@@ -961,7 +880,7 @@ class l10n_pf_account_vat_declaration(osv.osv):
 						vals = {
 							'state': 'valid',
 							'journal_id': company_obj.browse(cr, uid, uid, context=context).journal_id.id,
-							'account_id': company_obj.browse(cr, uid, uid, context=context).immo_ids[0].account_collected_id.id,
+							'account_id': company_obj.browse(cr, uid, uid, context=context).tax_immo_ids[0].account_collected_id.id,
 							'credit': self.browse(cr, uid, ids, context=context).vat_immobilization,
 							'period_id': self.browse(cr, uid, ids, context=context).period_to.id,
 							'date': self.browse(cr, uid, ids, context=context).period_to.date_stop,
@@ -973,7 +892,7 @@ class l10n_pf_account_vat_declaration(osv.osv):
 						vals = {
 							'state': 'valid',
 							'journal_id': company_obj.browse(cr, uid, uid, context=context).journal_id.id,
-							'account_id': company_obj.browse(cr, uid, uid, context=context).immo_ids[0].account_collected_id.id,
+							'account_id': company_obj.browse(cr, uid, uid, context=context).tax_immo_ids[0].account_collected_id.id,
 							'debit': abs(self.browse(cr, uid, ids, context=context).vat_immobilization),
 							'period_id': self.browse(cr, uid, ids, context=context).period_to.id,
 							'date': self.browse(cr, uid, ids, context=context).period_to.date_stop,
@@ -989,7 +908,7 @@ class l10n_pf_account_vat_declaration(osv.osv):
 						vals = {
 							'state': 'valid',
 							'journal_id': company_obj.browse(cr, uid, uid, context=context).journal_id.id,
-							'account_id': company_obj.browse(cr, uid, uid, context=context).others_goods_services_ids[0].account_collected_id.id,
+							'account_id': company_obj.browse(cr, uid, uid, context=context).tax_others_goods_services_ids[0].account_collected_id.id,
 							'credit': self.browse(cr, uid, ids, context=context).vat_other_goods_services,
 							'period_id': self.browse(cr, uid, ids, context=context).period_to.id,
 							'date': self.browse(cr, uid, ids, context=context).period_to.date_stop,
@@ -1001,7 +920,7 @@ class l10n_pf_account_vat_declaration(osv.osv):
 						vals = {
 							'state': 'valid',
 							'journal_id': company_obj.browse(cr, uid, uid, context=context).journal_id.id,
-							'account_id': company_obj.browse(cr, uid, uid, context=context).others_goods_services_ids[0].account_collected_id.id,
+							'account_id': company_obj.browse(cr, uid, uid, context=context).tax_others_goods_services_ids[0].account_collected_id.id,
 							'debit': abs(self.browse(cr, uid, ids, context=context).vat_other_goods_services),
 							'period_id': self.browse(cr, uid, ids, context=context).period_to.id,
 							'date': self.browse(cr, uid, ids, context=context).period_to.date_stop,
@@ -1077,7 +996,7 @@ class l10n_pf_account_vat_declaration(osv.osv):
 						vals = {
 							'state': 'valid',
 							'journal_id': company_obj.browse(cr, uid, uid, context=context).journal_id.id,
-							'account_id': company_obj.browse(cr, uid, uid, context=context).intermediate_rate_ids[0].account_collected_id.id,
+							'account_id': company_obj.browse(cr, uid, uid, context=context).tax_intermediate_rate_ids[0].account_collected_id.id,
 							'debit': self.browse(cr, uid, ids, context=context).vat_due_intermediate_rate,
 							'period_id': self.browse(cr, uid, ids, context=context).period_to.id,
 							'date': self.browse(cr, uid, ids, context=context).period_to.date_stop,
@@ -1089,7 +1008,7 @@ class l10n_pf_account_vat_declaration(osv.osv):
 						vals = {
 							'state': 'valid',
 							'journal_id': company_obj.browse(cr, uid, uid, context=context).journal_id.id,
-							'account_id': company_obj.browse(cr, uid, uid, context=context).intermediate_rate_ids[0].account_collected_id.id,
+							'account_id': company_obj.browse(cr, uid, uid, context=context).tax_intermediate_rate_ids[0].account_collected_id.id,
 							'credit': abs(self.browse(cr, uid, ids, context=context).vat_due_intermediate_rate),
 							'period_id': self.browse(cr, uid, ids, context=context).period_to.id,
 							'date': self.browse(cr, uid, ids, context=context).period_to.date_stop,
@@ -1104,7 +1023,7 @@ class l10n_pf_account_vat_declaration(osv.osv):
 						vals = {
 							'state': 'valid',
 							'journal_id': company_obj.browse(cr, uid, uid, context=context).journal_id.id,
-							'account_id': company_obj.browse(cr, uid, uid, context=context).immo_ids[0].account_collected_id.id,
+							'account_id': company_obj.browse(cr, uid, uid, context=context).tax_immo_ids[0].account_collected_id.id,
 							'credit': self.browse(cr, uid, ids, context=context).vat_immobilization,
 							'period_id': self.browse(cr, uid, ids, context=context).period_to.id,
 							'date': self.browse(cr, uid, ids, context=context).period_to.date_stop,
@@ -1116,7 +1035,7 @@ class l10n_pf_account_vat_declaration(osv.osv):
 						vals = {
 							'state': 'valid',
 							'journal_id': company_obj.browse(cr, uid, uid, context=context).journal_id.id,
-							'account_id': company_obj.browse(cr, uid, uid, context=context).immo_ids[0].account_collected_id.id,
+							'account_id': company_obj.browse(cr, uid, uid, context=context).tax_immo_ids[0].account_collected_id.id,
 							'debit': abs(self.browse(cr, uid, ids, context=context).vat_immobilization),
 							'period_id': self.browse(cr, uid, ids, context=context).period_to.id,
 							'date': self.browse(cr, uid, ids, context=context).period_to.date_stop,
@@ -1132,7 +1051,7 @@ class l10n_pf_account_vat_declaration(osv.osv):
 						vals = {
 							'state': 'valid',
 							'journal_id': company_obj.browse(cr, uid, uid, context=context).journal_id.id,
-							'account_id': company_obj.browse(cr, uid, uid, context=context).others_goods_services_ids[0].account_collected_id.id,
+							'account_id': company_obj.browse(cr, uid, uid, context=context).tax_others_goods_services_ids[0].account_collected_id.id,
 							'credit': self.browse(cr, uid, ids, context=context).vat_other_goods_services,
 							'period_id': self.browse(cr, uid, ids, context=context).period_to.id,
 							'date': self.browse(cr, uid, ids, context=context).period_to.date_stop,
@@ -1144,7 +1063,7 @@ class l10n_pf_account_vat_declaration(osv.osv):
 						vals = {
 							'state': 'valid',
 							'journal_id': company_obj.browse(cr, uid, uid, context=context).journal_id.id,
-							'account_id': company_obj.browse(cr, uid, uid, context=context).others_goods_services_ids[0].account_collected_id.id,
+							'account_id': company_obj.browse(cr, uid, uid, context=context).tax_others_goods_services_ids[0].account_collected_id.id,
 							'debit': abs(self.browse(cr, uid, ids, context=context).vat_other_goods_services),
 							'period_id': self.browse(cr, uid, ids, context=context).period_to.id,
 							'date': self.browse(cr, uid, ids, context=context).period_to.date_stop,
@@ -1215,19 +1134,14 @@ class l10n_pf_account_vat_declaration(osv.osv):
 	def set_to_simulate(self, cr, uid, ids, context=None):
 		self.enter_journal_items(cr, uid, ids, context=context)
 		return self.write(cr, uid, ids, {'state':'simulate'}, context=context)
-
-	#def cancel(self, cr, uid, ids, context=None):
-		#account_move_obj = self.pool.get('account.move')
-		#move_ids = []
-		#for line in self.browse(cr, uid, ids, context=context):
-			#if line.journal_entry_id:
-				#move_ids.append(line.journal_entry_id.id)
-				#for aml in line.journal_entry_id.line_id
-
+	
 	## Cette méthode met l'état de la déclaration à "Brouillon"
 	## et annuler les écritures comptables
 	def set_to_draft(self, cr, uid, ids, context=None):
-		
+		dec_ids = []
+		for dec in self.browse(cr, uid, ids, context=context):
+			dec_ids += [line.id for line in dec.line_ids]
+		self.cancel(cr, uid, dec_ids, context=context)
 		return self.write(cr, uid, ids, {'state':'draft'}, context=context)
 
 	## Cette méthode valide la déclaration et met son état à "Valider"
@@ -1235,6 +1149,24 @@ class l10n_pf_account_vat_declaration(osv.osv):
 		if context is None:
 			context = {}
 		return self.write(cr, uid, ids, {'state':'done'}, context)
+
+	#def unlink(self, cr, uid, ids, context=None):
+		#line_obj = self.pool[']
+
+	#def cancel(self, cr, uid, ids, context=None):
+		#account_move_obj = self.pool.get('account.move')
+		#move_ids = []
+		#for line in self.browse(cr, uid, ids, context=context):
+			#if line.journal_entry_id:
+				#move_ids.append(line.journal_entry_id.id)
+				#for aml in line.journal_entry_id.line_id:
+					#if aml.reconcile_id:
+						#move_lines = [l.id for l in aml.reconcile.line_id]
+						#move_lines.remove(aml.id)
+						#self.pool.get('account_move_reconcile').unlink(cr, uid, [aml.reconcile_id.id], context=context)
+		#if move_ids:
+			#account_move_obj.set_to_draft(cr, uid, move_ids, context=context)
+			#account_move_obj.unlink(cr, uid, move_ids, context)
 
 	## Cette méthode récupère les informations de l'entreprise
 	def on_change_company_id(self, cr, uid, ids, company_id, context=None):
@@ -1254,6 +1186,7 @@ class l10n_pf_account_vat_declaration(osv.osv):
 				'city_zip': company.city_zip,
 				'company_regime': company.regime_vat,
 				'company_vat_type': company.type_vat,
+				'ntahiti': company.ntahiti,
 			}
 		return {'value':values}
 			
@@ -1331,3 +1264,22 @@ class l10n_pf_account_vat_declaration(osv.osv):
 						temp_from = i.id
 		res['value'] = {'period_to': temp_to, 'period_from':temp_from}
 		return res
+
+
+#class l10n_pf_account_vat_declaration_line(osv.osv):
+	#_name = "l10n.pf.account.vat_declaration.line"
+	
+	#def cancel(self, cr, uid, ids, context=None):
+		#account_move_obj = self.pool.get('account.move')
+		#move_ids = []
+		#for line in self.browse(cr, uid, ids, context=context):
+			#if line.journal_entry_id:
+				#move_ids.append(line.journal_entry_id.id)
+				#for aml in line.journal_entry_id.line_id:
+					#if aml.reconcile_id:
+						#move_lines = [l.id for l in aml.reconcile.line_id]
+						#move_lines.remove(aml.id)
+						#self.pool.get('account_move_reconcile').unlink(cr, uid, [aml.reconcile_id.id], context=context)
+		#if move_ids:
+			#account_move_obj.set_to_draft(cr, uid, move_ids, context=context)
+			#account_move_obj.unlink(cr, uid, move_ids, context)

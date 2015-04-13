@@ -45,7 +45,7 @@
 						<table style="width:98%;margin-left:10px;">
 							<tr>
 								<td width="20%">N° TAHITI</td>
-								<td width="30%">: <span t-field="o.no_tahiti"/></td>
+								<td width="30%">: <span t-field="o.ntahiti"/></td>
 							</tr>
 							<tr>
 								<td>Nom/Raison sociale</td>
@@ -376,9 +376,6 @@
 											<td style="width:25%;">Chèque (à l'ordre du Trésor Public)</td>
 											<td style="width:2%;vertical-align:top;"><input type="checkbox" value="cash"/></td>
 											<td style="width:22%;">Espèces</td>
-											<td rowspan="2" style="text-align:center;">
-												<img src="/l10n_pf_account_vat/static/src/img/signature.jpg" style="height:50px;width:100px;"/>
-											</td>
 										</tr>
 										<tr style="height:45px;">
 											<td style="vertical-align:top;"><input type="checkbox" value="transfert"/></td>

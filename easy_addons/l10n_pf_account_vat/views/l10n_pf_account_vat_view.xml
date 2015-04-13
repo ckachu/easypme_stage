@@ -35,7 +35,7 @@
 								<group>
 									<group>
 										<!--<field name="account_id"/>-->
-										<field name="no_tahiti"/>
+										<field name="ntahiti"/>
 										<field name="company_id" on_change="on_change_company_id(company_id)"/>
 										<field name="company_activity"/>
 										<field name="company_phone"/>
