@@ -1,0 +1,365 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+	<data>
+		<template id="report_deposit">
+			<t t-call="report.html_container">
+				<t t-foreach="docs" t-as="o">
+					<!--<t t-call="report.external_layout">-->
+					
+					<!-- Header -->
+					<div class="header" style="font-family:'Times New Roman',Times,serif;">
+						<div class="row">
+							
+							<div class="col-xs-3 pull-left">
+								<img src="/l10n_pf_account_vat/static/src/img/logo.png" style="height:100px;width:200px;"/>
+								<p style="text-align:center;color:blue;font-size:14pt;font-weight:bold;">Recette des Impôts</p>
+								<hr style="text-align:center;border:1px dashed blue;width:100px"/>
+							</div>
+							
+							<!-- Période de déclaration -->
+							<div class="col-xs-3 pull-right">
+								<table style="border:1px solid black;width:250px;height:80px;">
+									<tr>
+										<th style="text-align:center;">Période de déclaration</th>
+									</tr>
+									<tr>
+										<td style="text-align:center;">Du 1er janvier <span t-field="o.fiscalyear"/> au 31 août <span t-field="o.fiscalyear"/></td>
+									</tr>
+								</table>
+							</div>
+							
+							
+							<div class="text-center" style="width:500px;height:40px;margin-left:350px;">
+								<p style="font-size:20px;font-weight:bold;">TAXE SUR LA VALEUR AJOUTEE<br/>Régime simplifié</p>
+								<hr style="border:1px solid black;width:200px;"/>
+								<p style="font-size:16px;font-weight:bold;">(Déclaration d'acompte)<br/>à déposer au plus tard le 30 septembre de l'année</p>
+							</div>
+							
+						</div>
+					</div>
+					
+					<div class="page" style="font-family:'Times New Roman',Times,serif;">
+						<!-- Tableau : Informations de l'entreprise -->						
+						<table>
+							<tr>
+								<td width="20%">N° TAHITI</td>
+								<td width="30%">: <span t-field="o.no_tahiti"/></td>
+							</tr>
+							<tr>
+								<td>Nom/Raison sociale</td>
+								<td>: <span t-field="o.company_id"/></td>
+							</tr>
+							<tr>
+								<td>Activité exercée</td>
+								<td>: <span t-field="o.company_activity"/></td>
+							</tr>
+							<tr>
+								<td>Téléphone</td>
+								<td>: <span t-field="o.company_phone"/></td>
+							</tr>
+							<tr>
+								<td>Adresse</td>
+								<td>: <span t-field="o.company_street"/> <span t-field="o.company_city"/></td>
+							</tr>
+							<tr>
+								<td>Adresse mail de la société ou du représentant légal</td>
+								<td>: <span t-field="o.company_email"/></td>
+							</tr>
+							<tr>
+								<td>Boîte postale</td>
+								<td>: <span t-field="o.company_bp"/> Code postal: <span t-field="o.company_zip"/></td>
+								<td>Commune: <span t-field="o.city_zip"/></td>
+							</tr>
+						</table>
+						
+						<!-- Tableau : TVA Exigible -->
+						<table class="table-bordered" style="width:100%;">
+							<thead>
+								<tr style="height:25px;background-color:#F5DA81;">
+									<th colspan="7" style="text-align:center;vertical-align:middle;">A - TVA EXIGIBLE</th>
+								</tr>
+								<tr style="height:35px;">
+									<th colspan="3" style="text-align:center;vertical-align:middle;width:50%;">Chiffre d'affaires (Hors TVA)</th>
+									<th colspan="3" style="text-align:center;vertical-align:middle;width:20%;">Coefficient de <br/> l'entreprise</th>
+									<th style="text-align:center;vertical-align:middle;width:30%;">Taxe due</th>
+								</tr>
+
+							</thead>
+							<tbody>
+								<tr style="text-align:center;height:25px;">
+									<td style="width:4%;vertical-align:middle;background-color:#F5DA81;">01</td>
+									<td style="text-align:left;width:23%;vertical-align:middle;">
+										<span style="margin-left:5px;">Ventes</span>
+									</td>
+									<td style="width:23%;vertical-align:middle;">
+										<t t-if="o.excluding_vat_sales != 0">
+											<span t-field="o.excluding_vat_sales"/>
+										</t>
+									</td>
+									<td style="width:4%;vertical-align:middle;">X</td>
+									<td style="width:12%;vertical-align:middle;">5%</td>
+									<td style="width:4%;vertical-align:middle;background-color:#F5DA81;">03</td>
+									<td style="vertical-align:middle;">
+										<t t-if="o.tax_due_sales != 0">
+											<span t-field="o.tax_due_sales"/>
+										</t>
+									</td>
+								</tr>
+								<tr style="text-align:center;height:25px;">
+									<td style="vertical-align:middle;background-color:#F5DA81;">02</td>
+									<td style="text-align:left;vertical-align:middle;">
+										<span style="margin-left:5px;">Prestations de services</span>
+									</td>
+									<td style="vertical-align:middle;">
+										<t t-if="o.excluding_vat_services != 0">
+											<span t-field="o.excluding_vat_services"/>
+										</t>
+									</td>
+									<td style="vertical-align:middle;">X</td>
+									<td style="vertical-align:middle;">5%</td>
+									<td style="vertical-align:middle;background-color:#F5DA81;">04</td>
+									<td style="vertical-align:middle;">
+										<t t-if="o.tax_due_services != 0">
+											<span t-field="o.tax_due_services"/>
+										</t>
+									</td>
+								</tr>
+								<tr style="text-align:center;height:25px;">
+									<td style="vertical-align:middle;background-color:#F5DA81;">05</td>
+									<td colspan="4" style="text-align:right;vertical-align:middle;">
+										<span style="margin-right:5px;"><strong>Total (lignes 03 + 04)</strong></span>
+									</td>
+									<td colspan="2" style="vertical-align:middle;">
+										<t t-if="o.total_tax_payable != 0">
+											<span t-field="o.total_tax_payable"/>
+										</t>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+						<br/>
+						
+						<!-- Tableau : TVA Deductible -->
+						<table class="table-bordered" style="width:100%;">
+							<thead>
+								<tr style="height:25px;">
+									<th colspan="4" style="text-align:center;vertical-align:middle;background-color:#F5DA81;">B - TVA DEDUCTIBLE</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr style="text-align:center;height:25px;">
+									<td style="width:4%;vertical-align:middle;background-color:#F5DA81;">06</td>
+									<td colspan="2" style="text-align:left;width:62%;vertical-align:middle;">
+										<span style="margin-left:5px;">TVA sur biens constituant des immobilisations</span>
+									</td>
+									<td style="vertical-align:middle;">
+										<t t-if="o.vat_immobilization != 0">
+											<span t-field="o.vat_immobilization"/>
+										</t>
+									</td>
+								</tr>
+								<tr style="text-align:center;height:25px;">
+									<td style="vertical-align:middle;background-color:#F5DA81;">07</td>
+									<td colspan="2" style="text-align:left;vertical-align:middle;">
+										<span style="margin-left:5px;">Crédit apparaissant sur la précédente déclaration</span>
+									</td>
+									<td style="vertical-align:middle;">
+										<t t-if="o.defferal_credit != 0">
+											<span t-field="o.defferal_credit"/>
+										</t>
+									</td>
+								</tr>
+								<tr style="text-align:center;height:25px;">
+									<td colspan="2" style="text-align:left;width:54%;font-style:italic;vertical-align:middle;">
+										<span style="margin-left:5px;">Indiquer ici le pourcentage de déduction applicable pour la période</span>
+									</td>
+									<td style="width:12%;vertical-align:middle;">...... %</td>
+									<td style="vertical-align:middle;"></td>
+								</tr>
+								<tr style="text-align:center;height:25px;">
+									<td style="vertical-align:middle;background-color:#F5DA81;">08</td>
+									<td colspan="2" style="text-align:right;vertical-align:middle;">
+										<span style="margin-right:5px;"><strong>Total (lignes 06 + 07)</strong></span>
+									</td>
+									<td style="vertical-align:middle;">
+										<t t-if="o.total_vat_deductible != 0">
+											<span t-field="o.total_vat_deductible"/>
+										</t>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+						<br/>
+						
+						<!-- Tableau : Credit et TVA -->
+						<table class="table-bordered" style="width:100%;">
+							<thead>
+								<tr style="height:25px;">
+									<th colspan="3" style="text-align:center;width:50%;vertical-align:middle;background-color:#F5DA81;">C-CREDIT</th>
+									<th colspan="3" style="text-align:center;width:50%;vertical-align:middle;background-color:#F5DA81;">D-TVA à PAYER</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr style="text-align:center; height:40px;">
+									<td style="vertical-align:middle;width:4%;background-color:#F5DA81;">09</td>
+									<th style="text-align:left;width:23%;">
+										<span style="margin-left:5px;">CREDIT DE TVA</span>
+										<br/> <span style="margin-left:5px;">(lignes 08 - 05)</span>
+									</th>
+									<td style="width:23%;vertical-align:middle;">
+										<t t-if="o.vat_credit != 0">
+											<span t-field="o.vat_credit"/>
+										</t>
+									</td>
+									<td style="vertical-align:middle;width:4%;background-color:#F5DA81;">11</td>
+									<th style="text-align:left;width:24%;">
+										<span style="margin-left:5px;">TVA nette due</span>
+										<br/> <span style="margin-left:5px;">(lignes 05 - 08)</span>
+									</th>
+									<td style="vertical-align:middle;">
+										<t t-if="o.net_vat_due != 0">
+											<span t-field="o.net_vat_due"/> FCP
+										</t>
+									</td>
+								</tr>
+								<tr style="text-align:center;height:40px;">
+									<td style="vertical-align:middle;background-color:#F5DA81;">10</td>
+									<td style="text-align:left;vertical-align:middle;">
+										<span style="margin-left:5px;">Remboursement demandé:</span>
+										<br/> <span style="margin-left:5px;">(Demande de remboursement ci-jointe)</span>
+									</td>
+									<td style="vertical-align:middle;">
+										<t t-if="o.reimbursement != 0">
+											<span t-field="o.reimbursement"/>
+										</t>
+									</td>
+									<td colspan="3" style="vertical-align:middle;border-bottom:1px solid white;border-right:1px solid white;">DATE ET SIGNATURE</td>
+								</tr>
+							</tbody>
+						</table>
+						
+						<!-- Date/Signature + Moyens de paiement -->
+						<form>
+							<table style="width:100%;">
+								<thead>
+									<tr>
+										<td colspan="3" style="text-align:right;vertical-align:middle;width:54%;">A</td>
+										<td style="width:24%;"><span style="margin-left:5px;" t-field="o.place"/>,</td>
+										<td style="width:22%;">le <span t-field="o.date"/></td>
+									</tr>
+									<tr style="height:25px;">
+										<th colspan="2" style="text-align:center;width:54%;text-decoration:underline;">MOYENS DE PAIEMENT</th>
+										<th colspan="3" style="text-align:center;width:46%;text-decoration:underline;">Signature</th>
+									</tr>
+								</thead>
+								<tbody>
+									<t t-if="o.check">
+										<tr>
+											<td style="width:2%;vertical-align:top;"><input type="checkbox" value="check" checked="checked"/></td>
+											<td><span style="margin-left:10px;">Chèque (à l'ordre du Trésor Public)</span></td>
+										</tr>
+										<tr>
+											<td style="vertical-align:top;"><input type="checkbox" value="cash"/></td>
+											<td><span style="margin-left:10px;">Espèces</span></td>
+										</tr>
+										<tr>
+											<td style="vertical-align:top;"><input type="checkbox" value="transfert"/></td>
+											<td><span style="margin-left:10px;">Virement bancaire (Préciser le N° TAHITI, la taxe payée et la période concernée</span><br/>
+												<span style="margin-left:10px;">sans omettre de déposer ou poster votre déclaration)</span></td>
+										</tr>
+									</t>
+									<t t-if="o.cash">
+										<tr>
+											<td style="width:2%;vertical-align:top;"><input type="checkbox" value="check"/></td>
+											<td><span style="margin-left:10px;">Chèque (à l'ordre du Trésor Public)</span></td>
+										</tr>
+										<tr>
+											<td style="vertical-align:top;"><input type="checkbox" value="cash" checked="checked"/></td>
+											<td><span style="margin-left:10px;">Espèces</span></td>
+										</tr>
+										<tr>
+											<td style="vertical-align:top;"><input type="checkbox" value="transfert"/></td>
+											<td><span style="margin-left:10px;">Virement bancaire (Préciser le N° TAHITI, la taxe payée et la période concernée</span><br/>
+												<span style="margin-left:10px;">sans omettre de déposer ou poster votre déclaration)</span></td>
+										</tr>
+									</t>
+									<t t-if="o.transfert">
+										<tr>
+											<td style="width:2%;vertical-align:top;"><input type="checkbox" value="check"/></td>
+											<td><span style="margin-left:10px;">Chèque (à l'ordre du Trésor Public)</span></td>
+										</tr>
+										<tr>
+											<td style="vertical-align:top;"><input type="checkbox" value="cash"/></td>
+											<td><span style="margin-left:10px;">Espèces</span></td>
+										</tr>
+										<tr>
+											<td style="vertical-align:top;"><input type="checkbox" value="transfert" checked="checked"/></td>
+											<td><span style="margin-left:10px;">Virement bancaire (Préciser le N° TAHITI, la taxe payée et la période concernée</span><br/>
+												<span style="margin-left:10px;">sans omettre de déposer ou poster votre déclaration)</span></td>
+										</tr>
+									</t>
+								</tbody>
+							</table>
+						</form>
+						<br/>
+						
+						<!-- Réservé à l'administration -->
+						<table class="table-bordered" style="width:100%;">
+							<thead>
+								<tr style="height:25px;">
+									<th colspan="3" style="text-align:center;vertical-align:middle;background-color:#F5DA81;">Cadre réservé à l'administration</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr style="height:55px;">
+									<td rowspan="2" style="width:33%;">
+										<p style="margin-left:5px;text-decoration:underline;">Références comptables:</p>
+										<p style="margin-left:5px;">Date <span style="margin-left:30px;">:</span> <span style="margin-left:5px;">...................</span></p>
+										<p style="margin-left:5px;">N° <span style="margin-left:40px;">:</span> <span style="margin-left:5px;">...................</span></p>
+										<p style="margin-left:5px;">Montant <span style="margin-left:5px;">:</span> <span style="margin-left:5px;">............................FCP</span></p>
+									</td>
+									<td style="width:33%;vertical-align:middle;"><span style="margin-left:5px;">N° déclaration: ............................</span></td>
+									<td rowspan="2" style="text-align:center;width:33%;text-decoration:underline;vertical-align:top;">Date de réception</td>
+								</tr>
+								<tr style="height:35px;">
+									<td style="vertical-align:middle;"><span style="margin-left:5px;">Pénalités: ....................................</span></td>
+								</tr>
+							</tbody>
+						</table>
+						<div style="font-size:12px;transform:rotate(-90deg);transform-origin:left;">
+							DICP/TVARSI/1020/N020/V1/14
+						</div>
+					</div>
+					
+					<!-- Footer -->
+					<div class="footer" style="font-family:'Times New Roman',Times,serif;">
+						<div class="text-center">
+							<ul class="list-inline">
+								<li>« Les dispositions des articles 39 et 40 de la loi n°78-17 du 6 janvier 1978 relative à l"informatique,
+								aux fichiers et aux libertés, modifiée par la loi n°2004-801 du 6 août 2004, garantissent les droits des personnes
+								physiques à l'égard des traitements des données à caractère personnel.»</li>
+							</ul>
+						</div>
+						
+						<div class="text-center" style="border-top:2px solid black;">
+							<ul class="list-inline">
+								<li>Recette des Impôts (CCP 14168-00001-9062004YU68-32)</li>
+								<li>–</li>
+								<li>B.P.72</li>
+								<li>–</li>
+								<li>98713 PAPEETE</li>
+								<li>–</li>
+								<li>Tél: 40 46 13 56</li>
+								<li>–</li>
+								<li>Fax: 40 46 13 03</li>
+							</ul>
+						</div>
+					</div>
+					
+					<!--</t>-->
+				</t>
+			</t>
+		</template>
+	</data>
+</openerp>
+

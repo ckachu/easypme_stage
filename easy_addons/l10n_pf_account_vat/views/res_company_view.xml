@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+	<data>
+		<record model="ir.ui.view" id="view_company_inherit_vat_form">
+			<field name="name">res.company.form.vat.inherit</field>
+			<field name="inherit_id" ref="base.view_company_form"/>
+			<field name="model">res.company</field>
+			<field name="arch" type="xml">
+				<xpath expr="/form/sheet/notebook/page[1]/group/group[1]/div[1]" position="after">
+					<field name="bp"/>
+					<field name="city_zip"/>
+				</xpath>	
+				<notebook position="inside">
+					<page string="Informations TVA" position="inside">
+						<separator string="Informations sur l'entreprise"/>
+						<group>
+							<div>
+								<div>
+									<label for="activity" string="Company activity"/>
+									<field name="activity" string="Company activity" placeholder="Activity"
+										help='Mettez l activité exercée par l entreprise'/>
+									<label for="regime_vat" string="VAT Company regime"/>	
+									<field name="regime_vat" string="Regime VAT"
+										help='Choisissez le régime de l entreprise'/>
+									<label for="type_vat" string="VAT Company type"/>	
+									<field name="type_vat" string="Type VAT" attrs="{'invisible':['|',('regime_vat','=','deposit'),('regime_vat','=','annual')]}"
+										help='Choisissez le type de TVA de l entreprise'/>
+									<label for="period_declaration" string="Declaration period"/>
+									<field name="period_declaration" string="Declaration period" attrs="{'invisible':[('regime_vat','in',('annual','deposit'))]}"/>
+								</div>
+							</div>
+						</group>
+						<notebook>
+							<page string="Valeurs des taux">
+								<separator string="Valeurs des taux"/>
+								<group>
+									<div>
+										<label for="reduced_rate_vat" string="Reduced rate (%)" attrs="{'invisible':[('type_vat','=','cashing')]}"/>
+										<field name="reduced_rate_vat" attrs="{'invisible':[('type_vat','=','cashing')]}"
+											help='Taux réduit actuel'/>
+										<label for="intermediate_rate_vat" string="Intermediate rate (%)"/>
+										<field name="intermediate_rate_vat" help='Taux intermédiaire actuel'/>
+										<label for="normal_rate_vat" string="Normal rate (%)" attrs="{'invisible':[('type_vat','=','cashing')]}"/>
+										<field name="normal_rate_vat" attrs="{'invisible':[('type_vat','=','cashing')]}"
+											help='Taux normal actuel'/>
+									</div>
+								</group>
+							</page>
+							<page string="Journal">
+								<separator string="Journal"/>
+								<group>
+									<div>
+										<div>
+											<label for="journal_id" string="Select journal"/>
+											<field name="journal_id"/>
+										</div>
+									</div>
+								</group>
+							</page>
+							<page string="Comptes à utiliser">
+								<separator string="Comptes utilisés"/>
+								<group>
+									<div>
+										<div attrs="{'invisible':['|',('regime_vat','=','annual'),('regime_vat','=','real')]}">
+											<label for="sales_ids" string="Add all accounts for sales"/>
+											<field name="sales_ids" domain="[('type','!=','view')]" widget="many2many"
+												help='Choisissez tous les comptes du chiffre d affaires des ventes'>
+												<tree>
+													<field name='code'/>
+													<field name='name'/>
+													<field name='type'/>
+												</tree>
+											</field>
+										</div>
+										
+										<div attrs="{'invisible':['|',('regime_vat','=','annual'),('regime_vat','=','real')]}">
+											<label for="services_ids" string="Add all accounts for services"/>
+											<field name="services_ids" domain="[('type','!=','view')]" widget="many2many"
+												help='Choisissez tous les comptes du chiffre d affaires des prestations de services'>
+												<tree>
+													<field name='code'/>
+													<field name='name'/>
+													<field name='type'/>
+												</tree>
+											</field>
+										</div>
+										
+										<div attrs="{'invisible':[('regime_vat','=','deposit')]}">
+											<label for="exports_ids" string="Add all accounts for exports"/>
+											<field name="exports_ids" domain="[('type','!=','view')]" widget="many2many"
+												help='Choisissez tous les comptes pour les exportations'>
+												<tree>
+													<field name='code'/>
+													<field name='name'/>
+													<field name='type'/>
+												</tree>
+											</field>
+												
+										</div>
+										
+										<div attrs="{'invisible':[('regime_vat','=','deposit')]}">
+											<label for="others_ids" string="Add all accounts for other non-taxables transactions"/>
+											<field name="others_ids" domain="[('type','!=','view')]" widget="many2many"
+												help='Choisissez tous les comptes pour les autres opérations non taxables'>
+												<tree>
+													<field name='code'/>
+													<field name='name'/>
+													<field name='type'/>
+												</tree>
+											</field>
+										</div>
+										
+										<div attrs="{'invisible':['|',('regime_vat','=','deposit'),('type_vat','=','cashing')]}">
+											<label for="reduced_rate_ids" string="Add all accounts for reduced rate"/>
+											<field name="reduced_rate_ids" domain="[('type','!=','view')]" widget="many2many"
+												help='Choisissez tous les comptes pour le taux réduit'>
+												<tree>
+													<field name='name'/>
+													<field name='account_collected_id'/>
+													<field name='account_paid_id'/>
+												</tree>
+											</field>
+										</div>
+										
+										<div attrs="{'invisible':[('regime_vat','=','deposit')]}">
+											<label for="intermediate_rate_ids" string="Add all accounts for intermediate rate"/>
+											<field name="intermediate_rate_ids" domain="[('type','!=','view')]" widget="many2many"
+												help='Choisissez tous les comptes pour le taux intermédiaire'>
+												<tree>
+													<field name='name'/>
+													<field name='account_collected_id'/>
+													<field name='account_paid_id'/>
+												</tree>
+											</field>
+										</div>
+										
+										<div attrs="{'invisible':['|',('regime_vat','=','deposit'),('type_vat','=','cashing')]}">
+											<label for="normal_rate_ids" string="Add all accounts for normal rate"/>
+											<field name="normal_rate_ids" domain="[('type','!=','view')]" widget="many2many"
+												help='Choisissez tous les comptes pour le taux normal'>
+												<tree>
+													<field name='name'/>
+													<field name='account_collected_id'/>
+													<field name='account_paid_id'/>
+												</tree>
+											</field>
+										</div>
+										
+										<div>
+											<label for="immo_ids" string="Add all accounts for immobilization"/>
+											<field name="immo_ids" domain="[('type','!=','view')]" widget="many2many"
+												help='Choisissez tous les comptes pour les immobilisations'>
+												<tree>
+													<field name='name'/>
+													<field name='account_collected_id'/>
+													<field name='account_paid_id'/>
+												</tree>
+											</field>
+										</div>
+										
+										<div attrs="{'invisible':[('regime_vat','=','deposit')]}">
+											<label for="others_goods_services_ids" string="Add all accounts for others goods and services"/>
+											<field name="others_goods_services_ids" domain="[('type','!=','view')]" widget="many2many"
+												help='Choisissez tous les comptes pour les autres biens et services'>
+												<tree>
+													<field name='name'/>
+													<field name='account_collected_id'/>
+													<field name='account_paid_id'/>
+												</tree>
+											</field>
+										</div>
+										
+										<div attrs="{'invisible':['|',('regime_vat','in',('annual','deposit')),('type_vat','=','bills')]}">
+											<label for="customers_ids" string="Add all accounts for customers"/>
+											<field name="customers_ids" domain="[('type','!=','view')]" widget="many2many"
+												help='Choisissez tous les comptes clients'>
+												<tree>
+													<field name='code'/>
+													<field name='name'/>
+													<field name='type'/>
+												</tree>
+											</field>
+										</div>
+										
+										<div attrs="{'invisible':['|',('regime_vat','in',('annual','deposit')),('type_vat','=','bills')]}">
+											<label for="turnover_ids" string="Add all accounts for turnover"/>
+											<field name="turnover_ids" domain="[('type','!=','view')]" widget="many2many"
+												help='Choisissez tous les comptes du chiffre d affaires'>
+												<tree>
+													<field name='code'/>
+													<field name='name'/>
+													<field name='type'/>
+												</tree>
+											</field>
+										</div>
+										
+										<div>
+											<label for="credit_id" string="Ajouter le compte pour la saisie du crédit de TVA"/>
+											<field name="credit_id" domain="[('type','!=','view')]"
+												help='Choisissez tous les comptes du credit à reporter'>
+												<tree>
+													<field name='code'/>
+													<field name='name'/>
+													<field name='type'/>
+												</tree>
+											</field>
+										</div>
+										
+										<div>
+											<label for="vat_id" string="Ajouter le compte pour la saisie de la TVA"/>
+											<field name="vat_id" domain="[('type','!=','view')]"
+												help='Choisissez le compte pour la saisie de la TVA'>
+												<tree>
+													<field name='code'/>
+													<field name='name'/>
+													<field name='type'/>
+												</tree>
+											</field>
+										</div>
+									</div>
+								</group>
+							</page>
+						</notebook>
+					</page>
+				</notebook>
+			</field>
+		</record>
+	</data>
+</openerp>
