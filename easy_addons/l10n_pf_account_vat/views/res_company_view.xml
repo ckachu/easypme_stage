@@ -193,7 +193,7 @@
 										</div>
 										
 										<div>
-											<label for="vat_id" string="Ajouter le compte pour la saisie de la TVA"/>
+											<label for="vat_id" string="Ajouter le compte pour la saisie de la TVA à payer"/>
 											<field name="vat_id" domain="[('type','!=','view')]"
 												help='Choisir le compte pour la saisie de la TVA à payer'>
 												<tree>

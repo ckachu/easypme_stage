@@ -667,7 +667,7 @@ class l10n_pf_account_vat_declaration(osv.osv):
 
 		'state': fields.selection([('draft','Draft'),('simulate','Simulate'),('done','Done')], 'Status', required=True, copy=False),
 		
-		'move_id': fields.many2one('account.move', 'Journal Entry', copy=False)
+		'journal_entry_id': fields.many2one('account.move', 'Journal Entry', copy=False)
 	}
 	
 	_defaults = {
@@ -683,7 +683,7 @@ class l10n_pf_account_vat_declaration(osv.osv):
 	}
 	
 	## Cette méthode saisit les écritures comptables
-	def enter_journal_items(self, cr, uid, ids, context=None):
+	def enter_journal_items(self, cr, uid, ids, move_id, context=None):
 		#import pdb
 		#pdb.set_trace()
 		ac_mv_line_obj = self.pool.get('account.move.line')
@@ -797,6 +797,7 @@ class l10n_pf_account_vat_declaration(osv.osv):
 					montant = self.browse(cr, uid, ids, context=context).vat_due_reduced_rate
 					if montant > 0:						
 						vals = {
+							'move_id': move_id,
 							'state': 'valid',
 							'journal_id': company_obj.browse(cr, uid, uid, context=context).journal_id.id,
 							'account_id': company_obj.browse(cr, uid, uid, context=context).tax_reduced_rate_ids[0].account_collected_id.id,
@@ -809,6 +810,7 @@ class l10n_pf_account_vat_declaration(osv.osv):
 						ac_mv_line_obj.create(cr, uid, vals, context=context, check=False)
 					elif montant < 0:
 						vals = {
+							'move_id': move_id,
 							'state': 'valid',
 							'journal_id': company_obj.browse(cr, uid, uid, context=context).journal_id.id,
 							'account_id': company_obj.browse(cr, uid, uid, context=context).tax_reduced_rate_ids[0].account_collected_id.id,
@@ -824,6 +826,7 @@ class l10n_pf_account_vat_declaration(osv.osv):
 					montant = self.browse(cr, uid, ids, context=context).vat_due_intermediate_rate
 					if montant > 0:
 						vals = {
+							'move_id': move_id,
 							'state': 'valid',
 							'journal_id': company_obj.browse(cr, uid, uid, context=context).journal_id.id,
 							'account_id': company_obj.browse(cr, uid, uid, context=context).tax_intermediate_rate_ids[0].account_collected_id.id,
@@ -836,6 +839,7 @@ class l10n_pf_account_vat_declaration(osv.osv):
 						ac_mv_line_obj.create(cr, uid, vals, context=context, check=False)
 					elif montant < 0:
 						vals = {
+							'move_id': move_id,
 							'state': 'valid',
 							'journal_id': company_obj.browse(cr, uid, uid, context=context).journal_id.id,
 							'account_id': company_obj.browse(cr, uid, uid, context=context).tax_intermediate_rate_ids[0].account_collected_id.id,
@@ -851,6 +855,7 @@ class l10n_pf_account_vat_declaration(osv.osv):
 					montant = self.browse(cr, uid, ids, context=context).vat_due_normal_rate
 					if montant > 0:
 						vals = {
+							'move_id': move_id,
 							'state': 'valid',
 							'journal_id': company_obj.browse(cr, uid, uid, context=context).journal_id.id,
 							'account_id': company_obj.browse(cr, uid, uid, context=context).tax_normal_rate_ids[0].account_collected_id.id,
@@ -863,6 +868,7 @@ class l10n_pf_account_vat_declaration(osv.osv):
 						ac_mv_line_obj.create(cr, uid, vals, context=context, check=False)
 					elif montant < 0:
 						vals = {
+							'move_id': move_id,
 							'state': 'valid',
 							'journal_id': company_obj.browse(cr, uid, uid, context=context).journal_id.id,
 							'account_id': company_obj.browse(cr, uid, uid, context=context).tax_normal_rate_ids[0].account_collected_id.id,
@@ -878,6 +884,7 @@ class l10n_pf_account_vat_declaration(osv.osv):
 					montant = self.browse(cr, uid, ids, context=context).vat_immobilization
 					if montant > 0:
 						vals = {
+							'move_id': move_id,
 							'state': 'valid',
 							'journal_id': company_obj.browse(cr, uid, uid, context=context).journal_id.id,
 							'account_id': company_obj.browse(cr, uid, uid, context=context).tax_immo_ids[0].account_collected_id.id,
@@ -890,6 +897,7 @@ class l10n_pf_account_vat_declaration(osv.osv):
 						ac_mv_line_obj.create(cr, uid, vals, context=context, check=False)
 					elif montant < 0:
 						vals = {
+							'move_id': move_id,
 							'state': 'valid',
 							'journal_id': company_obj.browse(cr, uid, uid, context=context).journal_id.id,
 							'account_id': company_obj.browse(cr, uid, uid, context=context).tax_immo_ids[0].account_collected_id.id,
@@ -906,6 +914,7 @@ class l10n_pf_account_vat_declaration(osv.osv):
 					montant = self.browse(cr, uid, ids, context=context).vat_other_goods_services
 					if montant > 0:
 						vals = {
+							'move_id': move_id,
 							'state': 'valid',
 							'journal_id': company_obj.browse(cr, uid, uid, context=context).journal_id.id,
 							'account_id': company_obj.browse(cr, uid, uid, context=context).tax_others_goods_services_ids[0].account_collected_id.id,
@@ -918,6 +927,7 @@ class l10n_pf_account_vat_declaration(osv.osv):
 						ac_mv_line_obj.create(cr, uid, vals, context=context, check=False)
 					elif montant < 0:
 						vals = {
+							'move_id': move_id,
 							'state': 'valid',
 							'journal_id': company_obj.browse(cr, uid, uid, context=context).journal_id.id,
 							'account_id': company_obj.browse(cr, uid, uid, context=context).tax_others_goods_services_ids[0].account_collected_id.id,
@@ -933,6 +943,7 @@ class l10n_pf_account_vat_declaration(osv.osv):
 					montant = self.browse(cr, uid, ids, context=context).defferal_credit
 					if montant > 0:
 						vals = {
+							'move_id': move_id,
 							'state': 'valid',
 							'journal_id': company_obj.browse(cr, uid, uid, context=context).journal_id.id,
 							'account_id': company_obj.browse(cr, uid, uid, context=context).credit_id.id,
@@ -945,6 +956,7 @@ class l10n_pf_account_vat_declaration(osv.osv):
 						ac_mv_line_obj.create(cr, uid, vals, context=context, check=False)
 					elif montant < 0:
 						vals = {
+							'move_id': move_id,
 							'state': 'valid',
 							'journal_id': company_obj.browse(cr, uid, uid, context=context).journal_id.id,
 							'account_id': company_obj.browse(cr, uid, uid, context=context).credit_id.id,
@@ -965,6 +977,7 @@ class l10n_pf_account_vat_declaration(osv.osv):
 					# TVA
 					if difference > 0:
 						vals = {
+							'move_id': move_id,
 							'state': 'valid',
 							'journal_id': company_obj.browse(cr, uid, uid, context=context).journal_id.id,
 							'account_id': company_obj.browse(cr, uid, uid, context=context).vat_id.id,
@@ -977,6 +990,7 @@ class l10n_pf_account_vat_declaration(osv.osv):
 					# Crédit de TVA
 					else:
 						vals = {
+							'move_id': move_id,
 							'state': 'valid',
 							'journal_id': company_obj.browse(cr, uid, uid, context=context).journal_id.id,
 							'account_id': company_obj.browse(cr, uid, uid, context=context).credit_id.id,
@@ -1128,20 +1142,54 @@ class l10n_pf_account_vat_declaration(osv.osv):
 						}
 						ac_mv_line_obj.create(cr, uid, vals, context=context, check=False)
 		return True
+
+	def _prepare_move(self, cr, uid, decl_line, decl_line_nb, context=None):
+		return {
+			'journal_id': decl_line.company_id.journal_id.id,
+			'period_id': decl_line.period_to.id,
+			'date': decl_line.period_to.date_stop,
+			'name':decl_line_nb,
+		}
+
+	#def create_journal_items(self, cr, uid, id, mv_line_dicts, context=None):
+	def create_journal_items(self, cr, uid, ids, context=None):
+		if context is None:
+			context = {}
+		declaration_line = self.browse(cr, uid, ids, context=context)
+		am_obj = self.pool.get('account.move')
+		aml_obj = self.pool.get('account.move.line')
+		
+		# Checks
+		#if declaration_line.journal_entry_id.id:
+			#raise osv.except_osv(_('Error!'), _('The declaration line was already create'))
+		#for mv_line_dicts in mv_line_dicts:
+			#for field in ['debit', 'credit']:
+				#if field not in mv_line_dict:
+					#mv_line_dict[field] = 0.0
+			#if mv_line_dict.get('counterpart_move_line_id'):
+				#mv_line = aml_obj.browse(cr, uid, mv_line_dict.get('counterpart_move_line_id'), context=context)
+				#if mv_line.reconcile_id:
+					#raise osv.except_osv(_('Error!'), _('A selected move line was already create'))
+		
+		# Create the move
+		move_name = declaration_line.name
+		move_vals = self._prepare_move(cr, uid, declaration_line, move_name, context=context)
+		move_id = am_obj.create(cr, uid, move_vals, context=context)
+		
+		self.enter_journal_items(cr, uid, ids, move_id, context=context)	
+		self.write(cr, uid, ids, {'journal_entry_id': move_id}, context=context)
 		
 	## Cette méthode met l'état de la déclaration à "Simuler"
 	## et crée les écritures comptables
 	def set_to_simulate(self, cr, uid, ids, context=None):
-		self.enter_journal_items(cr, uid, ids, context=context)
+		#self.enter_journal_items(cr, uid, ids, context=context)
+		self.create_journal_items(cr, uid, ids, context=context)
 		return self.write(cr, uid, ids, {'state':'simulate'}, context=context)
 	
 	## Cette méthode met l'état de la déclaration à "Brouillon"
 	## et annuler les écritures comptables
 	def set_to_draft(self, cr, uid, ids, context=None):
-		dec_ids = []
-		for dec in self.browse(cr, uid, ids, context=context):
-			dec_ids += [line.id for line in dec.line_ids]
-		self.cancel(cr, uid, dec_ids, context=context)
+		self.cancel(cr, uid, ids, context=context)
 		return self.write(cr, uid, ids, {'state':'draft'}, context=context)
 
 	## Cette méthode valide la déclaration et met son état à "Valider"
@@ -1150,23 +1198,15 @@ class l10n_pf_account_vat_declaration(osv.osv):
 			context = {}
 		return self.write(cr, uid, ids, {'state':'done'}, context)
 
-	#def unlink(self, cr, uid, ids, context=None):
-		#line_obj = self.pool[']
-
-	#def cancel(self, cr, uid, ids, context=None):
-		#account_move_obj = self.pool.get('account.move')
-		#move_ids = []
-		#for line in self.browse(cr, uid, ids, context=context):
-			#if line.journal_entry_id:
-				#move_ids.append(line.journal_entry_id.id)
-				#for aml in line.journal_entry_id.line_id:
-					#if aml.reconcile_id:
-						#move_lines = [l.id for l in aml.reconcile.line_id]
-						#move_lines.remove(aml.id)
-						#self.pool.get('account_move_reconcile').unlink(cr, uid, [aml.reconcile_id.id], context=context)
-		#if move_ids:
-			#account_move_obj.set_to_draft(cr, uid, move_ids, context=context)
-			#account_move_obj.unlink(cr, uid, move_ids, context)
+	def cancel(self, cr, uid, ids, context=None):
+		account_move_obj = self.pool.get('account.move')
+		move_ids = []
+		for declaration in self.browse(cr, uid, ids, context=context):
+			if declaration.journal_entry_id:
+				move_ids.append(declaration.journal_entry_id.id)
+		if move_ids:
+			account_move_obj.button_cancel(cr, uid, move_ids, context=context)
+			account_move_obj.unlink(cr, uid, move_ids, context)
 
 	## Cette méthode récupère les informations de l'entreprise
 	def on_change_company_id(self, cr, uid, ids, company_id, context=None):
@@ -1264,22 +1304,3 @@ class l10n_pf_account_vat_declaration(osv.osv):
 						temp_from = i.id
 		res['value'] = {'period_to': temp_to, 'period_from':temp_from}
 		return res
-
-
-#class l10n_pf_account_vat_declaration_line(osv.osv):
-	#_name = "l10n.pf.account.vat_declaration.line"
-	
-	#def cancel(self, cr, uid, ids, context=None):
-		#account_move_obj = self.pool.get('account.move')
-		#move_ids = []
-		#for line in self.browse(cr, uid, ids, context=context):
-			#if line.journal_entry_id:
-				#move_ids.append(line.journal_entry_id.id)
-				#for aml in line.journal_entry_id.line_id:
-					#if aml.reconcile_id:
-						#move_lines = [l.id for l in aml.reconcile.line_id]
-						#move_lines.remove(aml.id)
-						#self.pool.get('account_move_reconcile').unlink(cr, uid, [aml.reconcile_id.id], context=context)
-		#if move_ids:
-			#account_move_obj.set_to_draft(cr, uid, move_ids, context=context)
-			#account_move_obj.unlink(cr, uid, move_ids, context)

@@ -10,7 +10,7 @@
 				<form string="Vat">
 					<header>
 						<button name="set_to_simulate" states="draft" string="Simulate declaration" type="object"/>
-						<button name="account_chart_open_window" states="simulate" string="Show account chart" type="object"/>
+						<button states="simulate" string="Show account chart" type="object"/>
 						<button states="simulate" string="Show journal items" type="object"/>
 						<button name="validate" states="simulate" string="Validate" type="object"/>
 						<button name="set_to_draft" states="simulate" string="Back to draft" type="object"/>
@@ -29,6 +29,9 @@
 						<group>
 							<field name="company_regime"/>
 							<field name="company_vat_type"/>
+						</group>
+						<group>
+							<field name="journal_entry_id"/>
 						</group>
 						<notebook colspan="2">
 							<page string="General">
