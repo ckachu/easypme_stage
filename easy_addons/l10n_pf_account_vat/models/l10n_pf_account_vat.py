@@ -806,7 +806,6 @@ class l10n_pf_account_vat_declaration(osv.osv):
 							'date': self.browse(cr, uid, ids, context=context).period_to.date_stop,
 							'name': self.browse(cr, uid, ids, context=context).name 
 						}
-						#if vals['debit'] != 0:
 						ac_mv_line_obj.create(cr, uid, vals, context=context, check=False)
 					elif montant < 0:
 						vals = {
@@ -819,7 +818,6 @@ class l10n_pf_account_vat_declaration(osv.osv):
 							'date': self.browse(cr, uid, ids, context=context).period_to.date_stop,
 							'name': self.browse(cr, uid, ids, context=context).name 
 						}
-						#if vals['credit'] != 0:
 						ac_mv_line_obj.create(cr, uid, vals, context=context, check=False)
 				# Saisie du taux intermédiaire en DEBIT
 				elif field == 'intermediate_rate':
@@ -835,7 +833,6 @@ class l10n_pf_account_vat_declaration(osv.osv):
 							'date': self.browse(cr, uid, ids, context=context).period_to.date_stop,
 							'name': self.browse(cr, uid, ids, context=context).name 
 						}
-						#if vals['debit'] != 0.0:
 						ac_mv_line_obj.create(cr, uid, vals, context=context, check=False)
 					elif montant < 0:
 						vals = {
@@ -848,7 +845,6 @@ class l10n_pf_account_vat_declaration(osv.osv):
 							'date': self.browse(cr, uid, ids, context=context).period_to.date_stop,
 							'name': self.browse(cr, uid, ids, context=context).name 
 						}
-						#if vals['credit'] != 0.0:
 						ac_mv_line_obj.create(cr, uid, vals, context=context, check=False)
 				# Saisie du taux normal en DEBIT
 				elif field == 'normal_rate':
@@ -864,7 +860,6 @@ class l10n_pf_account_vat_declaration(osv.osv):
 							'date': self.browse(cr, uid, ids, context=context).period_to.date_stop,
 							'name': self.browse(cr, uid, ids, context=context).name 
 						}
-						#if vals['debit'] != 0.0:
 						ac_mv_line_obj.create(cr, uid, vals, context=context, check=False)
 					elif montant < 0:
 						vals = {
@@ -877,7 +872,6 @@ class l10n_pf_account_vat_declaration(osv.osv):
 							'date': self.browse(cr, uid, ids, context=context).period_to.date_stop,
 							'name': self.browse(cr, uid, ids, context=context).name 
 						}
-						#if vals['credit'] != 0.0:
 						ac_mv_line_obj.create(cr, uid, vals, context=context, check=False)
 				# Saisie de l'immobilisation en CREDIT
 				elif field == 'immo':
@@ -893,7 +887,6 @@ class l10n_pf_account_vat_declaration(osv.osv):
 							'date': self.browse(cr, uid, ids, context=context).period_to.date_stop,
 							'name': self.browse(cr, uid, ids, context=context).name 
 						}
-						#if vals['credit'] != 0.0:
 						ac_mv_line_obj.create(cr, uid, vals, context=context, check=False)
 					elif montant < 0:
 						vals = {
@@ -906,7 +899,6 @@ class l10n_pf_account_vat_declaration(osv.osv):
 							'date': self.browse(cr, uid, ids, context=context).period_to.date_stop,
 							'name': self.browse(cr, uid, ids, context=context).name 
 						}
-						#if vals['debit'] != 0.0:
 						ac_mv_line_obj.create(cr, uid, vals, context=context, check=False)
 
 				# Saisie des autres biens et services en CREDIT
@@ -923,7 +915,6 @@ class l10n_pf_account_vat_declaration(osv.osv):
 							'date': self.browse(cr, uid, ids, context=context).period_to.date_stop,
 							'name': self.browse(cr, uid, ids, context=context).name 
 						}
-						#if vals['credit'] != 0.0:
 						ac_mv_line_obj.create(cr, uid, vals, context=context, check=False)
 					elif montant < 0:
 						vals = {
@@ -936,7 +927,6 @@ class l10n_pf_account_vat_declaration(osv.osv):
 							'date': self.browse(cr, uid, ids, context=context).period_to.date_stop,
 							'name': self.browse(cr, uid, ids, context=context).name 
 						}
-						#if vals['debit'] != 0.0:
 						ac_mv_line_obj.create(cr, uid, vals, context=context, check=False)
 				# Saisie du report de crédit en CREDIT
 				elif field == 'report_credit':
@@ -952,7 +942,6 @@ class l10n_pf_account_vat_declaration(osv.osv):
 							'date': self.browse(cr, uid, ids, context=context).period_to.date_stop,
 							'name': self.browse(cr, uid, ids, context=context).name 
 						}
-						#if vals['credit'] != 0.0:
 						ac_mv_line_obj.create(cr, uid, vals, context=context, check=False)
 					elif montant < 0:
 						vals = {
@@ -965,7 +954,6 @@ class l10n_pf_account_vat_declaration(osv.osv):
 							'date': self.browse(cr, uid, ids, context=context).period_to.date_stop,
 							'name': self.browse(cr, uid, ids, context=context).name 
 						}
-						#if vals['debit'] != 0.0:
 						ac_mv_line_obj.create(cr, uid, vals, context=context, check=False)
 
 				# Saisie du crédit de TVA en DEBIT
@@ -1008,6 +996,7 @@ class l10n_pf_account_vat_declaration(osv.osv):
 					montant = self.browse(cr, uid, ids, context=context).vat_due_intermediate_rate
 					if montant > 0:
 						vals = {
+							'move_id': move_id,
 							'state': 'valid',
 							'journal_id': company_obj.browse(cr, uid, uid, context=context).journal_id.id,
 							'account_id': company_obj.browse(cr, uid, uid, context=context).tax_intermediate_rate_ids[0].account_collected_id.id,
@@ -1016,10 +1005,10 @@ class l10n_pf_account_vat_declaration(osv.osv):
 							'date': self.browse(cr, uid, ids, context=context).period_to.date_stop,
 							'name': self.browse(cr, uid, ids, context=context).name 
 						}
-						#if vals['debit'] != 0.0:
 						ac_mv_line_obj.create(cr, uid, vals, context=context, check=False)
 					elif montant < 0:
 						vals = {
+							'move_id': move_id,
 							'state': 'valid',
 							'journal_id': company_obj.browse(cr, uid, uid, context=context).journal_id.id,
 							'account_id': company_obj.browse(cr, uid, uid, context=context).tax_intermediate_rate_ids[0].account_collected_id.id,
@@ -1028,13 +1017,13 @@ class l10n_pf_account_vat_declaration(osv.osv):
 							'date': self.browse(cr, uid, ids, context=context).period_to.date_stop,
 							'name': self.browse(cr, uid, ids, context=context).name 
 						}
-						#if vals['credit'] != 0.0:
 						ac_mv_line_obj.create(cr, uid, vals, context=context, check=False)
 				# Saisie de l'immobilisation en CREDIT
 				elif field == 'immo':
 					montant = self.browse(cr, uid, ids, context=context).vat_immobilization
 					if montant > 0:
 						vals = {
+							'move_id': move_id,
 							'state': 'valid',
 							'journal_id': company_obj.browse(cr, uid, uid, context=context).journal_id.id,
 							'account_id': company_obj.browse(cr, uid, uid, context=context).tax_immo_ids[0].account_collected_id.id,
@@ -1043,10 +1032,10 @@ class l10n_pf_account_vat_declaration(osv.osv):
 							'date': self.browse(cr, uid, ids, context=context).period_to.date_stop,
 							'name': self.browse(cr, uid, ids, context=context).name 
 						}
-						#if vals['credit'] != 0.0:
 						ac_mv_line_obj.create(cr, uid, vals, context=context, check=False)
 					elif montant < 0:
 						vals = {
+							'move_id': move_id,
 							'state': 'valid',
 							'journal_id': company_obj.browse(cr, uid, uid, context=context).journal_id.id,
 							'account_id': company_obj.browse(cr, uid, uid, context=context).tax_immo_ids[0].account_collected_id.id,
@@ -1055,7 +1044,6 @@ class l10n_pf_account_vat_declaration(osv.osv):
 							'date': self.browse(cr, uid, ids, context=context).period_to.date_stop,
 							'name': self.browse(cr, uid, ids, context=context).name 
 						}
-						#if vals['debit'] != 0.0:
 						ac_mv_line_obj.create(cr, uid, vals, context=context, check=False)
 
 				# Saisie des autres biens et services en CREDIT
@@ -1063,6 +1051,7 @@ class l10n_pf_account_vat_declaration(osv.osv):
 					montant = self.browse(cr, uid, ids, context=context).vat_other_goods_services
 					if montant > 0:
 						vals = {
+							'move_id': move_id,
 							'state': 'valid',
 							'journal_id': company_obj.browse(cr, uid, uid, context=context).journal_id.id,
 							'account_id': company_obj.browse(cr, uid, uid, context=context).tax_others_goods_services_ids[0].account_collected_id.id,
@@ -1071,10 +1060,10 @@ class l10n_pf_account_vat_declaration(osv.osv):
 							'date': self.browse(cr, uid, ids, context=context).period_to.date_stop,
 							'name': self.browse(cr, uid, ids, context=context).name 
 						}
-						#if vals['credit'] != 0.0:
 						ac_mv_line_obj.create(cr, uid, vals, context=context, check=False)
 					elif montant < 0:
 						vals = {
+							'move_id': move_id,
 							'state': 'valid',
 							'journal_id': company_obj.browse(cr, uid, uid, context=context).journal_id.id,
 							'account_id': company_obj.browse(cr, uid, uid, context=context).tax_others_goods_services_ids[0].account_collected_id.id,
@@ -1083,13 +1072,13 @@ class l10n_pf_account_vat_declaration(osv.osv):
 							'date': self.browse(cr, uid, ids, context=context).period_to.date_stop,
 							'name': self.browse(cr, uid, ids, context=context).name 
 						}
-						#if vals['debit'] != 0.0:
 						ac_mv_line_obj.create(cr, uid, vals, context=context, check=False)
 				# Saisie du report de crédit en CREDIT
 				elif field == 'report_credit':
 					montant = self.browse(cr, uid, ids, context=context).defferal_credit
 					if montant > 0:
 						vals = {
+							'move_id': move_id,
 							'state': 'valid',
 							'journal_id': company_obj.browse(cr, uid, uid, context=context).journal_id.id,
 							'account_id': company_obj.browse(cr, uid, uid, context=context).credit_id.id,
@@ -1098,10 +1087,10 @@ class l10n_pf_account_vat_declaration(osv.osv):
 							'date': self.browse(cr, uid, ids, context=context).period_to.date_stop,
 							'name': self.browse(cr, uid, ids, context=context).name 
 						}
-						#if vals['credit'] != 0.0:
 						ac_mv_line_obj.create(cr, uid, vals, context=context, check=False)
 					elif montant < 0:
 						vals = {
+							'move_id': move_id,
 							'state': 'valid',
 							'journal_id': company_obj.browse(cr, uid, uid, context=context).journal_id.id,
 							'account_id': company_obj.browse(cr, uid, uid, context=context).credit_id.id,
@@ -1110,7 +1099,6 @@ class l10n_pf_account_vat_declaration(osv.osv):
 							'date': self.browse(cr, uid, ids, context=context).period_to.date_stop,
 							'name': self.browse(cr, uid, ids, context=context).name 
 						}
-						#if vals['debit'] != 0.0:
 						ac_mv_line_obj.create(cr, uid, vals, context=context, check=False)
 
 				# Saisie du crédit de TVA en DEBIT
@@ -1120,6 +1108,7 @@ class l10n_pf_account_vat_declaration(osv.osv):
 					# TVA
 					if difference >= 0:
 						vals = {
+							'move_id': move_id,
 							'state': 'valid',
 							'journal_id': company_obj.browse(cr, uid, uid, context=context).journal_id.id,
 							'account_id': company_obj.browse(cr, uid, uid, context=context).vat_id.id,
@@ -1132,6 +1121,7 @@ class l10n_pf_account_vat_declaration(osv.osv):
 					# Crédit de TVA
 					else:
 						vals = {
+							'move_id': move_id,
 							'state': 'valid',
 							'journal_id': company_obj.browse(cr, uid, uid, context=context).journal_id.id,
 							'account_id': company_obj.browse(cr, uid, uid, context=context).credit_id.id,
@@ -1182,7 +1172,6 @@ class l10n_pf_account_vat_declaration(osv.osv):
 	## Cette méthode met l'état de la déclaration à "Simuler"
 	## et crée les écritures comptables
 	def set_to_simulate(self, cr, uid, ids, context=None):
-		#self.enter_journal_items(cr, uid, ids, context=context)
 		self.create_journal_items(cr, uid, ids, context=context)
 		return self.write(cr, uid, ids, {'state':'simulate'}, context=context)
 	
@@ -1231,8 +1220,8 @@ class l10n_pf_account_vat_declaration(osv.osv):
 		return {'value':values}
 			
 	def on_change_fiscalyear(self, cr, uid, ids, fiscalyear_id=False, context=None):
-		import pdb
-		pdb.set_trace()
+		#import pdb
+		#pdb.set_trace()
 		company = self.pool.get('res.company')
 		period = self.pool.get('account.period')
 		periods = period.search(cr, uid, [])
