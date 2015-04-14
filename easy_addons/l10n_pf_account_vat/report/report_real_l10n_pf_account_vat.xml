@@ -9,7 +9,7 @@
                         <table style="width:98%;margin-left:10px;">
                             <tr>
                                 <td rowspan="2">
-                                    <img src="/l10n_pf_account_vat/static/src/img/logo.png" style="height:80px;width:160px;"/>
+                                    <img src="/l10n_pf_account_vat/static/src/img/logo.png" style="height:100px;width:200px;"/>
                                 </td>
                                 <td rowspan="3"  style="text-align:center;font-size:20px;font-weight:bold;vertical-align:middle;">
                                     <span t-if="o.state == 'done'">TAXE SUR LA VALEUR AJOUTEE<br/>Régime réel</span>
@@ -18,14 +18,25 @@
                                 <td rowspan="3" style="border:1px black solid !important;vertical-align:top !important;">
                                     <span style="margin-left:60px;font-weight:bold;">Période de déclaration</span>
                                     <br/><br/>
-                                    <span style="margin-left:15px;">
-                                        Mois: <span style="margin-left:5px" t-esc="time.strftime('%B',time.strptime(o.period_from.date_start,'%Y-%m-%d'))"/>
-                                        <span t-field="o.fiscalyear"/>
-                                    </span>
-                                    <br/><br/>
-                                    <span style="margin-left:15px;">
-                                        ou ... trimestre <span t-field="o.fiscalyear"/>
-                                    </span>
+                                    <t t-if="o.company_id.period_declaration == 'month'" >
+										<span style="margin-left:15px;">
+											Mois: 	<span style="margin-left:5px" t-esc="time.strftime('%B',time.strptime(o.period_from.date_start,'%Y-%m-%d'))"/>
+													<span t-field="o.fiscalyear"/>
+										</span>
+										<br/><br/>
+										<span style="margin-left:15px;">
+											ou ............ trimestre <span t-field="o.fiscalyear"/>
+										</span>
+									</t>
+									<t t-if="o.company_id.period_declaration == 'trimester'" >
+										<span style="margin-left:15px;">
+											Mois: ........................ <span t-field="o.fiscalyear"/>
+										</span>
+										<br/><br/>
+										<span style="margin-left:15px;">
+											ou ............ trimestre <span t-field="o.fiscalyear"/>
+										</span>
+									</t>
                                 </td>
                             </tr>
                             <tr>
