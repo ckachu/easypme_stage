@@ -460,7 +460,7 @@
 
                     <!-- Footer -->
                     <div class="footer" style="font-family:'Times New Roman',Times,serif;">
-                        <div class="text-center">
+                        <div class="text-center" style="font-size:8px;">
                             <ul class="list-inline">
                                 <li>« Les dispositions des articles 39 et 40 de la loi n°78-17 du 6 janvier 1978 relative à l"informatique,
                                     aux fichiers et aux libertés, modifiée par la loi n°2004-801 du 6 août 2004, garantissent les droits des personnes
@@ -468,7 +468,7 @@
                             </ul>
                         </div>
 
-                        <div class="text-center" style="border-top:1px solid black;">
+                        <div class="text-center" style="border-top:1px solid black;font-size:9px;">
                             <ul class="list-inline">
                                 <li>Recette des Impôts (CCP 14168-00001-9062004YU68-32)</li>
                                 <li>–</li>
