@@ -1,0 +1,1582 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* l10n_pf_account_vat
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 8.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2015-04-16 01:56+0000\n"
+"PO-Revision-Date: 2015-04-16 08:27-1000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: \n"
+"X-Generator: Poedit 1.5.4\n"
+
+#. module: l10n_pf_account_vat
+#: view:website:l10n_pf_account_vat.report_deposit
+#: view:website:l10n_pf_account_vat.report_real
+msgid "(Demande de remboursement ci-jointe)"
+msgstr "(Demande de remboursement ci-jointe)"
+
+#. module: l10n_pf_account_vat
+#: view:website:l10n_pf_account_vat.report_deposit
+msgid "(Déclaration d'acompte)"
+msgstr "(Déclaration d'acompte)"
+
+#. module: l10n_pf_account_vat
+#: view:website:l10n_pf_account_vat.report_annual
+msgid "(Déclaration récapitulative annuelle)"
+msgstr "(Déclaration récapitulative annuelle)"
+
+#. module: l10n_pf_account_vat
+#: view:website:l10n_pf_account_vat.report_deposit
+msgid "(lignes 05 - 08)"
+msgstr "(lignes 05 - 08)"
+
+#. module: l10n_pf_account_vat
+#: view:website:l10n_pf_account_vat.report_deposit
+msgid "(lignes 08 - 05)"
+msgstr "(lignes 08 - 05)"
+
+#. module: l10n_pf_account_vat
+#: view:website:l10n_pf_account_vat.report_real
+msgid "(lignes 09 - 14)"
+msgstr "(lignes 09 - 14)"
+
+#. module: l10n_pf_account_vat
+#: view:website:l10n_pf_account_vat.report_real
+msgid "(lignes 14 - 09)"
+msgstr "(lignes 14 - 09)"
+
+#. module: l10n_pf_account_vat
+#: view:website:l10n_pf_account_vat.report_real
+msgid "(lignes 15 - 16)"
+msgstr "(lignes 15 - 16)"
+
+#. module: l10n_pf_account_vat
+#: view:website:l10n_pf_account_vat.report_annual
+msgid "(lignes 15+16)"
+msgstr "(lignes 15+16)"
+
+#. module: l10n_pf_account_vat
+#: view:website:l10n_pf_account_vat.report_annual
+msgid "(lignes 18-19)"
+msgstr "(lignes 18-19)"
+
+#. module: l10n_pf_account_vat
+#: view:website:l10n_pf_account_vat.report_annual
+#: view:website:l10n_pf_account_vat.report_deposit
+#: view:website:l10n_pf_account_vat.report_real
+msgid "..................."
+msgstr "..................."
+
+#. module: l10n_pf_account_vat
+#: view:website:l10n_pf_account_vat.report_annual
+#: view:website:l10n_pf_account_vat.report_deposit
+#: view:website:l10n_pf_account_vat.report_real
+msgid "............................FCP"
+msgstr "............................FCP"
+
+#. module: l10n_pf_account_vat
+#: view:website:l10n_pf_account_vat.report_annual
+#: view:website:l10n_pf_account_vat.report_deposit
+#: view:website:l10n_pf_account_vat.report_real
+msgid "98713 PAPEETE"
+msgstr "98713 PAPEETE"
+
+#. module: l10n_pf_account_vat
+#: model:ir.actions.act_window,help:l10n_pf_account_vat.action_open_view_l10n_pf_account_vat_declaration_tree
+msgid ""
+"<p class=\"oe_view_nocontent_create\">\n"
+"Click to create a new declaration.\n"
+"</p>\n"
+""
+msgstr ""
+"<p class=\"oe_view_nocontent_create\">\n"
+"tCliquez pour créer une nouvelle déclaration.\n"
+"</p>\n"
+""
+
+#. module: l10n_pf_account_vat
+#: view:website:l10n_pf_account_vat.report_deposit
+msgid "A - TVA EXIGIBLE"
+msgstr "A - TVA EXIGIBLE"
+
+#. module: l10n_pf_account_vat
+#: view:website:l10n_pf_account_vat.report_annual
+#: view:website:l10n_pf_account_vat.report_real
+msgid "A-OPERATIONS REALISEES"
+msgstr "A-OPERATIONS REALISEES"
+
+#. module: l10n_pf_account_vat
+#: view:website:l10n_pf_account_vat.report_annual
+msgid "ACOMPTE DECLARE"
+msgstr "ACOMPTE DECLARE"
+
+#. module: l10n_pf_account_vat
+#: field:l10n.pf.account.vat.declaration,account_id:0
+msgid "Account"
+msgstr "Compte"
+
+#. module: l10n_pf_account_vat
+#: field:l10n.pf.account.vat.declaration,company_activity:0
+#: view:res.company:l10n_pf_account_vat.view_company_inherit_vat_form
+msgid "Activity"
+msgstr "Activité exercée"
+
+#. module: l10n_pf_account_vat
+#: view:website:l10n_pf_account_vat.report_annual
+#: view:website:l10n_pf_account_vat.report_deposit
+#: view:website:l10n_pf_account_vat.report_real
+msgid "Activité exercée"
+msgstr "Activité exercée"
+
+#. module: l10n_pf_account_vat
+#: view:res.company:l10n_pf_account_vat.view_company_inherit_vat_form
+msgid "Add all accounts for customers"
+msgstr "Ajoutez tous les comptes clients"
+
+#. module: l10n_pf_account_vat
+#: view:res.company:l10n_pf_account_vat.view_company_inherit_vat_form
+msgid "Add all accounts for exports"
+msgstr "Ajoutez tous les comptes des exportations"
+
+#. module: l10n_pf_account_vat
+#: view:res.company:l10n_pf_account_vat.view_company_inherit_vat_form
+msgid "Add all accounts for other non-taxables transactions"
+msgstr "Ajoutez tous les comptes des autres opérations non taxables"
+
+#. module: l10n_pf_account_vat
+#: view:res.company:l10n_pf_account_vat.view_company_inherit_vat_form
+msgid "Add all accounts for sales"
+msgstr "Ajoutez tous les comptes des ventes"
+
+#. module: l10n_pf_account_vat
+#: view:res.company:l10n_pf_account_vat.view_company_inherit_vat_form
+msgid "Add all accounts for services"
+msgstr "Ajoutez tous les comptes des prestations de services"
+
+#. module: l10n_pf_account_vat
+#: view:res.company:l10n_pf_account_vat.view_company_inherit_vat_form
+msgid "Add all accounts for turnover"
+msgstr "Ajoutez tous les comptes du chiffre d'affaires"
+
+#. module: l10n_pf_account_vat
+#: view:res.company:l10n_pf_account_vat.view_company_inherit_vat_form
+msgid "Add all taxes for immobilization"
+msgstr "Ajoutez toutes les taxes des immobilisations"
+
+#. module: l10n_pf_account_vat
+#: view:res.company:l10n_pf_account_vat.view_company_inherit_vat_form
+msgid "Add all taxes for intermediate rate"
+msgstr "Ajoutez toutes les taxes du taux intermédiaire"
+
+#. module: l10n_pf_account_vat
+#: view:res.company:l10n_pf_account_vat.view_company_inherit_vat_form
+msgid "Add all taxes for normal rate"
+msgstr "Ajoutez toutes les taxes du taux normal"
+
+#. module: l10n_pf_account_vat
+#: view:res.company:l10n_pf_account_vat.view_company_inherit_vat_form
+msgid "Add all taxes for others goods and services"
+msgstr "Ajoutez toutes les taxes sur les autres biens et services"
+
+#. module: l10n_pf_account_vat
+#: view:res.company:l10n_pf_account_vat.view_company_inherit_vat_form
+msgid "Add all taxes for reduced rate"
+msgstr "Ajoutez toutes les taxes du taux réduit"
+
+#. module: l10n_pf_account_vat
+#: view:l10n.pf.account.vat.declaration:l10n_pf_account_vat.view_l10n_pf_account_vat_declaration_form
+msgid "Address"
+msgstr "Addresse"
+
+#. module: l10n_pf_account_vat
+#: view:website:l10n_pf_account_vat.report_annual
+#: view:website:l10n_pf_account_vat.report_deposit
+#: view:website:l10n_pf_account_vat.report_real
+msgid "Adresse"
+msgstr "Adresse"
+
+#. module: l10n_pf_account_vat
+#: view:website:l10n_pf_account_vat.report_annual
+#: view:website:l10n_pf_account_vat.report_deposit
+#: view:website:l10n_pf_account_vat.report_real
+msgid "Adresse mail de la société ou du représentant légal"
+msgstr "Adresse mail de la société ou du représentant légal"
+
+#. module: l10n_pf_account_vat
+#: view:res.company:l10n_pf_account_vat.view_company_inherit_vat_form
+msgid "Ajouter le compte pour la saisie de la TVA à payer"
+msgstr "Ajouter le compte pour la saisie de la TVA à payer"
+
+#. module: l10n_pf_account_vat
+#: view:res.company:l10n_pf_account_vat.view_company_inherit_vat_form
+msgid "Ajouter le compte pour la saisie du crédit de TVA"
+msgstr "Ajouter le compte pour la saisie du crédit de TVA"
+
+#. module: l10n_pf_account_vat
+#: selection:l10n.pf.account.vat.declaration,target_move:0
+msgid "All Entries"
+msgstr "Toutes les écritures"
+
+#. module: l10n_pf_account_vat
+#: selection:l10n.pf.account.vat.declaration,target_move:0
+msgid "All Posted Entries"
+msgstr "Toutes les écritures passées"
+
+#. module: l10n_pf_account_vat
+#: selection:l10n.pf.account.vat.declaration,company_regime:0
+#: selection:res.company,regime_vat:0
+msgid "Annual in simplified regime"
+msgstr "Annuelle en régime simplifié"
+
+#. module: l10n_pf_account_vat
+#: model:ir.actions.report.xml,name:l10n_pf_account_vat.l10n_pf_account_vat_declaration_annual_report
+msgid "Annual simplfied regime declaration"
+msgstr "Déclaration annuelle en régime simplifié"
+
+#. module: l10n_pf_account_vat
+#: view:website:l10n_pf_account_vat.report_annual
+msgid "Année:"
+msgstr "Année:"
+
+#. module: l10n_pf_account_vat
+#: view:website:l10n_pf_account_vat.report_annual
+#: view:website:l10n_pf_account_vat.report_real
+msgid "Autres opérations non taxables"
+msgstr "Autres opérations non taxables"
+
+#. module: l10n_pf_account_vat
+#: view:website:l10n_pf_account_vat.report_deposit
+msgid "B - TVA DEDUCTIBLE"
+msgstr "B - TVA DEDUCTIBLE"
+
+#. module: l10n_pf_account_vat
+#: view:website:l10n_pf_account_vat.report_annual
+#: view:website:l10n_pf_account_vat.report_real
+msgid "B - TVA EXIGIBLE"
+msgstr "B - TVA EXIGIBLE"
+
+#. module: l10n_pf_account_vat
+#: view:website:l10n_pf_account_vat.report_annual
+#: view:website:l10n_pf_account_vat.report_deposit
+#: view:website:l10n_pf_account_vat.report_real
+msgid "B.P.72"
+msgstr "B.P.72"
+
+#. module: l10n_pf_account_vat
+#: field:l10n.pf.account.vat.declaration,company_bp:0 field:res.company,bp:0
+msgid "BP"
+msgstr "BP"
+
+#. module: l10n_pf_account_vat
+#: view:l10n.pf.account.vat.declaration:l10n_pf_account_vat.view_l10n_pf_account_vat_declaration_form
+msgid "Back to draft"
+msgstr "Revenir en brouillon"
+
+#. module: l10n_pf_account_vat
+#: view:website:l10n_pf_account_vat.report_annual
+#: view:website:l10n_pf_account_vat.report_real
+msgid "Base Hors TVA"
+msgstr "Base Hors TVA"
+
+#. module: l10n_pf_account_vat
+#: field:l10n.pf.account.vat.declaration,base_intermediate_rate:0
+msgid "Base intermediate rate"
+msgstr "Base Hors TVA - Taux intermédiaire"
+
+#. module: l10n_pf_account_vat
+#: field:l10n.pf.account.vat.declaration,base_normal_rate:0
+msgid "Base normal rate"
+msgstr "Base Hors TVA - Taux normal"
+
+#. module: l10n_pf_account_vat
+#: field:l10n.pf.account.vat.declaration,base_reduced_rate:0
+msgid "Base reduced rate"
+msgstr "Base Hors TVA - Taux réduit"
+
+#. module: l10n_pf_account_vat
+#: field:l10n.pf.account.vat.declaration,base_regularization_to_donate:0
+msgid "Base regularization to donate"
+msgstr "Base Hors TVA - Régularisation: autre TVA à reverser"
+
+#. module: l10n_pf_account_vat
+#: selection:l10n.pf.account.vat.declaration,company_vat_type:0
+#: selection:res.company,type_vat:0
+msgid "Bills vat"
+msgstr "TVA sur les factures"
+
+#. module: l10n_pf_account_vat
+#: view:website:l10n_pf_account_vat.report_annual
+#: view:website:l10n_pf_account_vat.report_deposit
+#: view:website:l10n_pf_account_vat.report_real
+msgid "Boîte postale"
+msgstr "Boîte postale"
+
+#. module: l10n_pf_account_vat
+#: view:website:l10n_pf_account_vat.report_annual
+#: view:website:l10n_pf_account_vat.report_real
+msgid "C - TVA DEDUCTIBLE"
+msgstr "C - TVA DEDUCTIBLE"
+
+#. module: l10n_pf_account_vat
+#: view:website:l10n_pf_account_vat.report_deposit
+msgid "C-CREDIT"
+msgstr "C-CREDIT"
+
+#. module: l10n_pf_account_vat
+#: view:website:l10n_pf_account_vat.report_deposit
+#: view:website:l10n_pf_account_vat.report_real
+msgid "CREDIT DE TVA"
+msgstr "CREDIT DE TVA"
+
+#. module: l10n_pf_account_vat
+#: view:l10n.pf.account.vat.declaration:l10n_pf_account_vat.view_l10n_pf_account_vat_declaration_form
+msgid "CREDIT/VAT"
+msgstr "CREDIT/VAT"
+
+#. module: l10n_pf_account_vat
+#: view:website:l10n_pf_account_vat.report_annual
+#: view:website:l10n_pf_account_vat.report_deposit
+#: view:website:l10n_pf_account_vat.report_real
+msgid "Cadre réservé à l'administration"
+msgstr "Cadre réservé à l'administration"
+
+#. module: l10n_pf_account_vat
+#: view:l10n.pf.account.vat.declaration:l10n_pf_account_vat.view_l10n_pf_account_vat_declaration_form
+msgid "Cancel"
+msgstr "Annuler"
+
+#. module: l10n_pf_account_vat
+#: selection:l10n.pf.account.vat.declaration,means_payment:0
+msgid "Cash"
+msgstr "Espèces"
+
+#. module: l10n_pf_account_vat
+#: selection:l10n.pf.account.vat.declaration,company_vat_type:0
+#: selection:res.company,type_vat:0
+msgid "Cashing vat"
+msgstr "TVA sur les encaissements"
+
+#. module: l10n_pf_account_vat
+#: selection:l10n.pf.account.vat.declaration,means_payment:0
+msgid "Check"
+msgstr "Chèque"
+
+#. module: l10n_pf_account_vat
+#: view:website:l10n_pf_account_vat.report_deposit
+msgid "Chiffre d'affaires (Hors TVA)"
+msgstr "Chiffre d'affaires (Hors TVA)"
+
+#. module: l10n_pf_account_vat
+#: view:res.company:l10n_pf_account_vat.view_company_inherit_vat_form
+msgid "Choisir le compte du credit à reporter"
+msgstr "Choisir le compte du crédit à reporter"
+
+#. module: l10n_pf_account_vat
+#: view:res.company:l10n_pf_account_vat.view_company_inherit_vat_form
+msgid "Choisir le compte pour la saisie de la TVA à payer"
+msgstr "Choisir le compte pour la saisie de la TVA à payer"
+
+#. module: l10n_pf_account_vat
+#: view:res.company:l10n_pf_account_vat.view_company_inherit_vat_form
+msgid ""
+"Choisir tous les comptes du chiffre d affaires des prestations de services"
+msgstr ""
+"Choisir tous les comptes du chiffre d affaires des prestations de services"
+
+#. module: l10n_pf_account_vat
+#: view:res.company:l10n_pf_account_vat.view_company_inherit_vat_form
+msgid "Choisir tous les comptes du chiffre d affaires des ventes"
+msgstr "Choisir tous les comptes du chiffre d affaires des ventes"
+
+#. module: l10n_pf_account_vat
+#: view:res.company:l10n_pf_account_vat.view_company_inherit_vat_form
+msgid "Choisir tous les comptes pour les autres opérations non taxables"
+msgstr "Choisir tous les comptes pour les autres opérations non taxables"
+
+#. module: l10n_pf_account_vat
+#: view:res.company:l10n_pf_account_vat.view_company_inherit_vat_form
+msgid "Choisir tous les comptes pour les exportations"
+msgstr "Choisir tous les comptes pour les exportations"
+
+#. module: l10n_pf_account_vat
+#: view:res.company:l10n_pf_account_vat.view_company_inherit_vat_form
+msgid "Choisir toutes les taxes pour le taux intermédiaire"
+msgstr "Choisir toutes les taxes pour le taux intermédiaire"
+
+#. module: l10n_pf_account_vat
+#: view:res.company:l10n_pf_account_vat.view_company_inherit_vat_form
+msgid "Choisir toutes les taxes pour le taux normal"
+msgstr "Choisir toutes les taxes pour le taux normal"
+
+#. module: l10n_pf_account_vat
+#: view:res.company:l10n_pf_account_vat.view_company_inherit_vat_form
+msgid "Choisir toutes les taxes pour le taux réduit"
+msgstr "Choisir toutes les taxes pour le taux réduit"
+
+#. module: l10n_pf_account_vat
+#: view:res.company:l10n_pf_account_vat.view_company_inherit_vat_form
+msgid "Choisir toutes les taxes pour les autres biens et services"
+msgstr "Choisir toutes les taxes pour les autres biens et services"
+
+#. module: l10n_pf_account_vat
+#: view:res.company:l10n_pf_account_vat.view_company_inherit_vat_form
+msgid "Choisir toutes les taxes pour les immobilisations"
+msgstr "Choisir toutes les taxes pour les immobilisations"
+
+#. module: l10n_pf_account_vat
+#: view:res.company:l10n_pf_account_vat.view_company_inherit_vat_form
+msgid "Choisisser la période de déclaration"
+msgstr "Choisisser la période de déclaration"
+
+#. module: l10n_pf_account_vat
+#: view:res.company:l10n_pf_account_vat.view_company_inherit_vat_form
+msgid "Choisisser le régime de l entreprise"
+msgstr "Choisisser le régime de l entreprise"
+
+#. module: l10n_pf_account_vat
+#: view:res.company:l10n_pf_account_vat.view_company_inherit_vat_form
+msgid "Choisisser le type de TVA de l entreprise"
+msgstr "Choisisser le type de TVA de l entreprise"
+
+#. module: l10n_pf_account_vat
+#: view:res.company:l10n_pf_account_vat.view_company_inherit_vat_form
+msgid "Choisissez tous les comptes clients"
+msgstr "Choisissez tous les comptes clients"
+
+#. module: l10n_pf_account_vat
+#: view:res.company:l10n_pf_account_vat.view_company_inherit_vat_form
+msgid "Choisissez tous les comptes du chiffre d affaires"
+msgstr "Choisissez tous les comptes du chiffre d affaires"
+
+#. module: l10n_pf_account_vat
+#: view:website:l10n_pf_account_vat.report_annual
+#: view:website:l10n_pf_account_vat.report_deposit
+#: view:website:l10n_pf_account_vat.report_real
+msgid "Chèque (à l'ordre du Trésor Public)"
+msgstr "Chèque (à l'ordre du Trésor Public)"
+
+#. module: l10n_pf_account_vat
+#: view:l10n.pf.account.vat.declaration:l10n_pf_account_vat.view_l10n_pf_account_vat_declaration_form
+#: field:l10n.pf.account.vat.declaration,company_city:0
+msgid "City"
+msgstr "Ville"
+
+#. module: l10n_pf_account_vat
+#: field:l10n.pf.account.vat.declaration,city_zip:0
+msgid "City ZIP"
+msgstr "Ville du code postal"
+
+#. module: l10n_pf_account_vat
+#: field:res.company,city_zip:0
+msgid "City Zip"
+msgstr "Vile du code postal"
+
+#. module: l10n_pf_account_vat
+#: view:website:l10n_pf_account_vat.report_annual
+#: view:website:l10n_pf_account_vat.report_deposit
+#: view:website:l10n_pf_account_vat.report_real
+msgid "Code postal:"
+msgstr "Code postal:"
+
+#. module: l10n_pf_account_vat
+#: view:website:l10n_pf_account_vat.report_deposit
+msgid "Coefficient de"
+msgstr "Coefficient de"
+
+#. module: l10n_pf_account_vat
+#: view:website:l10n_pf_account_vat.report_annual
+#: view:website:l10n_pf_account_vat.report_deposit
+#: view:website:l10n_pf_account_vat.report_real
+msgid "Commune:"
+msgstr "Commune:"
+
+#. module: l10n_pf_account_vat
+#: model:ir.model,name:l10n_pf_account_vat.model_res_company
+msgid "Companies"
+msgstr "Sociétés"
+
+#. module: l10n_pf_account_vat
+#: field:l10n.pf.account.vat.declaration,company_id:0
+msgid "Company"
+msgstr "Company"
+
+#. module: l10n_pf_account_vat
+#: view:res.company:l10n_pf_account_vat.view_company_inherit_vat_form
+#: field:res.company,activity:0
+msgid "Company activity"
+msgstr "Activité de la compagnie"
+
+#. module: l10n_pf_account_vat
+#: view:res.company:l10n_pf_account_vat.view_company_inherit_vat_form
+msgid "Comptes utilisés"
+msgstr "Comptes utilisés"
+
+#. module: l10n_pf_account_vat
+#: view:res.company:l10n_pf_account_vat.view_company_inherit_vat_form
+msgid "Comptes à utiliser"
+msgstr "Comptes à utiliser"
+
+#. module: l10n_pf_account_vat
+#: view:l10n.pf.account.vat.declaration:l10n_pf_account_vat.view_l10n_pf_account_vat_declaration_form
+#: field:l10n.pf.account.vat.declaration,company_country:0
+msgid "Country"
+msgstr "Pays"
+
+#. module: l10n_pf_account_vat
+#: field:l10n.pf.account.vat.declaration,create_uid:0
+msgid "Created by"
+msgstr "Créé par"
+
+#. module: l10n_pf_account_vat
+#: field:l10n.pf.account.vat.declaration,create_date:0
+msgid "Created on"
+msgstr "Créé le"
+
+#. module: l10n_pf_account_vat
+#: field:res.company,credit_id:0
+msgid "Credit accounts"
+msgstr "Comptes du crédit"
+
+#. module: l10n_pf_account_vat
+#: field:l10n.pf.account.vat.declaration,credit_to_be_transferred:0
+msgid "Credit to be transferred"
+msgstr "Crédit à reporter sur la prochaine déclaration"
+
+#. module: l10n_pf_account_vat
+#: view:website:l10n_pf_account_vat.report_deposit
+msgid "Crédit apparaissant sur la précédente déclaration"
+msgstr "Crédit apparaissant sur la précédente déclaration"
+
+#. module: l10n_pf_account_vat
+#: view:website:l10n_pf_account_vat.report_real
+msgid "Crédit à reporter sur la prochaine"
+msgstr "Crédit à reporter sur la prochaine"
+
+#. module: l10n_pf_account_vat
+#: view:website:l10n_pf_account_vat.report_annual
+msgid "Crédit à reporter sur la prochaine déclaration"
+msgstr "Crédit à reporter sur la prochaine déclaration"
+
+#. module: l10n_pf_account_vat
+#: field:res.company,customers_ids:0
+msgid "Customers accounts"
+msgstr "Comptes clients"
+
+#. module: l10n_pf_account_vat
+#: view:website:l10n_pf_account_vat.report_annual
+#: view:website:l10n_pf_account_vat.report_real
+msgid "D - CREDIT"
+msgstr "D - CREDIT"
+
+#. module: l10n_pf_account_vat
+#: view:website:l10n_pf_account_vat.report_deposit
+msgid "D-TVA à PAYER"
+msgstr "D-TVA à PAYER"
+
+#. module: l10n_pf_account_vat
+#: view:website:l10n_pf_account_vat.report_annual
+#: view:website:l10n_pf_account_vat.report_deposit
+#: view:website:l10n_pf_account_vat.report_real
+msgid "DATE ET SIGNATURE"
+msgstr "DATE ET SIGNATURE"
+
+#. module: l10n_pf_account_vat
+#: view:website:l10n_pf_account_vat.report_real
+msgid "DICP/TVARR/1010/N019/V1/14"
+msgstr "DICP/TVARR/1010/N019/V1/14"
+
+#. module: l10n_pf_account_vat
+#: view:website:l10n_pf_account_vat.report_deposit
+msgid "DICP/TVARSI/1020/N020/V1/14"
+msgstr "DICP/TVARSI/1020/N020/V1/14"
+
+#. module: l10n_pf_account_vat
+#: view:website:l10n_pf_account_vat.report_annual
+msgid "DICP/TVARSI/1030/N021/V1/15"
+msgstr "DICP/TVARSI/1030/N021/V1/15"
+
+#. module: l10n_pf_account_vat
+#: view:website:l10n_pf_account_vat.report_annual
+msgid "DIFFERENCE (lignes 09-14)"
+msgstr "DIFFERENCE (lignes 09-14)"
+
+#. module: l10n_pf_account_vat
+#: view:website:l10n_pf_account_vat.report_annual
+msgid "DIFFERENCE (lignes 14-09)"
+msgstr "DIFFERENCE (lignes 14-09)"
+
+#. module: l10n_pf_account_vat
+#: view:website:l10n_pf_account_vat.report_annual
+#: view:website:l10n_pf_account_vat.report_deposit
+#: view:website:l10n_pf_account_vat.report_real
+msgid "Date"
+msgstr "Date"
+
+#. module: l10n_pf_account_vat
+#: view:website:l10n_pf_account_vat.report_annual
+#: view:website:l10n_pf_account_vat.report_deposit
+#: view:website:l10n_pf_account_vat.report_real
+msgid "Date de réception"
+msgstr "Date de réception"
+
+#. module: l10n_pf_account_vat
+#: model:ir.actions.act_window,name:l10n_pf_account_vat.action_open_view_l10n_pf_account_vat_declaration_tree
+#: view:l10n.pf.account.vat.declaration:l10n_pf_account_vat.view_l10n_pf_account_vat_declaration_form
+#: view:l10n.pf.account.vat.declaration:l10n_pf_account_vat.view_l10n_pf_account_vat_declaration_tree
+msgid "Declaration"
+msgstr "Déclaration"
+
+#. module: l10n_pf_account_vat
+#: field:l10n.pf.account.vat.declaration,date_declaration:0
+msgid "Declaration date"
+msgstr "Date de déclaration"
+
+#. module: l10n_pf_account_vat
+#: view:l10n.pf.account.vat.declaration:l10n_pf_account_vat.view_l10n_pf_account_vat_declaration_form
+#: field:l10n.pf.account.vat.declaration,name:0
+msgid "Declaration name"
+msgstr "Nom de la déclaration"
+
+#. module: l10n_pf_account_vat
+#: field:l10n.pf.account.vat.declaration,period_declaration:0
+#: view:res.company:l10n_pf_account_vat.view_company_inherit_vat_form
+#: field:res.company,period_declaration:0
+msgid "Declaration period"
+msgstr "Période de déclaration de la compagnie"
+
+#. module: l10n_pf_account_vat
+#: field:l10n.pf.account.vat.declaration,defferal_credit:0
+msgid "Defferal credit"
+msgstr "Report de crédit de la précédente déclaration"
+
+#. module: l10n_pf_account_vat
+#: field:l10n.pf.account.vat.declaration,deposit:0
+msgid "Deposit"
+msgstr "Acompte"
+
+#. module: l10n_pf_account_vat
+#: selection:l10n.pf.account.vat.declaration,company_regime:0
+#: selection:res.company,regime_vat:0
+msgid "Deposit in simplified regime"
+msgstr "Acompte en régime simplifié"
+
+#. module: l10n_pf_account_vat
+#: model:ir.actions.report.xml,name:l10n_pf_account_vat.l10n_pf_account_vat_declaration_deposit_report
+msgid "Deposit simplified regime declaration"
+msgstr "Déclaration d acompte en régime simplifié"
+
+#. module: l10n_pf_account_vat
+#: field:l10n.pf.account.vat.declaration,difference_deductible_payable:0
+#: field:l10n.pf.account.vat.declaration,difference_payable_deductible:0
+msgid "Difference"
+msgstr "Différence"
+
+#. module: l10n_pf_account_vat
+#: selection:l10n.pf.account.vat.declaration,state:0
+msgid "Done"
+msgstr "Validé"
+
+#. module: l10n_pf_account_vat
+#: selection:l10n.pf.account.vat.declaration,state:0
+msgid "Draft"
+msgstr "Brouillon"
+
+#. module: l10n_pf_account_vat
+#: view:website:l10n_pf_account_vat.report_deposit
+msgid "Du 1er janvier"
+msgstr "Du 1er janvier"
+
+#. module: l10n_pf_account_vat
+#: view:website:l10n_pf_account_vat.report_annual
+#: view:website:l10n_pf_account_vat.report_real
+msgid "E - TVA à PAYER"
+msgstr "E - TVA à PAYER"
+
+#. module: l10n_pf_account_vat
+#: view:website:l10n_pf_account_vat.report_annual
+msgid "EXCEDENT"
+msgstr "EXCEDENT"
+
+#. module: l10n_pf_account_vat
+#: field:l10n.pf.account.vat.declaration,company_email:0
+msgid "Email"
+msgstr "Email"
+
+#. module: l10n_pf_account_vat
+#: field:l10n.pf.account.vat.declaration,period_to:0
+msgid "End period"
+msgstr "Période de fin"
+
+#. module: l10n_pf_account_vat
+#: view:website:l10n_pf_account_vat.report_annual
+#: view:website:l10n_pf_account_vat.report_deposit
+#: view:website:l10n_pf_account_vat.report_real
+msgid "Espèces"
+msgstr "Espèces"
+
+#. module: l10n_pf_account_vat
+#: field:l10n.pf.account.vat.declaration,excluding_vat_sales:0
+msgid "Excluding vat sales"
+msgstr "Chiffre d affaires (Hors TVA): Ventes"
+
+#. module: l10n_pf_account_vat
+#: field:l10n.pf.account.vat.declaration,excluding_vat_services:0
+msgid "Excluding vat services"
+msgstr "Chiffre d affaires (Hors TVA): Prestations de services"
+
+#. module: l10n_pf_account_vat
+#: view:website:l10n_pf_account_vat.report_annual
+#: view:website:l10n_pf_account_vat.report_real
+msgid "Exportations"
+msgstr "Exportations"
+
+#. module: l10n_pf_account_vat
+#: field:l10n.pf.account.vat.declaration,account_exports:0
+msgid "Exports"
+msgstr "Exportations"
+
+#. module: l10n_pf_account_vat
+#: field:res.company,exports_ids:0
+msgid "Exports accounts"
+msgstr "Comptes des exportations"
+
+#. module: l10n_pf_account_vat
+#: view:website:l10n_pf_account_vat.report_annual
+#: view:website:l10n_pf_account_vat.report_deposit
+msgid "FCP"
+msgstr "FCP"
+
+#. module: l10n_pf_account_vat
+#: view:website:l10n_pf_account_vat.report_annual
+#: view:website:l10n_pf_account_vat.report_deposit
+#: view:website:l10n_pf_account_vat.report_real
+msgid "Fax: 40 46 13 03"
+msgstr "Fax: 40 46 13 03"
+
+#. module: l10n_pf_account_vat
+#: selection:l10n.pf.account.vat.declaration,state:0
+msgid "Fill"
+msgstr "Rempli"
+
+#. module: l10n_pf_account_vat
+#: view:l10n.pf.account.vat.declaration:l10n_pf_account_vat.view_l10n_pf_account_vat_declaration_form
+msgid "Fill declaration"
+msgstr "Remplir la déclaration"
+
+#. module: l10n_pf_account_vat
+#: field:l10n.pf.account.vat.declaration,fiscalyear:0
+msgid "Fiscal year"
+msgstr "Exercice"
+
+#. module: l10n_pf_account_vat
+#: view:l10n.pf.account.vat.declaration:l10n_pf_account_vat.view_l10n_pf_account_vat_declaration_form
+msgid "General"
+msgstr "Informations générales"
+
+#. module: l10n_pf_account_vat
+#: field:l10n.pf.account.vat.declaration,id:0
+msgid "ID"
+msgstr "ID"
+
+#. module: l10n_pf_account_vat
+#: field:res.company,tax_immo_ids:0
+msgid "Immobilization Taxe"
+msgstr "Taxe des immobilisations"
+
+#. module: l10n_pf_account_vat
+#: view:website:l10n_pf_account_vat.report_deposit
+msgid "Indiquer ici le pourcentage de déduction applicable pour la période"
+msgstr "Indiquer ici le pourcentage de déduction applicable pour la période"
+
+#. module: l10n_pf_account_vat
+#: view:res.company:l10n_pf_account_vat.view_company_inherit_vat_form
+msgid "Informations TVA"
+msgstr "Informations TVA"
+
+#. module: l10n_pf_account_vat
+#: view:res.company:l10n_pf_account_vat.view_company_inherit_vat_form
+msgid "Informations sur l'entreprise"
+msgstr "Informations sur l'entreprise"
+
+#. module: l10n_pf_account_vat
+#: field:res.company,tax_intermediate_rate_ids:0
+msgid "Intermediate rate Taxe"
+msgstr "Taxe du taux intermédiaire"
+
+#. module: l10n_pf_account_vat
+#: view:res.company:l10n_pf_account_vat.view_company_inherit_vat_form
+#: field:res.company,journal_id:0
+msgid "Journal"
+msgstr "Journal"
+
+#. module: l10n_pf_account_vat
+#: field:l10n.pf.account.vat.declaration,journal_entry_id:0
+msgid "Journal Entry"
+msgstr "Journal des écritures comptables"
+
+#. module: l10n_pf_account_vat
+#: field:l10n.pf.account.vat.declaration,write_uid:0
+msgid "Last Updated by"
+msgstr "Dernière mise à jour par"
+
+#. module: l10n_pf_account_vat
+#: field:l10n.pf.account.vat.declaration,write_date:0
+msgid "Last Updated on"
+msgstr "Dernière mise à jour le"
+
+#. module: l10n_pf_account_vat
+#: help:l10n.pf.account.vat.declaration,journal_entry_id:0
+msgid "Link to the automatically generated journal items"
+msgstr "Lien pour générer automatiquement les écritures comptables"
+
+#. module: l10n_pf_account_vat
+#: view:website:l10n_pf_account_vat.report_annual
+#: view:website:l10n_pf_account_vat.report_deposit
+#: view:website:l10n_pf_account_vat.report_real
+msgid "MOYENS DE PAIEMENT"
+msgstr "MOYENS DE PAIEMENT"
+
+#. module: l10n_pf_account_vat
+#: view:l10n.pf.account.vat.declaration:l10n_pf_account_vat.view_l10n_pf_account_vat_declaration_form
+#: field:l10n.pf.account.vat.declaration,means_payment:0
+msgid "Means of payment"
+msgstr "Moyens de paiement"
+
+#. module: l10n_pf_account_vat
+#: view:website:l10n_pf_account_vat.report_real
+msgid "Mois:"
+msgstr "Mois:"
+
+#. module: l10n_pf_account_vat
+#: view:website:l10n_pf_account_vat.report_real
+msgid "Mois: ........................"
+msgstr "Mois: ........................"
+
+#. module: l10n_pf_account_vat
+#: view:website:l10n_pf_account_vat.report_annual
+#: view:website:l10n_pf_account_vat.report_deposit
+#: view:website:l10n_pf_account_vat.report_real
+msgid "Montant"
+msgstr "Montant"
+
+#. module: l10n_pf_account_vat
+#: view:website:l10n_pf_account_vat.report_annual
+#: view:website:l10n_pf_account_vat.report_real
+msgid "Montant des opérations imposables Hors TVA"
+msgstr "Montant des opérations imposables Hors TVA"
+
+#. module: l10n_pf_account_vat
+#: view:website:l10n_pf_account_vat.report_annual
+#: view:website:l10n_pf_account_vat.report_real
+msgid "Montant des opérations non imposables"
+msgstr "Montant des opérations non imposables"
+
+#. module: l10n_pf_account_vat
+#: selection:l10n.pf.account.vat.declaration,period_declaration:0
+#: selection:res.company,period_declaration:0
+msgid "Month"
+msgstr "Mensuelle"
+
+#. module: l10n_pf_account_vat
+#: view:website:l10n_pf_account_vat.report_annual
+msgid "NET A PAYER (lignes 23-17)"
+msgstr "NET A PAYER (lignes 23-17)"
+
+#. module: l10n_pf_account_vat
+#: field:l10n.pf.account.vat.declaration,net_vat_due:0
+msgid "Net vat due"
+msgstr "TVA nette due"
+
+#. module: l10n_pf_account_vat
+#: field:l10n.pf.account.vat.declaration,ntahiti:0
+msgid "No Tahiti"
+msgstr "No Tahiti"
+
+#. module: l10n_pf_account_vat
+#: view:website:l10n_pf_account_vat.report_annual
+#: view:website:l10n_pf_account_vat.report_deposit
+#: view:website:l10n_pf_account_vat.report_real
+msgid "Nom/Raison sociale"
+msgstr "Nom/Raison sociale"
+
+#. module: l10n_pf_account_vat
+#: field:res.company,tax_normal_rate_ids:0
+msgid "Normal rate Taxe"
+msgstr "Taxe du taux normal"
+
+#. module: l10n_pf_account_vat
+#: view:website:l10n_pf_account_vat.report_annual
+#: view:website:l10n_pf_account_vat.report_deposit
+#: view:website:l10n_pf_account_vat.report_real
+msgid "N°"
+msgstr "N°"
+
+#. module: l10n_pf_account_vat
+#: view:website:l10n_pf_account_vat.report_annual
+#: view:website:l10n_pf_account_vat.report_deposit
+#: view:website:l10n_pf_account_vat.report_real
+msgid "N° TAHITI"
+msgstr "N° TAHITI"
+
+#. module: l10n_pf_account_vat
+#: view:website:l10n_pf_account_vat.report_annual
+#: view:website:l10n_pf_account_vat.report_deposit
+#: view:website:l10n_pf_account_vat.report_real
+msgid "N° déclaration: ............................"
+msgstr "N° déclaration: ............................"
+
+#. module: l10n_pf_account_vat
+#: view:l10n.pf.account.vat.declaration:l10n_pf_account_vat.view_l10n_pf_account_vat_declaration_form
+msgid "OPERATIONS PERFORMED"
+msgstr "OPERATIONS REALISEES"
+
+#. module: l10n_pf_account_vat
+#: view:website:l10n_pf_account_vat.report_annual
+#: view:website:l10n_pf_account_vat.report_real
+msgid "Opération imposables (lignes 1 à 2)"
+msgstr "Opération imposables (lignes 1 à 2)"
+
+#. module: l10n_pf_account_vat
+#: field:l10n.pf.account.vat.declaration,account_other:0
+msgid "Other"
+msgstr "Autres opérations non taxables"
+
+#. module: l10n_pf_account_vat
+#: field:res.company,others_ids:0
+msgid "Others accounts"
+msgstr "Comptes des autres opérations non taxables"
+
+#. module: l10n_pf_account_vat
+#: field:res.company,tax_others_goods_services_ids:0
+msgid "Others goods and services Taxe"
+msgstr "Taxe des autres biens et services"
+
+#. module: l10n_pf_account_vat
+#: view:website:l10n_pf_account_vat.report_annual
+#: view:website:l10n_pf_account_vat.report_deposit
+#: view:website:l10n_pf_account_vat.report_real
+msgid "Prestations de services"
+msgstr "Prestations de services"
+
+#. module: l10n_pf_account_vat
+#: view:website:l10n_pf_account_vat.report_annual
+#: view:website:l10n_pf_account_vat.report_real
+msgid "Prorata de déduction applicable pour la période"
+msgstr "Prorata de déduction applicable pour la période"
+
+#. module: l10n_pf_account_vat
+#: view:website:l10n_pf_account_vat.report_annual
+#: view:website:l10n_pf_account_vat.report_deposit
+#: view:website:l10n_pf_account_vat.report_real
+msgid "Pénalités: ...................................."
+msgstr "Pénalités: ...................................."
+
+#. module: l10n_pf_account_vat
+#: view:website:l10n_pf_account_vat.report_annual
+#: view:website:l10n_pf_account_vat.report_deposit
+#: view:website:l10n_pf_account_vat.report_real
+msgid "Période de déclaration"
+msgstr "Période de déclaration"
+
+#. module: l10n_pf_account_vat
+#: view:website:l10n_pf_account_vat.report_annual
+msgid "Période du"
+msgstr "Période du"
+
+#. module: l10n_pf_account_vat
+#: view:website:l10n_pf_account_vat.report_annual
+msgid "REMBOURSEMENT OBTENU"
+msgstr "REMBOURSEMENT OBTENU"
+
+#. module: l10n_pf_account_vat
+#: selection:l10n.pf.account.vat.declaration,company_regime:0
+#: selection:res.company,regime_vat:0
+msgid "Real regime"
+msgstr "Régime réel"
+
+#. module: l10n_pf_account_vat
+#: model:ir.actions.report.xml,name:l10n_pf_account_vat.l10n_pf_account_vat_declaration_real_report
+msgid "Real regime declaration"
+msgstr "Déclaration en régime réel"
+
+#. module: l10n_pf_account_vat
+#: view:website:l10n_pf_account_vat.report_annual
+#: view:website:l10n_pf_account_vat.report_deposit
+#: view:website:l10n_pf_account_vat.report_real
+msgid "Recette des Impôts"
+msgstr "Recette des Impôts"
+
+#. module: l10n_pf_account_vat
+#: view:website:l10n_pf_account_vat.report_annual
+#: view:website:l10n_pf_account_vat.report_deposit
+#: view:website:l10n_pf_account_vat.report_real
+msgid "Recette des Impôts (CCP 14168-00001-9062004YU68-32)"
+msgstr "Recette des Impôts (CCP 14168-00001-9062004YU68-32)"
+
+#. module: l10n_pf_account_vat
+#: field:res.company,tax_reduced_rate_ids:0
+msgid "Reduced rate Taxe"
+msgstr "Taxe du taux réduit"
+
+#. module: l10n_pf_account_vat
+#: field:l10n.pf.account.vat.declaration,company_regime:0
+msgid "Regime"
+msgstr "Régime de TVA"
+
+#. module: l10n_pf_account_vat
+#: view:res.company:l10n_pf_account_vat.view_company_inherit_vat_form
+msgid "Regime VAT"
+msgstr "Régime de TVA"
+
+#. module: l10n_pf_account_vat
+#: field:res.company,regime_vat:0
+msgid "Regime Vat"
+msgstr "Régime de TVA"
+
+#. module: l10n_pf_account_vat
+#: field:l10n.pf.account.vat.declaration,vat_regularization:0
+msgid "Regularization"
+msgstr "Régularisation: autre TVA à déduire"
+
+#. module: l10n_pf_account_vat
+#: field:l10n.pf.account.vat.declaration,reimbursement:0
+msgid "Reimbursement"
+msgstr "Remboursement"
+
+#. module: l10n_pf_account_vat
+#: field:l10n.pf.account.vat.declaration,obtained_reimbursement:0
+msgid "Reimbursement obtained"
+msgstr "Remboursement obtenu"
+
+#. module: l10n_pf_account_vat
+#: view:website:l10n_pf_account_vat.report_deposit
+#: view:website:l10n_pf_account_vat.report_real
+msgid "Remboursement demandé:"
+msgstr "Remboursement demandé:"
+
+#. module: l10n_pf_account_vat
+#: view:website:l10n_pf_account_vat.report_annual
+msgid "Remboursement demandé: (Demande de remboursement ci-jointe)"
+msgstr "Remboursement demandé: (Demande de remboursement ci-jointe)"
+
+#. module: l10n_pf_account_vat
+#: view:website:l10n_pf_account_vat.report_annual
+#: view:website:l10n_pf_account_vat.report_real
+msgid ""
+"Report de crédit apparaissant sur la ligne 17 de la précédente déclaration"
+msgstr ""
+"Report de crédit apparaissant sur la ligne 17 de la précédente déclaration"
+
+#. module: l10n_pf_account_vat
+#: field:l10n.pf.account.vat.declaration,user_id:0
+msgid "Responsible"
+msgstr "Responsable"
+
+#. module: l10n_pf_account_vat
+#: view:website:l10n_pf_account_vat.report_annual
+#: view:website:l10n_pf_account_vat.report_deposit
+#: view:website:l10n_pf_account_vat.report_real
+msgid "Références comptables:"
+msgstr "Références comptables:"
+
+#. module: l10n_pf_account_vat
+#: view:website:l10n_pf_account_vat.report_real
+msgid "Régime réel"
+msgstr "Régime réel"
+
+#. module: l10n_pf_account_vat
+#: view:website:l10n_pf_account_vat.report_real
+msgid "Régime réel BROUILLON"
+msgstr "Régime réel BROUILLON"
+
+#. module: l10n_pf_account_vat
+#: view:website:l10n_pf_account_vat.report_annual
+#: view:website:l10n_pf_account_vat.report_deposit
+msgid "Régime simplifié"
+msgstr "Régime simplifié"
+
+#. module: l10n_pf_account_vat
+#: view:website:l10n_pf_account_vat.report_annual
+#: view:website:l10n_pf_account_vat.report_real
+msgid "Régularisation: autre TVA à déduire"
+msgstr "Régularisation: autre TVA à déduire"
+
+#. module: l10n_pf_account_vat
+#: view:website:l10n_pf_account_vat.report_annual
+#: view:website:l10n_pf_account_vat.report_real
+msgid "Régularisation: autre TVA à reverser"
+msgstr "Régularisation: autre TVA à reverser"
+
+#. module: l10n_pf_account_vat
+#: view:res.company:l10n_pf_account_vat.view_company_inherit_vat_form
+msgid "Saisir l activité exercée par l entreprise"
+msgstr "Saisir l activité exercée par l entreprise"
+
+#. module: l10n_pf_account_vat
+#: field:l10n.pf.account.vat.declaration,account_sales:0
+msgid "Sales"
+msgstr "Ventes"
+
+#. module: l10n_pf_account_vat
+#: field:res.company,sales_ids:0
+msgid "Sales accounts"
+msgstr "Comptes des ventes"
+
+#. module: l10n_pf_account_vat
+#: view:res.company:l10n_pf_account_vat.view_company_inherit_vat_form
+msgid "Select journal"
+msgstr "Sélectionner le journal pour la saisie des écritures comptables"
+
+#. module: l10n_pf_account_vat
+#: field:l10n.pf.account.vat.declaration,account_services:0
+msgid "Services"
+msgstr "Prestations de services"
+
+#. module: l10n_pf_account_vat
+#: field:res.company,services_ids:0
+msgid "Services accounts"
+msgstr "Comptes des prestations de services"
+
+#. module: l10n_pf_account_vat
+#: view:l10n.pf.account.vat.declaration:l10n_pf_account_vat.view_l10n_pf_account_vat_declaration_form
+msgid "Show account chart"
+msgstr "Ouvrir le plan comptable"
+
+#. module: l10n_pf_account_vat
+#: view:website:l10n_pf_account_vat.report_annual
+#: view:website:l10n_pf_account_vat.report_deposit
+#: view:website:l10n_pf_account_vat.report_real
+msgid "Signature"
+msgstr "Signature"
+
+#. module: l10n_pf_account_vat
+#: field:l10n.pf.account.vat.declaration,date:0
+msgid "Signature Date"
+msgstr "Date de signature"
+
+#. module: l10n_pf_account_vat
+#: field:l10n.pf.account.vat.declaration,place:0
+msgid "Signature Place"
+msgstr "Lieu de signature"
+
+#. module: l10n_pf_account_vat
+#: selection:l10n.pf.account.vat.declaration,state:0
+msgid "Simulate"
+msgstr "Simulation"
+
+#. module: l10n_pf_account_vat
+#: view:l10n.pf.account.vat.declaration:l10n_pf_account_vat.view_l10n_pf_account_vat_declaration_form
+msgid "Simulate declaration"
+msgstr "Simuler la déclaration"
+
+#. module: l10n_pf_account_vat
+#: field:l10n.pf.account.vat.declaration,period_from:0
+msgid "Start period"
+msgstr "Période de début"
+
+#. module: l10n_pf_account_vat
+#: field:l10n.pf.account.vat.declaration,state:0
+msgid "Status"
+msgstr "Etat"
+
+#. module: l10n_pf_account_vat
+#: view:l10n.pf.account.vat.declaration:l10n_pf_account_vat.view_l10n_pf_account_vat_declaration_form
+#: field:l10n.pf.account.vat.declaration,company_street:0
+msgid "Street"
+msgstr "Rue"
+
+#. module: l10n_pf_account_vat
+#: field:l10n.pf.account.vat.declaration,surplus:0
+msgid "Surplus"
+msgstr "Excédent"
+
+#. module: l10n_pf_account_vat
+#: view:res.company:l10n_pf_account_vat.view_company_inherit_vat_form
+msgid "Sélectionner le journal pour la saisie des écritures comptables"
+msgstr "Sélectionner le journal pour la saisie des écritures comptables"
+
+#. module: l10n_pf_account_vat
+#: view:website:l10n_pf_account_vat.report_annual
+#: view:website:l10n_pf_account_vat.report_deposit
+#: view:website:l10n_pf_account_vat.report_real
+msgid "TAXE SUR LA VALEUR AJOUTEE"
+msgstr "TAXE SUR LA VALEUR AJOUTEE"
+
+#. module: l10n_pf_account_vat
+#: view:website:l10n_pf_account_vat.report_real
+msgid "TAXE SUR LA VALEUR AJOUTEE BROUILLON"
+msgstr "TAXE SUR LA VALEUR AJOUTEE BROUILLON"
+
+#. module: l10n_pf_account_vat
+#: view:website:l10n_pf_account_vat.report_annual
+#: view:website:l10n_pf_account_vat.report_real
+msgid "TVA due"
+msgstr "TVA due"
+
+#. module: l10n_pf_account_vat
+#: view:website:l10n_pf_account_vat.report_deposit
+#: view:website:l10n_pf_account_vat.report_real
+msgid "TVA nette due"
+msgstr "TVA nette due"
+
+#. module: l10n_pf_account_vat
+#: view:website:l10n_pf_account_vat.report_annual
+#: view:website:l10n_pf_account_vat.report_real
+msgid "TVA sur autres biens et services"
+msgstr "TVA sur autres biens et services"
+
+#. module: l10n_pf_account_vat
+#: view:website:l10n_pf_account_vat.report_annual
+#: view:website:l10n_pf_account_vat.report_deposit
+#: view:website:l10n_pf_account_vat.report_real
+msgid "TVA sur biens constituant des immobilisations"
+msgstr "TVA sur biens constituant des immobilisations"
+
+#. module: l10n_pf_account_vat
+#: field:l10n.pf.account.vat.declaration,target_move:0
+msgid "Target Moves"
+msgstr "Mouvements cibles"
+
+#. module: l10n_pf_account_vat
+#: view:website:l10n_pf_account_vat.report_annual
+#: view:website:l10n_pf_account_vat.report_real
+msgid "Taux intermédiaire"
+msgstr "Taux intermédiaire"
+
+#. module: l10n_pf_account_vat
+#: view:website:l10n_pf_account_vat.report_annual
+#: view:website:l10n_pf_account_vat.report_real
+msgid "Taux normal"
+msgstr "Taux normal"
+
+#. module: l10n_pf_account_vat
+#: view:website:l10n_pf_account_vat.report_annual
+#: view:website:l10n_pf_account_vat.report_real
+msgid "Taux réduit"
+msgstr "Taux réduit"
+
+#. module: l10n_pf_account_vat
+#: model:ir.ui.menu,name:l10n_pf_account_vat.action_menu_open_view_l10n_pf_account_vat_declaration_tree
+msgid "Tax"
+msgstr "Taxe"
+
+#. module: l10n_pf_account_vat
+#: field:l10n.pf.account.vat.declaration,tax_due_sales:0
+msgid "Tax due sales"
+msgstr "Taxe due: Ventes"
+
+#. module: l10n_pf_account_vat
+#: field:l10n.pf.account.vat.declaration,tax_due_services:0
+msgid "Tax due services"
+msgstr "Tax due: Prestations de services"
+
+#. module: l10n_pf_account_vat
+#: view:website:l10n_pf_account_vat.report_deposit
+msgid "Taxe due"
+msgstr "Taxe due"
+
+#. module: l10n_pf_account_vat
+#: field:l10n.pf.account.vat.declaration,company_phone:0
+msgid "Telephone"
+msgstr "Téléphone"
+
+#. module: l10n_pf_account_vat
+#: field:l10n.pf.account.vat.declaration,total_difference_deposit:0
+#: field:l10n.pf.account.vat.declaration,total_difference_reimbursement:0
+#: view:website:l10n_pf_account_vat.report_annual
+msgid "Total"
+msgstr "Total"
+
+#. module: l10n_pf_account_vat
+#: view:website:l10n_pf_account_vat.report_deposit
+msgid "Total (lignes 03 + 04)"
+msgstr "Total (lignes 03 + 04)"
+
+#. module: l10n_pf_account_vat
+#: view:website:l10n_pf_account_vat.report_annual
+#: view:website:l10n_pf_account_vat.report_real
+msgid "Total (lignes 05 à 08):"
+msgstr "Total (lignes 05 à 08):"
+
+#. module: l10n_pf_account_vat
+#: view:website:l10n_pf_account_vat.report_deposit
+msgid "Total (lignes 06 + 07)"
+msgstr "Total (lignes 06 + 07)"
+
+#. module: l10n_pf_account_vat
+#: view:website:l10n_pf_account_vat.report_annual
+#: view:website:l10n_pf_account_vat.report_real
+msgid "Total (lignes 10 à 13):"
+msgstr "Total (lignes 10 à 13):"
+
+#. module: l10n_pf_account_vat
+#: view:website:l10n_pf_account_vat.report_annual
+msgid "Total (lignes 21+22)"
+msgstr "Total (lignes 21+22)"
+
+#. module: l10n_pf_account_vat
+#: field:l10n.pf.account.vat.declaration,total_tax_payable:0
+msgid "Total tax payable"
+msgstr "Total tax payable"
+
+#. module: l10n_pf_account_vat
+#: field:l10n.pf.account.vat.declaration,total_vat_deductible:0
+msgid "Total vat deductible"
+msgstr "Total vat deductible"
+
+#. module: l10n_pf_account_vat
+#: field:l10n.pf.account.vat.declaration,total_vat_payable:0
+msgid "Total vat payable"
+msgstr "Total vat payable"
+
+#. module: l10n_pf_account_vat
+#: selection:l10n.pf.account.vat.declaration,means_payment:0
+msgid "Transfert"
+msgstr "Virement bancaire"
+
+#. module: l10n_pf_account_vat
+#: selection:l10n.pf.account.vat.declaration,period_declaration:0
+#: selection:res.company,period_declaration:0
+msgid "Trimester"
+msgstr "Trimestrielle"
+
+#. module: l10n_pf_account_vat
+#: field:res.company,turnover_ids:0
+msgid "Turnover accounts"
+msgstr "Comptes du chiffre d affaires"
+
+#. module: l10n_pf_account_vat
+#: field:l10n.pf.account.vat.declaration,company_vat_type:0
+#: view:res.company:l10n_pf_account_vat.view_company_inherit_vat_form
+msgid "Type VAT"
+msgstr "Type de TVA"
+
+#. module: l10n_pf_account_vat
+#: field:res.company,type_vat:0
+msgid "Type vat"
+msgstr "Type de TVA"
+
+#. module: l10n_pf_account_vat
+#: view:website:l10n_pf_account_vat.report_annual
+#: view:website:l10n_pf_account_vat.report_deposit
+#: view:website:l10n_pf_account_vat.report_real
+msgid "Tél: 40 46 13 56"
+msgstr "Tél: 40 46 13 56"
+
+#. module: l10n_pf_account_vat
+#: view:website:l10n_pf_account_vat.report_annual
+#: view:website:l10n_pf_account_vat.report_deposit
+#: view:website:l10n_pf_account_vat.report_real
+msgid "Téléphone"
+msgstr "Téléphone"
+
+#. module: l10n_pf_account_vat
+#: view:res.company:l10n_pf_account_vat.view_company_inherit_vat_form
+msgid "VAT Company regime"
+msgstr "Régime de TVA de la compagnie"
+
+#. module: l10n_pf_account_vat
+#: view:res.company:l10n_pf_account_vat.view_company_inherit_vat_form
+msgid "VAT Company type"
+msgstr "Type de TVA de la compagnie"
+
+#. module: l10n_pf_account_vat
+#: view:l10n.pf.account.vat.declaration:l10n_pf_account_vat.view_l10n_pf_account_vat_declaration_form
+msgid "VAT DEDUCTIBLE"
+msgstr "TVA DEDUCTIBLE"
+
+#. module: l10n_pf_account_vat
+#: view:l10n.pf.account.vat.declaration:l10n_pf_account_vat.view_l10n_pf_account_vat_declaration_form
+msgid "VAT DUE"
+msgstr "TVA DUE"
+
+#. module: l10n_pf_account_vat
+#: model:ir.ui.menu,name:l10n_pf_account_vat.sous_menu_l10n_pf_account_vat_declaration
+msgid "VAT Declaration"
+msgstr "Déclaration de TVA"
+
+#. module: l10n_pf_account_vat
+#: field:res.company,vat_id:0
+msgid "VAT accounts"
+msgstr "Comptes de TVA à payer"
+
+#. module: l10n_pf_account_vat
+#: view:l10n.pf.account.vat.declaration:l10n_pf_account_vat.view_l10n_pf_account_vat_declaration_form
+msgid "Validate"
+msgstr "Valider"
+
+#. module: l10n_pf_account_vat
+#: view:l10n.pf.account.vat.declaration:l10n_pf_account_vat.view_l10n_pf_account_vat_declaration_form
+msgid "Vat"
+msgstr "TVA"
+
+#. module: l10n_pf_account_vat
+#: field:l10n.pf.account.vat.declaration,vat_credit:0
+msgid "Vat credit"
+msgstr "Crédit de TVA"
+
+#. module: l10n_pf_account_vat
+#: model:ir.model,name:l10n_pf_account_vat.model_l10n_pf_account_vat_declaration
+msgid "Vat declaration"
+msgstr "Déclaration de TVA"
+
+#. module: l10n_pf_account_vat
+#: field:l10n.pf.account.vat.declaration,vat_due_intermediate_rate:0
+msgid "Vat due intermediate rate"
+msgstr "TVA due - Taux intermédiaire"
+
+#. module: l10n_pf_account_vat
+#: field:l10n.pf.account.vat.declaration,vat_due_normal_rate:0
+msgid "Vat due normal rate"
+msgstr "TVA due - Taux normal"
+
+#. module: l10n_pf_account_vat
+#: field:l10n.pf.account.vat.declaration,vat_due_reduced_rate:0
+msgid "Vat due reduced rate"
+msgstr "TVA due - Taux réduit"
+
+#. module: l10n_pf_account_vat
+#: field:l10n.pf.account.vat.declaration,vat_due_regularization_to_donate:0
+msgid "Vat due regularization to donate"
+msgstr "TVA due - Régularisation: autre TVA à reverser"
+
+#. module: l10n_pf_account_vat
+#: field:l10n.pf.account.vat.declaration,vat_immobilization:0
+msgid "Vat immobilization"
+msgstr "TVA sur biens constituant des immobilisations"
+
+#. module: l10n_pf_account_vat
+#: field:l10n.pf.account.vat.declaration,vat_other_goods_services:0
+msgid "Vat other goods and services"
+msgstr "TVA sur autres biens et services"
+
+#. module: l10n_pf_account_vat
+#: view:website:l10n_pf_account_vat.report_annual
+#: view:website:l10n_pf_account_vat.report_deposit
+#: view:website:l10n_pf_account_vat.report_real
+msgid "Ventes"
+msgstr "Ventes"
+
+#. module: l10n_pf_account_vat
+#: view:website:l10n_pf_account_vat.report_deposit
+msgid ""
+"Virement bancaire (Préciser le N° TAHITI, la taxe payée et la période "
+"concernée"
+msgstr ""
+"Virement bancaire (Préciser le N° TAHITI, la taxe payée et la période "
+"concernée"
+
+#. module: l10n_pf_account_vat
+#: view:website:l10n_pf_account_vat.report_annual
+#: view:website:l10n_pf_account_vat.report_real
+msgid ""
+"Virement bancaire (Préciser le N° TAHITI, la taxe payée et la période "
+"concernée sans omettre de déposer ou poster votre déclaration)"
+msgstr ""
+"Virement bancaire (Préciser le N° TAHITI, la taxe payée et la période "
+"concernée sans omettre de déposer ou poster votre déclaration)"
+
+#. module: l10n_pf_account_vat
+#: code:addons/l10n_pf_account_vat/models/l10n_pf_account_vat.py:691
+#, python-format
+msgid "You cannot delete a declaration after it has been validated."
+msgstr "Vous ne pouvez pas supprimer une déclaration après l avoir validé."
+
+#. module: l10n_pf_account_vat
+#: code:addons/l10n_pf_account_vat/models/l10n_pf_account_vat.py:689
+#, python-format
+msgid "You cannot delete an declaration which is not draft."
+msgstr ""
+"Vous ne pouvez pas supprimer une déclaration qui n est pas en brouillon."
+
+#. module: l10n_pf_account_vat
+#: field:l10n.pf.account.vat.declaration,company_zip:0
+msgid "ZIP"
+msgstr "ZIP"
+
+#. module: l10n_pf_account_vat
+#: view:website:l10n_pf_account_vat.report_deposit
+msgid "au 31 août"
+msgstr "au 31 août"
+
+#. module: l10n_pf_account_vat
+#: view:website:l10n_pf_account_vat.report_real
+msgid "declaration"
+msgstr "déclaration"
+
+#. module: l10n_pf_account_vat
+#: view:website:l10n_pf_account_vat.report_real
+msgid "e....trimestre"
+msgstr "e....trimestre"
+
+#. module: l10n_pf_account_vat
+#: view:website:l10n_pf_account_vat.report_deposit
+msgid "l'entreprise"
+msgstr "l'entreprise"
+
+#. module: l10n_pf_account_vat
+#: view:website:l10n_pf_account_vat.report_real
+msgid "ou ....."
+msgstr "ou ....."
+
+#. module: l10n_pf_account_vat
+#: view:website:l10n_pf_account_vat.report_real
+msgid "ou ............ trimestre"
+msgstr "ou ............ trimestre"
+
+#. module: l10n_pf_account_vat
+#: view:website:l10n_pf_account_vat.report_deposit
+msgid "sans omettre de déposer ou poster votre déclaration)"
+msgstr "sans omettre de déposer ou poster votre déclaration)"
+
+#. module: l10n_pf_account_vat
+#: view:website:l10n_pf_account_vat.report_annual
+#: view:website:l10n_pf_account_vat.report_deposit
+msgid ""
+"« Les dispositions des articles 39 et 40 de la loi n°78-17 du 6 janvier 1978 "
+"relative à l\"informatique,\n"
+"\t\t\t\t\t\t\t\taux fichiers et aux libertés, modifiée par la loi n°2004-801 "
+"du 6 août 2004, garantissent les droits des personnes\n"
+"\t\t\t\t\t\t\t\tphysiques à l'égard des traitements des données à caractère "
+"personnel.»"
+msgstr ""
+"« Les dispositions des articles 39 et 40 de la loi n°78-17 du 6 janvier 1978 "
+"relative à l\"informatique,\n"
+"\t\t\t\t\t\t\t\taux fichiers et aux libertés, modifiée par la loi n°2004-801 "
+"du 6 août 2004, garantissent les droits des personnes\n"
+"\t\t\t\t\t\t\t\tphysiques à l'égard des traitements des données à caractère "
+"personnel.»"
+
+#. module: l10n_pf_account_vat
+#: view:website:l10n_pf_account_vat.report_real
+msgid ""
+"« Les dispositions des articles 39 et 40 de la loi n°78-17 du 6 janvier 1978 "
+"relative à l\"informatique,\n"
+"                                    aux fichiers et aux libertés, modifiée "
+"par la loi n°2004-801 du 6 août 2004, garantissent les droits des personnes\n"
+"                                    physiques à l'égard des traitements des "
+"données à caractère personnel.»"
+msgstr ""
+"« Les dispositions des articles 39 et 40 de la loi n°78-17 du 6 janvier 1978 "
+"relative à l\"informatique,\n"
+"                                    aux fichiers et aux libertés, modifiée "
+"par la loi n°2004-801 du 6 août 2004, garantissent les droits des personnes\n"
+"                                    physiques à l'égard des traitements des "
+"données à caractère personnel.»"
+
+#. module: l10n_pf_account_vat
+#: view:website:l10n_pf_account_vat.report_deposit
+msgid "à déposer au plus tard le 30 septembre de l'année"
+msgstr "à déposer au plus tard le 30 septembre de l'année"
+
+#. module: l10n_pf_account_vat
+#: view:website:l10n_pf_account_vat.report_annual
+msgid "à déposer au plus tard le 31 mars de l'année suivante"
+msgstr "à déposer au plus tard le 31 mars de l'année suivante"
