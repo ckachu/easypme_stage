@@ -16,33 +16,76 @@ class l10n_pf_account_vat_declaration(models.Model):
 	def _get_fiscalyear(self, cr, uid, context=None):
 		return self.pool.get('account.fiscalyear').find(cr, uid, context=context)
 
-	#def _get_period_from(self, cr, uid, ids, context=None):
-		#import pdb
-		#pdb.set_trace()
-		## Récupérer l'exercice fiscal
-		#fy = self.pool.get('account.fiscalyear').find(cr, uid, context=context)
-		## Récupérer la compagnie
-		#company = self.pool.get('res.company')._company_default_get(cr, uid, 'l10n.pf.account.vat.declaration', context=context)
-		## Récupérer les périodes de l'exercice en cours
-		#period = self.pool.get('account.period')
-		#periods = period.search(cr, uid, [('fiscalyear_id.id','=', fy), ('special', '=', False)])
-		#today = datetime.now()
-		#res = {}
-		#m_from = 0
-		###Cas 1: Par Trimestre
-		#if company.period_declaration == 'trimester':
-			#m_from = today.month - 3
-		##Cas 2: Par Mois
-		#elif company.period_declaration == 'month':
-			#m_from = today.month - 1
+	def _get_period_from(self, cr, uid, ids, context=None):
+		if context is None:
+			context = {}
+		# Récupérer l'exercice fiscal
+		fy = self.pool.get('account.fiscalyear').find(cr, uid, context=context)
+		
+		# Récupérer la compagnie
+		company_obj = self.pool.get('res.company')
+		company_id = company_obj._company_default_get(cr, uid, context=context)
+		company = self.pool.get('res.company').browse(cr, uid, company_id, context=context)
+		
+		# Récupérer les périodes de l'exercice en cours
+		period = self.pool.get('account.period')
+		periods = period.search(cr, uid, [('fiscalyear_id.id','=', fy), ('special', '=', False)])
+		today = datetime.now()
+		
+		res = 0
+		m_from = 0
+		
+		# On détermine si la déclaration se fait en Janvier
+		first_month = False
+		if today.month == 1:
+			first_month = True
+		
+		##Cas 1: Par Trimestre
+		if company.period_declaration == 'trimester':
+			if first_month:
+				m_from = today.month + 9
+			elif not first_month:
+				m_from = today.month - 3
+		#Cas 2: Par Mois
+		elif company.period_declaration == 'month':
+			if first_month:
+				m_from = today.month + 11
+			elif not first_month:
+				m_from = today.month - 1
 			
-		#for i in period.browse(cr, uid, periods, context=context):
-			#d_stop = datetime.strptime(i.date_stop, '%Y-%m-%d')
-			#if (d_stop.month == m_from):
-				#res['value'] = {
-					#'period_from': i.id,
-				#}
-		#return res
+		for i in period.browse(cr, uid, periods, context=context):
+			d_stop = datetime.strptime(i.date_stop, '%Y-%m-%d')
+			if (d_stop.month == m_from):
+				res = i.id
+		return res
+	
+	def _get_period_to(self, cr, uid, ids, context=None):
+		if context is None:
+			context = {}
+		# Récupérer l'exercice fiscal
+		fy = self.pool.get('account.fiscalyear').find(cr, uid, context=context)
+		
+		# Récupérer les périodes de l'exercice en cours
+		period = self.pool.get('account.period')
+		periods = period.search(cr, uid, [('fiscalyear_id.id','=', fy), ('special', '=', False)])
+		today = datetime.now()
+		
+		res = 0
+		# On détermine si la déclaration se fait en Janvier
+		first_month = False
+		if today.month == 1:
+			first_month = True
+		
+		if first_month:
+			m_to = today.month + 11
+		elif not first_month:
+			m_to = today.month - 1
+		
+		for i in period.browse(cr, uid, periods, context=context):
+			d_stop = datetime.strptime(i.date_stop, '%Y-%m-%d')
+			if (d_stop.month == m_to):
+				res = i.id
+		return res
 
 	def account_chart_open_window(self, cr, uid, ids, context=None):
 		mod_obj = self.pool.get('ir.model.data')
@@ -679,7 +722,8 @@ class l10n_pf_account_vat_declaration(models.Model):
 		'target_move': 'all',
 		'fiscalyear': _get_fiscalyear,
 		'state': 'draft',
-		#'period_from': _get_period_from,
+		'period_from': _get_period_from,
+		'period_to': _get_period_to,
 	}
 	
 	@api.multi
@@ -739,34 +783,4 @@ class l10n_pf_account_vat_declaration(models.Model):
 				'ntahiti': company.ntahiti,
 				'period_declaration': company.period_declaration,
 			}
-		return {'value':values}
-
-	#def on_change_fiscalyear(self, cr, uid, ids, fiscalyear_id=False, context=None):
-		#company = self.pool.get('res.company')
-		#period = self.pool.get('account.period')
-		#periods = period.search(cr, uid, [('fiscalyear_id.id','=', fiscalyear_id), ('special', '=', False)])
-
-		#today = datetime.now()
-		#res = {}
-		#temp_to = 0
-		#temp_from = 0
-		#m_from = 0
-		#m_to = today.month - 1
-		##Cas 1: Par Trimestre
-		#if company.browse(cr, uid, uid, context=context).period_declaration == 'trimester':
-			#m_from = today.month - 3
-		##Cas 2: Par Mois
-		#elif company.browse(cr, uid, uid, context=context).period_declaration == 'month':
-			#m_from = today.month - 1
-			
-		#for i in period.browse(cr, uid, periods, context=context):
-			
-			#d_stop = datetime.strptime(i.date_stop, '%Y-%m-%d')
-			#if (d_stop.month == m_to):
-				#temp_to = i.id
-
-			#if (d_stop.month == m_from):
-				#temp_from = i.id
-
-		#res['value'] = {'period_to': temp_to, 'period_from':temp_from}
-		#return res
+		return {'value': values}
