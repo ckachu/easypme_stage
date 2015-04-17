@@ -389,7 +389,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-									 <t t-if="o.means_payment != 'check' or o.means_payment != 'cash' or o.means_payment != 'transfert'">
+									 <t t-if="not o.means_payment">
                                         <tr style="height:25px;">
                                             <td style="width:2%;vertical-align:top;"><input type="checkbox" value="check"/></td>
                                             <td style="width:25%;">Chèque (à l'ordre du Trésor Public)</td>
