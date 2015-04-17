@@ -8,6 +8,8 @@
             string="Deposit simplified regime declaration"
             name="l10n_pf_account_vat.report_deposit"
             file="l10n_pf_account_vat.report_deposit"
+            attachment_use="True"
+            attachment="(object.state in ('done')) and ((object.name or '').replace('/','')+'.pdf')"
         />
         
         <report
@@ -17,6 +19,8 @@
             string="Annual simplfied regime declaration"
             name="l10n_pf_account_vat.report_annual"
             file="l10n_pf_account_vat.report_annual"
+            attachment_use="True"
+            attachment="(object.state in ('done')) and ((object.name or '').replace('/','')+'.pdf')"
         />
         
         <report
@@ -26,6 +30,8 @@
             string="Real regime declaration"
             name="l10n_pf_account_vat.report_real"
             file="l10n_pf_account_vat.report_real"
+            attachment_use="True"
+            attachment="(object.state in ('done')) and ((object.name or '').replace('/','')+'.pdf')"
         />
 	</data>
 </openerp>

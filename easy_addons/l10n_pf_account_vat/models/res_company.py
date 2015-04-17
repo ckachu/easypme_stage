@@ -35,8 +35,4 @@ class res_company(osv.osv):
 		
 		'regime_vat': fields.selection([('deposit','Deposit in simplified regime'),('annual','Annual in simplified regime'),('real','Real regime')], 'Regime Vat'),
 		'type_vat': fields.selection([('cashing','Cashing vat'),('bills','Bills vat')],'Type vat'),
-		
-		#'reduced_rate_vat': fields.many2one('account.tax', 'Reduced rate vat'),
-		#'intermediate_rate_vat': fields.many2one('account.tax', 'Intermediate rate vat'),
-		#'normal_rate_vat': fields.many2one('account.tax', 'Normal rate vat'),
 	}

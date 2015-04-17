@@ -9,12 +9,14 @@
 			<field name="arch" type="xml">
 				<form string="Vat">
 					<header>
-						<button name="set_to_simulate" states="draft" string="Simulate declaration" type="object"/>
-						<button name="account_chart_open_window" states="simulate" string="Show account chart" type="object"/>
+						<button name="%(action_l10n_pf_account_vat_journal_items)d" string="Simulate" states="fill" type="action"/>
+						<button name="action_fill_declaration" states="draft" string="Fill declaration" 
+								type="object" context="{'fiscalyear':fiscalyear, 'period_from': period_from, 'period_to': period_to}"/>
+						<button name="account_chart_open_window" states="simulate,done" string="Show account chart" type="object"/>
 						<button name="validate" states="simulate" string="Validate" type="object"/>
-						<button name="set_to_draft" states="simulate" string="Back to draft" type="object"/>
+						<button name="set_to_draft" states="simulate,fill" string="Back to draft" type="object"/>
 						<button name="set_to_draft" states="done" string="Cancel" type="object"  groups="account.group_account_manager"/> 
-						<field name="state" widget="statusbar" statusbar_visible="draft,simulate,done"/>
+						<field name="state" widget="statusbar" statusbar_visible="draft,fill,simulate,done"/>
 					</header>
 					<sheet>
 						<group>
@@ -26,6 +28,7 @@
 							<field name="user_id"/>
 						</group>
 						<group>
+							<field name="period_declaration"/>
 							<field name="company_regime"/>
 							<field name="company_vat_type"/>
 						</group>
@@ -55,7 +58,8 @@
 										<field name="city_zip"/>
 										
 										
-										<field name="fiscalyear" class="oe_inline" on_change="on_change_fiscalyear(fiscalyear)"/>
+										<!--<field name="fiscalyear" class="oe_inline" on_change="on_change_fiscalyear(fiscalyear)"/>-->
+										<field name="fiscalyear" class="oe_inline"/>
 										<field name="period_from" class="oe_inline"/>
 										<field name="period_to" class="oe_inline"/>
 									</group>
@@ -143,7 +147,6 @@
 								<group>
 									<field name="means_payment"/>
 								</group>
-								<button name="action_fill_declaration" states="draft" string="Fill declaration" type="object" context="{'fiscalyear':fiscalyear, 'period_from': period_from, 'period_to': period_to}"/>
 							</page>
 						</notebook>
 					</sheet>

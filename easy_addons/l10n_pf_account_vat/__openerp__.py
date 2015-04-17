@@ -29,6 +29,7 @@
         'security/ir.model.access.csv',
         'views/l10n_pf_account_vat_view.xml',
         'views/res_company_view.xml',
+        'wizard/l10n_pf_account_vat_journal_items_view.xml',
         'report/l10n_pf_account_vat_report.xml',
         'report/report_deposit_l10n_pf_account_vat.xml',
         'report/report_annual_l10n_pf_account_vat.xml',
