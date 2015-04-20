@@ -16,18 +16,26 @@
 						<group>
 							<div>
 								<div>
-									<label for="activity" string="Company activity"/>
-									<field name="activity" string="Company activity" placeholder="Activity"
-										help='Saisir l activité exercée par l entreprise'/>
-									<label for="regime_vat" string="VAT Company regime"/>	
-									<field name="regime_vat" string="Regime VAT"
-										help='Choisisser le régime de l entreprise'/>
-									<label for="type_vat" string="VAT Company type"/>	
-									<field name="type_vat" string="Type VAT" attrs="{'invisible':['|',('regime_vat','=','deposit'),('regime_vat','=','annual')]}"
-										help='Choisisser le type de TVA de l entreprise'/>
-									<label for="period_declaration" string="Declaration period"/>
-									<field name="period_declaration" string="Declaration period" attrs="{'invisible':[('regime_vat','in',('annual','deposit'))]}"
-										help='Choisisser la période de déclaration'/>
+									<div>
+										<label for="activity" string="Company activity"/>
+										<field name="activity" string="Company activity" placeholder="Activity"
+											help='Saisir l activité exercée par l entreprise'/>
+									</div>
+									<div>
+										<label for="regime_vat" string="VAT Company regime"/>	
+										<field name="regime_vat" string="Regime VAT"
+											help='Choisisser le régime de l entreprise'/>
+									</div>
+									<div>
+										<label for="type_vat" string="VAT Company type"/>	
+										<field name="type_vat" string="Type VAT" attrs="{'invisible':['|',('regime_vat','=','deposit'),('regime_vat','=','annual')]}"
+											help='Choisisser le type de TVA de l entreprise'/>
+									</div>
+									<div>
+										<label for="period_declaration" string="Declaration period"/>
+										<field name="period_declaration" string="Declaration period" attrs="{'invisible':[('regime_vat','in',('annual','deposit'))]}"
+											help='Choisisser la période de déclaration'/>
+									</div>
 								</div>
 							</div>
 						</group>

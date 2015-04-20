@@ -39,7 +39,6 @@
 							<page string="General">
 								<group>
 									<group>
-										<!--<field name="account_id"/>-->
 										<field name="ntahiti"/>
 										<field name="company_id" on_change="on_change_company_id(company_id)"/>
 										<field name="company_activity"/>
@@ -57,8 +56,6 @@
 										<field name="company_bp"/>
 										<field name="city_zip"/>
 										
-										
-										<!--<field name="fiscalyear" class="oe_inline" on_change="on_change_fiscalyear(fiscalyear)"/>-->
 										<field name="fiscalyear" class="oe_inline"/>
 										<field name="period_from" class="oe_inline"/>
 										<field name="period_to" class="oe_inline"/>
@@ -86,22 +83,26 @@
 										<field name="excluding_vat_sales" attrs="{'invisible':['|',('company_regime','=','annual'),('company_regime','=','real')]}"/>
 										<field name="excluding_vat_services" attrs="{'invisible':['|',('company_regime','=','annual'),('company_regime','=','real')]}"/>
 										<!-- Annual simplified regime & Real regime -->
-										<field name="base_reduced_rate" attrs="{'invisible':[('company_regime','=','deposit')]}"/>
-										<field name="base_intermediate_rate" attrs="{'invisible':[('company_regime','=','deposit')]}"/>
-										<field name="base_normal_rate" attrs="{'invisible':[('company_regime','=','deposit')]}"/>
-										<field name="base_regularization_to_donate" attrs="{'invisible':[('company_regime','=','deposit')]}"/>
+										<group>
+											<field name="base_reduced_rate" attrs="{'invisible':[('company_regime','=','deposit')]}"/>
+											<field name="base_intermediate_rate" attrs="{'invisible':[('company_regime','=','deposit')]}"/>
+											<field name="base_normal_rate" attrs="{'invisible':[('company_regime','=','deposit')]}"/>
+											<field name="base_regularization_to_donate" attrs="{'invisible':[('company_regime','=','deposit')]}"/>
+										</group>
 									</group>
 									<group>
 										<!-- Deposit simplified regime -->
 										<field name="tax_due_sales" attrs="{'invisible':['|',('company_regime','=','annual'),('company_regime','=','real')]}"/>
 										<field name="tax_due_services" attrs="{'invisible':['|',('company_regime','=','annual'),('company_regime','=','real')]}"/>
 										<field name="total_tax_payable" attrs="{'invisible':['|',('company_regime','=','annual'),('company_regime','=','real')]}"/>
-										<!-- Annual simplified regime & Real regime -->						
-										<field name="vat_due_reduced_rate" attrs="{'invisible':[('company_regime','=','deposit')]}"/>
-										<field name="vat_due_intermediate_rate" attrs="{'invisible':[('company_regime','=','deposit')]}"/>
-										<field name="vat_due_normal_rate" attrs="{'invisible':[('company_regime','=','deposit')]}"/>
-										<field name="vat_due_regularization_to_donate" attrs="{'invisible':[('company_regime','=','deposit')]}"/>
-										<field name="total_vat_payable" attrs="{'invisible':[('company_regime','=','deposit')]}"/>
+										<!-- Annual simplified regime & Real regime -->	
+										<group>					
+											<field name="vat_due_reduced_rate" attrs="{'invisible':[('company_regime','=','deposit')]}"/>
+											<field name="vat_due_intermediate_rate" attrs="{'invisible':[('company_regime','=','deposit')]}"/>
+											<field name="vat_due_normal_rate" attrs="{'invisible':[('company_regime','=','deposit')]}"/>
+											<field name="vat_due_regularization_to_donate" attrs="{'invisible':[('company_regime','=','deposit')]}"/>
+											<field name="total_vat_payable" attrs="{'invisible':[('company_regime','=','deposit')]}"/>
+										</group>
 									</group>
 								</group>
 								<!-- TVA deductible -->

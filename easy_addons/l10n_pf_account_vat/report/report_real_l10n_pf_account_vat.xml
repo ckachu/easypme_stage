@@ -384,7 +384,7 @@
                                         <th colspan="4" style="text-align:center;width:51%;vertical-align:middle;text-decoration:underline;">MOYENS DE PAIEMENT</th>
                                         <th style="text-align:center;width:49%;vertical-align:middle;text-decoration:underline;">
                                             Signature<br/>
-                                            <!--<img src="/l10n_pf_account_vat/static/src/img/signature.jpg" style="height:80px;width:160px;"/>-->
+                                            <!--<img t-if="o.company_id.logo" t-att-src="'data:image/png;base64,%s' % o.company_id.logo" style="max-height: 45px;"/>-->
                                         </th>
                                     </tr>
                                 </thead>

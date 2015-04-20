@@ -97,7 +97,7 @@ msgid ""
 ""
 msgstr ""
 "<p class=\"oe_view_nocontent_create\">\n"
-"tCliquez pour créer une nouvelle déclaration.\n"
+"Cliquez pour créer une nouvelle déclaration.\n"
 "</p>\n"
 ""
 
