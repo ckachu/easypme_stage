@@ -33,6 +33,7 @@ class res_company(osv.osv):
 		
 		'activity': fields.char('Company activity'),
 		
-		'regime_vat': fields.selection([('deposit','Deposit in simplified regime'),('annual','Annual in simplified regime'),('real','Real regime')], 'Regime Vat'),
-		'type_vat': fields.selection([('cashing','Cashing vat'),('bills','Bills vat')],'Type vat'),
+		#'regime_vat': fields.selection([('deposit','Deposit in simplified regime'),('annual','Annual in simplified regime'),('real','Real regime')], 'Regime Vat'),
+		'regime_vat': fields.selection([('simplified', 'Simplified regime'), ('real', 'Real regime')], 'Regime Vat'),
+		'type_vat': fields.selection([('cashing', 'Cashing vat'), ('bills', 'Bills vat')], 'Type vat'),
 	}

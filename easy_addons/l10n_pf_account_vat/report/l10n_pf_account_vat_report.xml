@@ -4,7 +4,7 @@
 		<report
             id="l10n_pf_account_vat_declaration_deposit_report"
             model="l10n.pf.account.vat.declaration"
-            report_type="qweb-html"
+            report_type="qweb-pdf"
             string="Deposit simplified regime declaration"
             name="l10n_pf_account_vat.report_deposit"
             file="l10n_pf_account_vat.report_deposit"
@@ -15,7 +15,7 @@
         <report
             id="l10n_pf_account_vat_declaration_annual_report"
             model="l10n.pf.account.vat.declaration"
-            report_type="qweb-html"
+            report_type="qweb-pdf"
             string="Annual simplfied regime declaration"
             name="l10n_pf_account_vat.report_annual"
             file="l10n_pf_account_vat.report_annual"

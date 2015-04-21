@@ -13,62 +13,117 @@ class l10n_pf_account_vat_declaration(models.Model):
 	_name = 'l10n.pf.account.vat.declaration'
 	_description = 'Vat declaration'
 
-	def _get_fiscalyear(self, cr, uid, context=None):
-		return self.pool.get('account.fiscalyear').find(cr, uid, context=context)
+	# Méthode qui retourne l'exercice N - 1
+	def fiscalyear_past(self, cr, uid, context=None):
+		# On récupère les exercices
+		fy_obj = self.pool.get('account.fiscalyear')
+		fy_ids = fy_obj.search(cr, uid, [])
+		# Date actuelle
+		today = datetime.now()
+		# On va récupérer l'exercice N - 1
+		for item in fy_obj.browse(cr, uid, fy_ids, context=context):
+			if datetime.strptime(item.date_stop, '%Y-%m-%d').year == today.year - 1:
+				fy = item.id
+		return fy
 
-	def _get_period_from(self, cr, uid, ids, context=None):
-		if context is None:
-			context = {}
-		# Récupérer l'exercice fiscal
-		fy = self.pool.get('account.fiscalyear').find(cr, uid, context=context)
-		
+	# Méthode qui retourne l'exercice selon le cas
+	def _get_fiscalyear(self, cr, uid, context=None):
 		# Récupérer la compagnie
 		company_obj = self.pool.get('res.company')
 		company_id = company_obj._company_default_get(cr, uid, context=context)
 		company = self.pool.get('res.company').browse(cr, uid, company_id, context=context)
 		
+		# Exercice de la date actuelle
+		fy = self.pool.get('account.fiscalyear').find(cr, uid, context=context)		
+		# Date actuelle
+		today = datetime.now()
+		
+		# Cas d'une déclaration annuelle en régime simplifié effectué le mois de mars de l'année suivante
+		if company.regime_vat == 'simplified' and today.month == 3:
+			fy = self.fiscalyear_past(cr, uid, context=context)
+		return fy
+
+	# Méthode qui retourne la période de début selon le cas
+	def _get_period_from(self, cr, uid, ids, context=None):
+		if context is None:
+			context = {}
+		
+		# Récupérer la compagnie
+		company_obj = self.pool.get('res.company')
+		company_id = company_obj._company_default_get(cr, uid, context=context)
+		company = self.pool.get('res.company').browse(cr, uid, company_id, context=context)
+		# Date actuelle
+		today = datetime.now()
+
+		# Récupérer l'exercice fiscal
+		fy = self.pool.get('account.fiscalyear').find(cr, uid, context=context)
+		
+		# Changer l'exercice si on est dans le cas de la déclaration annuelle en régime simplifié
+		if company.regime_vat == 'simplified' and today.month == 3:
+			fy = self.fiscalyear_past(cr, uid, context=context)
+			
 		# Récupérer les périodes de l'exercice en cours
 		period = self.pool.get('account.period')
 		periods = period.search(cr, uid, [('fiscalyear_id.id','=', fy), ('special', '=', False)])
-		today = datetime.now()
-		
+
 		res = 0
 		m_from = 0
 		
-		# On détermine si la déclaration se fait en Janvier
-		first_month = False
-		if today.month == 1:
-			first_month = True
-		
-		##Cas 1: Par Trimestre
-		if company.period_declaration == 'trimester':
-			if first_month:
-				m_from = today.month + 9
-			elif not first_month:
-				m_from = today.month - 3
-		#Cas 2: Par Mois
-		elif company.period_declaration == 'month':
-			if first_month:
-				m_from = today.month + 11
-			elif not first_month:
-				m_from = today.month - 1
-			
+		# Cas régime réel
+		if company.regime_vat == 'real':
+			# On détermine si la déclaration se fait en Janvier
+			first_month = False
+			if today.month == 1:
+				first_month = True
+			##Cas 1: Par Trimestre
+			if company.period_declaration == 'trimester':
+				if first_month:
+					m_from = today.month + 9
+				elif not first_month:
+					m_from = today.month - 3
+			#Cas 2: Par Mois
+			elif company.period_declaration == 'month':
+				if first_month:
+					m_from = today.month + 11
+				elif not first_month:
+					m_from = today.month - 1
+		# Cas régime simplifié
+		elif company.regime_vat == 'simplified':
+			# Acompte
+			if today.month == 9:
+				m_from = today.month - 8
+			# Annuelle
+			elif today.month == 3:
+				m_from = today.month - 2
+		# Récupérer la bonne période
 		for i in period.browse(cr, uid, periods, context=context):
 			d_stop = datetime.strptime(i.date_stop, '%Y-%m-%d')
 			if (d_stop.month == m_from):
 				res = i.id
 		return res
 	
+	# Méthode qui retourne la période de fin selon le cas
 	def _get_period_to(self, cr, uid, ids, context=None):
 		if context is None:
 			context = {}
+		
+		# Récupérer la compagnie
+		company_obj = self.pool.get('res.company')
+		company_id = company_obj._company_default_get(cr, uid, context=context)
+		company = self.pool.get('res.company').browse(cr, uid, company_id, context=context)
+		# Date actuelle
+		today = datetime.now()
+
 		# Récupérer l'exercice fiscal
 		fy = self.pool.get('account.fiscalyear').find(cr, uid, context=context)
+		
+		# Changer l'exercice si on est dans le cas de la déclaration annuelle en régime simplifié
+		if company.regime_vat == 'simplified' and today.month == 3:
+			fy = self.fiscalyear_past(cr, uid, context=context)
 		
 		# Récupérer les périodes de l'exercice en cours
 		period = self.pool.get('account.period')
 		periods = period.search(cr, uid, [('fiscalyear_id.id','=', fy), ('special', '=', False)])
-		today = datetime.now()
 		
 		res = 0
 		# On détermine si la déclaration se fait en Janvier
@@ -81,10 +136,27 @@ class l10n_pf_account_vat_declaration(models.Model):
 		elif not first_month:
 			m_to = today.month - 1
 		
+		# Cas annuelle en régime simplifié
+		if company.regime_vat == 'simplified' and today.month == 3:
+			m_to = today.month + 9
+		
+		# Récupérer la bonne période
 		for i in period.browse(cr, uid, periods, context=context):
 			d_stop = datetime.strptime(i.date_stop, '%Y-%m-%d')
 			if (d_stop.month == m_to):
 				res = i.id
+		return res
+
+	# Méthode qui retourne le bonne type de déclaration selon si on est en acompte ou en annuelle
+	def _get_type_simplified(self, cr, uid, ids, context=None):
+		res = ''
+		p_to_id = self._get_period_to(cr, uid, ids, context=context)
+		p_to = self.pool.get('account.period').browse(cr, uid, p_to_id, context=context)
+
+		if p_to_id != 0 and datetime.strptime(p_to.date_stop, '%Y-%m-%d').month == 8:
+			res = 'deposit'
+		elif p_to_id != 0 and datetime.strptime(p_to.date_stop, '%Y-%m-%d').month == 12:
+			res = 'annual'
 		return res
 
 	def account_chart_open_window(self, cr, uid, ids, context=None):
@@ -118,173 +190,216 @@ class l10n_pf_account_vat_declaration(models.Model):
 			for field in ['exports_ids', 'others_ids', 'reduced_rate_ids', 'intermediate_rate_ids', 'normal_rate_ids', \
 			'immo_ids', 'others_goods_services_ids', 'sales_ids', 'services_ids', 'credit_ids', 'deposit']:
 				res = 0.0
-				if (decl.company_regime == 'real') and (decl.company_vat_type == 'bills'):
-					period = self.pool.get('account.period')
-					special_period = period.search(cr, uid, [('fiscalyear_id.id','=', decl.fiscalyear.id), ('special', '=', True)])
-					#Contexte pour calculer les balances de l'année en cours	
-					ctx_n = {
-						'fiscalyear': decl.fiscalyear.id,
-						'period_from': special_period[0],
-						'period_to': decl.period_to.id,
-						'target_move': decl.target_move
-					}
+				period = self.pool.get('account.period')
+				special_period = period.search(cr, uid, [('fiscalyear_id.id','=', decl.fiscalyear.id), ('special', '=', True)])
+				#Contexte pour calculer les balances de l'année en cours	
+				ctx_n = {
+					'fiscalyear': decl.fiscalyear.id,
+					'period_from': special_period[0],
+					'period_to': decl.period_to.id,
+					'target_move': decl.target_move
+				}
+				# Cas régime réel (Factures et encaissements) + Cas régime simplifié (Annuelle)
+				if (decl.company_regime == 'real') or (decl.company_regime == 'simplified' and decl.type_simplified == 'annual'):
+					# Récupérer le montant des comptes des exportations
 					if field == 'exports_ids':
 						for i in (ac for ac in decl.company_id.exports_ids if ac != None):
 							res = res + i.balance
 						decl.update({'account_exports': -res})
+					# Récupérer le montant des autres opérations non taxables
 					elif field == 'others_ids':
 						for i in (ac for ac in decl.company_id.others_ids if ac != None):
 							res = res + i.balance
 						decl.update({'account_other': res})
-					elif field == 'reduced_rate_ids':
-						my_list = []
-						# On récupère tous les comptes qui se trouvent dans la Taxe
-						for i in (tx for tx in self.browse(cr, uid, ids, context=ctx_n).company_id.tax_reduced_rate_ids if tx != None):
-							my_list = my_list + list(i.account_collected_id) + list(i.account_paid_id)
-						# On supprime les doublons
-						my_list = list(set(my_list))
-						# On parcourt la liste des comptes triés pour avoir le total des balances
-						for index, obj in enumerate(my_list):
-							res = res + my_list[index].balance
-						decl.update({'vat_due_reduced_rate': -res})
-					elif field == 'intermediate_rate_ids':
-						my_list = []
-						# On récupère tous les comptes qui se trouvent dans la Taxe
-						for i in (tx for tx in self.browse(cr, uid, ids, context=ctx_n).company_id.tax_intermediate_rate_ids if tx != None):
-							my_list = my_list + list(i.account_collected_id) + list(i.account_paid_id)
-						# On supprime les doublons
-						my_list = list(set(my_list))
-						# On parcourt la liste des comptes triés pour avoir le total des balances
-						for index, obj in enumerate(my_list):
-							res = res + my_list[index].balance
-						decl.update({'vat_due_intermediate_rate': -res})
-					elif field == 'normal_rate_ids':
-						my_list = []
-						# On récupère tous les comptes qui se trouvent dans la Taxe
-						for i in (tx for tx in self.browse(cr, uid, ids, context=ctx_n).company_id.tax_normal_rate_ids if tx != None):
-							my_list = my_list + list(i.account_collected_id) + list(i.account_paid_id)
-						# On supprime les doublons
-						my_list = list(set(my_list))
-						# On parcourt la liste des comptes triés pour avoir le total des balances
-						for index, obj in enumerate(my_list):
-							res = res + my_list[index].balance
-						decl.update({'vat_due_normal_rate': -res})
-					elif field == 'immo_ids':
-						my_list = []
-						# On récupère tous les comptes qui se trouvent dans la Taxe
-						for i in (tx for tx in self.browse(cr, uid, ids, context=ctx_n).company_id.tax_immo_ids if tx != None):
-							my_list = my_list + list(i.account_collected_id) + list(i.account_paid_id)
-						# On supprime les doublons
-						my_list = list(set(my_list))
-						# On parcourt la liste des comptes triés pour avoir le total des balances
-						for index, obj in enumerate(my_list):
-							res = res + my_list[index].balance
-						decl.update({'vat_immobilization': res})
-					elif field == 'others_goods_services_ids':
-						my_list = []
-						# On récupère tous les comptes qui se trouvent dans la Taxe
-						for i in (tx for tx in self.browse(cr, uid, ids, context=ctx_n).company_id.tax_others_goods_services_ids if tx != None):
-							my_list = my_list + list(i.account_collected_id) + list(i.account_paid_id)
-						# On supprime les doublons
-						my_list = list(set(my_list))
-						# On parcourt la liste des comptes triés pour avoir le total des balances
-						for index, obj in enumerate(my_list):
-							res = res + my_list[index].balance
-						decl.update({'vat_other_goods_services': res})
-					elif field == 'credit_ids':
-						search_ids = self.search(cr, uid, [('company_regime', 'in', ('annual','real'))])
-						print search_ids
-						for obj in self.browse(cr, uid, search_ids, context=context):
-							if decl.company_regime == 'annual':
+					# Annuelle en régime simplifié OU Régime réel sur les factures
+					if (decl.type_simplified == 'annual') or (decl.company_vat_type == 'bills'):
+						if field == 'reduced_rate_ids':
+							my_list = []
+							# On récupère tous les comptes qui se trouvent dans la Taxe
+							for i in (tx for tx in self.browse(cr, uid, ids, context=ctx_n).company_id.tax_reduced_rate_ids if tx != None):
+								my_list = my_list + list(i.account_collected_id) + list(i.account_paid_id)
+							# On supprime les doublons
+							my_list = list(set(my_list))
+							# On parcourt la liste des comptes triés pour avoir le total des balances
+							for index, obj in enumerate(my_list):
+								res = res + my_list[index].balance
+							decl.update({'vat_due_reduced_rate': -res})
+						elif field == 'intermediate_rate_ids':
+							my_list = []
+							# On récupère tous les comptes qui se trouvent dans la Taxe
+							for i in (tx for tx in self.browse(cr, uid, ids, context=ctx_n).company_id.tax_intermediate_rate_ids if tx != None):
+								my_list = my_list + list(i.account_collected_id) + list(i.account_paid_id)
+							# On supprime les doublons
+							my_list = list(set(my_list))
+							# On parcourt la liste des comptes triés pour avoir le total des balances
+							for index, obj in enumerate(my_list):
+								res = res + my_list[index].balance
+							decl.update({'vat_due_intermediate_rate': -res})
+						elif field == 'normal_rate_ids':
+							my_list = []
+							# On récupère tous les comptes qui se trouvent dans la Taxe
+							for i in (tx for tx in self.browse(cr, uid, ids, context=ctx_n).company_id.tax_normal_rate_ids if tx != None):
+								my_list = my_list + list(i.account_collected_id) + list(i.account_paid_id)
+							# On supprime les doublons
+							my_list = list(set(my_list))
+							# On parcourt la liste des comptes triés pour avoir le total des balances
+							for index, obj in enumerate(my_list):
+								res = res + my_list[index].balance
+							decl.update({'vat_due_normal_rate': -res})
+						elif field == 'immo_ids':
+							my_list = []
+							# On récupère tous les comptes qui se trouvent dans la Taxe
+							for i in (tx for tx in self.browse(cr, uid, ids, context=ctx_n).company_id.tax_immo_ids if tx != None):
+								my_list = my_list + list(i.account_collected_id) + list(i.account_paid_id)
+							# On supprime les doublons
+							my_list = list(set(my_list))
+							# On parcourt la liste des comptes triés pour avoir le total des balances
+							for index, obj in enumerate(my_list):
+								res = res + my_list[index].balance
+							decl.update({'vat_immobilization': res})
+						elif field == 'others_goods_services_ids':
+							my_list = []
+							# On récupère tous les comptes qui se trouvent dans la Taxe
+							for i in (tx for tx in self.browse(cr, uid, ids, context=ctx_n).company_id.tax_others_goods_services_ids if tx != None):
+								my_list = my_list + list(i.account_collected_id) + list(i.account_paid_id)
+							# On supprime les doublons
+							my_list = list(set(my_list))
+							# On parcourt la liste des comptes triés pour avoir le total des balances
+							for index, obj in enumerate(my_list):
+								res = res + my_list[index].balance
+							decl.update({'vat_other_goods_services': res})
+						elif field == 'credit_ids':
+							# Récupérer les déclarations sur les factures et celles annuelles
+							search_ids = self.search(cr, uid, ['|', ('company_vat_type', '=', 'bills'), ('type_simplified', '=', 'annual')])
+							for obj in self.browse(cr, uid, search_ids, context=context):
+								# Cas annuelle en régime simplifié
+								if decl.type_simplified == 'annual':
+									# Date de début de la période de fin de la déclaration actuelle
+									d1 = datetime.strptime(decl.period_to.date_start, '%Y-%m-%d')
+									# Date de début de la période de fin de la déclaration i
+									d2 = datetime.strptime(obj.period_to.date_start, '%Y-%m-%d')
+									# Récupérer le crédit à reporter si la déclaration est validée
+									if (str(d1.year) == str(d2.year + 1)) and (obj.state == 'done') and (decl.company_regime == obj.company_regime):
+										decl.update({'defferal_credit': obj.credit_to_be_transferred})
+										print obj.credit_to_be_transferred
+								# Cas régime réel sur les factures
+								elif decl.company_vat_type == 'bills':
+									# Date de début de la période de fin de la déclaration actuelle
+									d1 = datetime.strptime(decl.period_to.date_start, '%Y-%m-%d')
+									# Date de début de la période de fin de la déclaration i
+									d2 = datetime.strptime(obj.period_to.date_start, '%Y-%m-%d')
+									# Cas où on veut récupérer le report de crédit du T4 ou du M12 de l'exercice précédent
+									# TODO: à revoir
+									if str(d1.year) == str(d2.year + 1):
+										if ((str(d1.month) == str(d2.month - 11)) or (str(d1.month) == str(d2.month - 9))) and \
+											(obj.state == 'done') and (decl.company_regime == obj.company_regime) and \
+											(decl.company_vat_type == obj.company_vat_type):
+											decl.update({'defferal_credit': obj.credit_to_be_transferred})
+											print obj.credit_to_be_transferred
+									# Autres cas
+									elif str(d1.year) == str(d2.year):
+										if ((str(d1.month - 1) == str(d2.month)) or (str(d1.month) == str(d2.month + 3))) and \
+											(obj.state == 'done') and (decl.company_regime == obj.company_regime) and \
+											(decl.company_vat_type == obj.company_vat_type):
+											decl.update({'defferal_credit': obj.credit_to_be_transferred})
+											print obj.credit_to_be_transferred
+					# Régime réel sur les encaissements
+					elif decl.company_vat_type == 'cashing':
+						#Contexte pour calculer la balance au 1er jour de l'exercice
+						ctx_open = {
+								'fiscalyear': decl.fiscalyear.id,
+								'period_from': special_period[0],
+								'period_to': special_period[0],
+								'target_move': decl.target_move
+						}
+						if field == 'intermediate_rate_ids':
+							compte_client_n = 0.0
+							chiffre_n = 0.0
+							taux_inter_n = 0.0
+							compte_client_n_1 = 0.0
+							deja_declare = 0.0
+							# on recupere le montant du 411 pour l'annee N
+							for i in (ac for ac in self.browse(cr, uid, ids, context=ctx_n).company_id.customers_ids if ac != None):
+								compte_client_n = compte_client_n + i.balance
+							# on recupere le montant du 706 pour l'annee N
+							for i in (ac for ac in self.browse(cr, uid, ids, context=ctx_n).company_id.turnover_ids if ac != None):
+								chiffre_n = chiffre_n + i.balance
+							# on  recupere le montant du taux intermédiaire pour l'annee N
+							my_list = []
+							# On récupère tous les comptes qui se trouvent dans la Taxe
+							for i in (tx for tx in self.browse(cr, uid, ids, context=ctx_n).company_id.tax_intermediate_rate_ids if tx != None):
+								my_list = my_list + list(i.account_collected_id) + list(i.account_paid_id)
+							print my_list
+							# On supprime les doublons
+							my_list = list(set(my_list))
+							print my_list
+							# On parcourt la liste des comptes triés pour avoir le total des balances
+							for index,obj in enumerate(my_list):
+								taux_inter_n = taux_inter_n + my_list[index].balance
+							# on recupere la balance 411 dans la periode d'ouverture de l'annee N
+							for i in (ac for ac in self.browse(cr, uid, ids, context=ctx_open).company_id.customers_ids if ac != None):
+								compte_client_n_1 = compte_client_n_1 + i.balance
+							# Montant déjà déclaré
+							decl_ids = self.search(cr, uid, [])
+							print decl_ids
+							for j in self.browse(cr, uid, decl_ids, context=context):
+								if (j.fiscalyear == decl.fiscalyear) and (j.state == 'done') and (j.company_regime == 'real') and (j.company_vat_type == 'cashing'):
+									deja_declare = deja_declare + j.vat_due_intermediate_rate
+							# Calcul du montant TTC
+							ttc = compte_client_n_1 - chiffre_n - taux_inter_n - compte_client_n
+							# Calcul du montant HT
+							ht = decl.company_id.tax_intermediate_rate_ids and \
+								decl.company_id.currency_id.round((ttc / (1 + decl.company_id.tax_intermediate_rate_ids[0].amount)) or 0.0) or 0.0
+							# Calcul du montant de la prestation à déclarer
+							prestation = ht - deja_declare
+							# Calcul du montant de la TVA due de la prestation
+							res = decl.company_id.tax_intermediate_rate_ids and \
+								decl.company_id.currency_id.round((prestation * decl.company_id.tax_intermediate_rate_ids[0].amount) or 0.0) or 0.0
+							decl.update({'vat_due_intermediate_rate': res})
+						elif field == 'immo_ids':
+							my_list = []
+							# On récupère tous les comptes qui se trouvent dans la Taxe
+							for i in (tx for tx in self.browse(cr, uid, ids, context=ctx_n).company_id.tax_immo_ids if tx != None):
+								my_list = my_list + list(i.account_collected_id) + list(i.account_paid_id)
+							# On supprime les doublons
+							my_list = list(set(my_list))
+							# On parcourt la liste des comptes triés pour avoir le total des balances
+							for index,obj in enumerate(my_list):
+								res = res + my_list[index].balance
+							decl.update({'vat_immobilization': res})
+						elif field == 'others_goods_services_ids':
+							my_list = []
+							# On récupère tous les comptes qui se trouvent dans la Taxe
+							for i in (tx for tx in self.browse(cr, uid, ids, context=ctx_n).company_id.tax_others_goods_services_ids if tx != None):
+								my_list = my_list + list(i.account_collected_id) + list(i.account_paid_id)
+							# On supprime les doublons
+							my_list = list(set(my_list))
+							# On parcourt la liste des comptes triés pour avoir le total des balances
+							for index,obj in enumerate(my_list):
+								res = res + my_list[index].balance
+							decl.update({'vat_other_goods_services': res})
+						elif field == 'credit_ids':
+							search_ids = self.search(cr, uid, [('company_regime','=','real'),('company_vat_type','=','cashing')])
+							print search_ids
+							for obj in self.browse(cr, uid, search_ids, context=context):
 								d1 = datetime.strptime(decl.period_to.date_start, '%Y-%m-%d')
 								d2 = datetime.strptime(obj.period_to.date_start, '%Y-%m-%d')
-								if (str(d1.year) == str(d2.year + 1)) and (obj.state == 'done') and (decl.company_regime == obj.company_regime):
+								if ((str(d1.month) == str(d2.month + 1)) or (str(d1.month) == str(d2.month + 3))) and \
+									(obj.state == 'done') and (decl.company_regime == obj.company_regime) and \
+									(decl.company_vat_type == obj.company_vat_type):
 									decl.update({'defferal_credit': obj.credit_to_be_transferred})
 									print obj.credit_to_be_transferred
-							elif (decl.company_regime == 'real') and (decl.company_vat_type == 'bills'):
-								d1 = datetime.strptime(decl.period_to.date_start, '%Y-%m-%d')
-								d2 = datetime.strptime(obj.period_to.date_start, '%Y-%m-%d')
-								if str(d1.year) == str(d2.year + 1):
-									if ((str(d1.month) == str(d2.month - 11)) or (str(d1.month) == str(d2.month - 9))) and \
-										(obj.state == 'done') and (decl.company_regime == obj.company_regime) and \
-										(decl.company_vat_type == obj.company_vat_type):
-										decl.update({'defferal_credit': obj.credit_to_be_transferred})
-										print obj.credit_to_be_transferred
-								else:
-									if ((str(d1.month - 1) == str(d2.month)) or (str(d1.month) == str(d2.month + 3))) and \
-										(obj.state == 'done') and (decl.company_regime == obj.company_regime) and \
-										(decl.company_vat_type == obj.company_vat_type):
-										decl.update({'defferal_credit': obj.credit_to_be_transferred})
-										print obj.credit_to_be_transferred
-				elif (decl.company_regime == 'real' and decl.company_vat_type == 'cashing'):
-					period = self.pool.get('account.period')
-					special_period = period.search(cr, uid, [('fiscalyear_id.id','=', decl.fiscalyear.id), ('special', '=', True)])
-					#Contexte pour calculer les balances de l'année en cours
-					ctx_n = {
-						'fiscalyear': decl.fiscalyear.id,
-						'period_from': special_period[0],
-						'period_to': decl.period_to.id,
-						'target_move': decl.target_move,
-					}
-					#Contexte pour calculer la balance au 1er jour de l'exercice
-					ctx_open = {
-							'fiscalyear': decl.fiscalyear.id,
-							'period_from': special_period[0],
-							'period_to': special_period[0],
-							'target_move': decl.target_move
-					}
-					if field == 'exports_ids':
-						for i in (ac for ac in decl.company_id.exports_ids if ac != None):
+					decl.update({'state': 'fill'})
+				# Cas régime simplifié (Acompte)
+				elif (decl.company_regime == 'simplified' and decl.type_simplified == 'deposit'):
+					if field == 'sales_ids':
+						for i in (ac for ac in decl.company_id.sales_ids if ac != None):
 							res = res + i.balance
-						decl.update({'account_exports': -res})
-					elif field == 'others_ids':
-						for i in (ac for ac in decl.company_id.others_ids if ac != None):
+						decl.update({'excluding_vat_sales': -res})
+					elif field == 'services_ids':
+						for i in (ac for ac in decl.company_id.services_ids if ac != None):
 							res = res + i.balance
-						decl.update({'account_other': res})
-					elif field == 'intermediate_rate_ids':
-						compte_client_n = 0.0
-						chiffre_n = 0.0
-						taux_inter_n = 0.0
-						compte_client_n_1 = 0.0
-						deja_declare = 0.0
-						# on recupere le montant du 411 pour l'annee N
-						for i in (ac for ac in self.browse(cr, uid, ids, context=ctx_n).company_id.customers_ids if ac != None):
-							compte_client_n = compte_client_n + i.balance
-						# on recupere le montant du 706 pour l'annee N
-						for i in (ac for ac in self.browse(cr, uid, ids, context=ctx_n).company_id.turnover_ids if ac != None):
-							chiffre_n = chiffre_n + i.balance
-						# on  recupere le montant du taux intermédiaire pour l'annee N
-						my_list = []
-						# On récupère tous les comptes qui se trouvent dans la Taxe
-						for i in (tx for tx in self.browse(cr, uid, ids, context=ctx_n).company_id.tax_intermediate_rate_ids if tx != None):
-							my_list = my_list + list(i.account_collected_id) + list(i.account_paid_id)
-						print my_list
-						# On supprime les doublons
-						my_list = list(set(my_list))
-						print my_list
-						# On parcourt la liste des comptes triés pour avoir le total des balances
-						for index,obj in enumerate(my_list):
-							taux_inter_n = taux_inter_n + my_list[index].balance
-						# on recupere la balance 411 dans la periode d'ouverture de l'annee N
-						for i in (ac for ac in self.browse(cr, uid, ids, context=ctx_open).company_id.customers_ids if ac != None):
-							compte_client_n_1 = compte_client_n_1 + i.balance
-						# Montant déjà déclaré
-						decl_ids = self.search(cr, uid, [])
-						print decl_ids
-						for j in self.browse(cr, uid, decl_ids, context=context):
-							if (j.fiscalyear == decl.fiscalyear) and (j.state == 'done') and (j.company_regime == 'real') and (j.company_vat_type == 'cashing'):
-								deja_declare = deja_declare + j.vat_due_intermediate_rate
-						# Calcul du montant TTC
-						ttc = compte_client_n_1 - chiffre_n - taux_inter_n - compte_client_n
-						# Calcul du montant HT
-						ht = decl.company_id.tax_intermediate_rate_ids and \
-							decl.company_id.currency_id.round((ttc / (1 + decl.company_id.tax_intermediate_rate_ids[0].amount)) or 0.0) or 0.0
-						# Calcul du montant de la prestation à déclarer
-						prestation = ht - deja_declare
-						# Calcul du montant de la TVA due de la prestation
-						res = decl.company_id.tax_intermediate_rate_ids and \
-							decl.company_id.currency_id.round((prestation * decl.company_id.tax_intermediate_rate_ids[0].amount) or 0.0) or 0.0
-						decl.update({'vat_due_intermediate_rate': res})
+						decl.update({'excluding_vat_services': -res})
 					elif field == 'immo_ids':
 						my_list = []
 						# On récupère tous les comptes qui se trouvent dans la Taxe
@@ -293,33 +408,26 @@ class l10n_pf_account_vat_declaration(models.Model):
 						# On supprime les doublons
 						my_list = list(set(my_list))
 						# On parcourt la liste des comptes triés pour avoir le total des balances
-						for index,obj in enumerate(my_list):
+						for index, obj in enumerate(my_list):
 							res = res + my_list[index].balance
 						decl.update({'vat_immobilization': res})
-					elif field == 'others_goods_services_ids':
-						my_list = []
-						# On récupère tous les comptes qui se trouvent dans la Taxe
-						for i in (tx for tx in self.browse(cr, uid, ids, context=ctx_n).company_id.tax_others_goods_services_ids if tx != None):
-							my_list = my_list + list(i.account_collected_id) + list(i.account_paid_id)
-						# On supprime les doublons
-						my_list = list(set(my_list))
-						# On parcourt la liste des comptes triés pour avoir le total des balances
-						for index,obj in enumerate(my_list):
-							res = res + my_list[index].balance
-						decl.update({'vat_other_goods_services': res})
 					elif field == 'credit_ids':
-						search_ids = self.search(cr, uid, [('company_regime','=','real'),('company_vat_type','=','cashing')])
-						print search_ids
+						# TODO: A tester
+						# Récupérer les déclarations sur les factures et celles annuelles
+						search_ids = self.search(cr, uid, [('company_vat_type', '=', 'simplified'), ('type_simplified', '=', 'deposit')])
 						for obj in self.browse(cr, uid, search_ids, context=context):
+							# Date de début de la période de fin de la déclaration actuelle
 							d1 = datetime.strptime(decl.period_to.date_start, '%Y-%m-%d')
+							# Date de début de la période de fin de la déclaration i
 							d2 = datetime.strptime(obj.period_to.date_start, '%Y-%m-%d')
-							if ((str(d1.month) == str(d2.month + 1)) or (str(d1.month) == str(d2.month + 3))) and \
-								(obj.state == 'done') and (decl.company_regime == obj.company_regime) and \
-								(decl.company_vat_type == obj.company_vat_type):
+							# Récupérer le crédit à reporter si la déclaration est validée
+							if (str(d1.year) == str(d2.year + 1)) and (obj.state == 'done') and (decl.company_regime == obj.company_regime):
 								decl.update({'defferal_credit': obj.credit_to_be_transferred})
 								print obj.credit_to_be_transferred
-
-		decl.update({'state': 'fill'})
+					decl.update({'state': 'simulate'})
+						
+					
+		
 		return True
 
 	## Cette fonction calcule le montant des bases hors TVA
@@ -347,35 +455,35 @@ class l10n_pf_account_vat_declaration(models.Model):
 
 	## Cette fonction calcule le total de la TVA déductible selon le type de régime
 	@api.one
-	@api.depends('company_regime','vat_immobilization','vat_other_goods_services','vat_regularization','defferal_credit')
+	@api.depends('type_simplified','vat_immobilization','vat_other_goods_services','vat_regularization','defferal_credit')
 	def _compute_total_deductible(self):
-		if self.company_regime == 'deposit':
+		if self.type_simplified == 'deposit':
 			self.total_vat_deductible = self.vat_immobilization + self.defferal_credit
 		else:
 			self.total_vat_deductible = self.vat_immobilization + self.vat_other_goods_services + self.vat_regularization + self.defferal_credit
 
 	## Cette fonction calcule le montant de la TVA ou du crédit de TVA selon les cas
 	@api.one
-	@api.depends('total_vat_payable','total_vat_deductible','total_tax_payable','company_regime','deposit','obtained_reimbursement')
+	@api.depends('total_vat_payable','total_vat_deductible','total_tax_payable','type_simplified','deposit','obtained_reimbursement')
 	def _compute_amount_vat(self):
 		diff1 = abs(self.total_tax_payable) - abs(self.total_vat_deductible)
 		diff2 = abs(self.total_vat_payable) - abs(self.total_vat_deductible)
 
-		if self.company_regime == 'deposit':
+		if self.type_simplified == 'deposit':
 			if diff1 > 0:
 				self.net_vat_due = abs(self.total_tax_payable) - abs(self.total_vat_deductible)
 				self.vat_credit = 0.0
-			else:
+			elif diff1 < 0:
 				self.vat_credit = abs(self.total_vat_deductible) - abs(self.total_tax_payable)
 				self.net_vat_due = 0.0
 		elif self.company_regime == 'real':
 			if diff2 > 0:
 				self.net_vat_due = abs(self.total_vat_payable) - abs(self.total_vat_deductible)
 				self.vat_credit = 0.0
-			else:
+			elif diff2 < 0:
 				self.vat_credit = abs(self.total_vat_deductible) - abs(self.total_vat_payable)
 				self.net_vat_due = 0.0
-		elif self.company_regime == 'annual':
+		elif self.type_simplified == 'annual':
 			# TVA A PAYER
 			if diff2 > 0:
 				self.difference_payable_deductible = diff2
@@ -385,7 +493,7 @@ class l10n_pf_account_vat_declaration(models.Model):
 				self.net_vat_due = self.total_difference_reimbursement - self.total_difference_deposit
 				self.surplus = 0.0
 			# CREDIT
-			else:
+			elif diff2 < 0:
 				self.difference_deductible_payable = diff2
 				self.difference_payable_deductible = 0.0
 				self.total_difference_deposit = self.difference_deductible_payable + self.deposit
@@ -395,25 +503,26 @@ class l10n_pf_account_vat_declaration(models.Model):
 
 	## Cette fonction calcule le montant du crédit à reporter
 	@api.one
-	@api.depends('vat_credit','reimbursement','surplus','company_regime')
+	@api.depends('vat_credit', 'reimbursement', 'surplus', 'company_regime', 'type_simplified')
 	def _compute_credit_to_reported(self):
-		if self.company_regime == 'annual':
+		if self.type_simplified == 'annual':
 			self.credit_to_be_transferred = self.surplus - self.reimbursement
-		else:
+		elif self.company_regime == 'real' or self.type_simplified == 'deposit':
 			self.credit_to_be_transferred = self.vat_credit - self.reimbursement
 
 	@api.one
 	@api.depends('excluding_vat_sales','excluding_vat_services','company_id')
 	def _compute_tax_due(self):
-		self.tax_due_sales = self.company_id.tax_reduced_rate_ids and self.excluding_vat_sales * self.company_id.tax_reduced_rate_ids[0].amount or 0.0
-		self.tax_due_services = self.company_id.tax_reduced_rate_ids and self.excluding_vat_services * self.company_id.tax_reduced_rate_ids[0].amount or 0.0
+		# Le coefficient de l'entreprise correspond à celui donné par le DICP (Actuellement à 5%)
+		self.tax_due_sales = self.excluding_vat_sales * 0.05 or 0.0
+		self.tax_due_services = self.excluding_vat_services * 0.05 or 0.0
 
 	@api.one
-	@api.depends('base_reduced_rate', 'base_intermediate_rate', 'base_normal_rate', 'base_regularization_to_donate', 'company_vat_type', 'company_regime')
+	@api.depends('base_reduced_rate', 'base_intermediate_rate', 'base_normal_rate', 'base_regularization_to_donate', 'company_vat_type', 'company_regime', 'type_simplified')
 	def _compute_amount_transaction(self):
 		if self.company_vat_type == 'cashing' and self.company_regime == 'real':
 			self.account_services = self.base_intermediate_rate + self.base_regularization_to_donate
-		elif self.company_regime == 'annual' or (self.company_regime == 'real' and self.company_vat_type == 'bills'):
+		elif self.type_simplified == 'annual' or (self.company_regime == 'real' and self.company_vat_type == 'bills'):
 			self.account_sales = self.base_reduced_rate + self.base_normal_rate
 			self.account_services = self.base_intermediate_rate
 
@@ -433,9 +542,12 @@ class l10n_pf_account_vat_declaration(models.Model):
 		'company_zip': fields.char('ZIP', states={'done':[('readonly',True)]}),
 		'company_bp': fields.char('BP', states={'done':[('readonly',True)]}),
 		'city_zip': fields.char('City ZIP', states={'done':[('readonly',True)]}),
-		'company_regime': fields.selection([('deposit','Deposit in simplified regime'),('annual','Annual in simplified regime'),('real','Real regime')], 'Regime'),
-		'company_vat_type': fields.selection([('cashing','Cashing vat'),('bills','Bills vat')],'Type VAT'),
-		'period_declaration': fields.selection([('month','Month'),('trimester','Trimester')], 'Declaration period'),
+		'company_regime': fields.selection([('simplified', 'Simplified regime'),('real', 'Real regime')], 'Regime'),
+		'company_vat_type': fields.selection([('cashing', 'Cashing vat'), ('bills', 'Bills vat')], 'Type VAT'),
+		
+		'type_simplified': fields.selection([('deposit', 'Deposit in simplified regime'), ('annual', 'Annual in simplified regime')], 'Type simplified'),
+		
+		'period_declaration': fields.selection([('month', 'Month'), ('trimester', 'Trimester')], 'Declaration period'),
 
 		'user_id': fields.many2one('res.users','Responsible',required=True, states={'done':[('readonly',True)]}),
 
@@ -490,7 +602,8 @@ class l10n_pf_account_vat_declaration(models.Model):
 
 		'state': fields.selection([('draft', 'Draft'), ('fill', 'Fill'), ('simulate', 'Simulate'), ('done', 'Done')], 'Status', required=True, copy=False),
 
-		'journal_entry_id': fields.many2one('account.move', 'Journal Entry', copy=False, readonly=True, index=True, help='Link to the automatically generated journal items')
+		'journal_entry_id': fields.many2one('account.move', 'Journal Entry', copy=False, readonly=True, index=True, help='Link to the automatically generated journal items'),
+		
 	}
 
 	_defaults = {
@@ -505,6 +618,7 @@ class l10n_pf_account_vat_declaration(models.Model):
 		'state': 'draft',
 		'period_from': _get_period_from,
 		'period_to': _get_period_to,
+		'type_simplified': _get_type_simplified,
 	}
 	
 	@api.multi
