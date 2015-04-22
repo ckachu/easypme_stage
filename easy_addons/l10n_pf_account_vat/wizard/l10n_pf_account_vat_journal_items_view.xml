@@ -45,7 +45,7 @@
 			<field name="res_model">l10n.pf.account.vat.journal.items</field>
 			<field name="type">ir.actions.act_window</field>
 			<field name="view_type">form</field>
-			<field name="view_mode">tree,form</field>
+			<field name="view_mode">form</field>
 			<field name="view_id" ref="l10n_pf_account_vat_journal_items_form"/>
 			<field name="target">new</field>
 		</record>

@@ -21,16 +21,16 @@
     'version': '1.0',
 
     # any module necessary for this one to work correctly
-    'depends': ['base', 'l10n_pf'],
+    'depends': ['base', 'account', 'l10n_pf'],
 
     # always loaded
     'data': [
 		#'security/l10n_pf_account_vat_security.xml',
         'security/ir.model.access.csv',
+        'wizard/l10n_pf_account_vat_journal_items_view.xml',
         'views/l10n_pf_account_vat_view.xml',
         'views/res_company_view.xml',
         'views/account_move_line_view.xml',
-        'wizard/l10n_pf_account_vat_journal_items_view.xml',
         'report/l10n_pf_account_vat_report.xml',
         'report/report_deposit_l10n_pf_account_vat.xml',
         'report/report_annual_l10n_pf_account_vat.xml',
