@@ -10,7 +10,7 @@
 				<form string="Vat">
 					<header>
 						<button name="%(action_l10n_pf_account_vat_journal_items)d" string="Simulate" type="action" 
-								attrs="{'invisible': [('type_simplified', '=', 'deposit')]}"/>
+								attrs="{'invisible': ['|', ('type_simplified', '=', 'deposit'), ('state', 'in', ('draft', 'simulate', 'done'))]}"/>
 						<button name="action_fill_declaration" states="draft" string="Fill declaration" 
 								type="object" context="{'fiscalyear':fiscalyear, 'period_from': period_from, 'period_to': period_to}"/>
 						<button name="account_chart_open_window" states="simulate,done" string="Show account chart" type="object"/>
