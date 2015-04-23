@@ -10,6 +10,8 @@ class l10n_pf_account_vat_journal_items(models.TransientModel):
 	_name = "l10n.pf.account.vat.journal.items"
 	_description = "L10n Pf Account Vat Journal Items"
 
+	# TODO: Mettre une alerte si l'utilisateur ne choisit aucun compte pour les régul
+
 	## Champs
 	vat_due_reduced_rate = fields.Float(string="Vat due reduced rate", readonly=True)
 	vat_due_intermediate_rate = fields.Float(string="Vat due intermediate rate", readonly=True)
