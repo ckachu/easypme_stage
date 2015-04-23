@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+from openerp.exceptions import except_orm, Warning, RedirectWarning
 from openerp import models, fields, api
 
 class l10n_pf_account_vat_journal_items(models.TransientModel):
@@ -51,10 +52,12 @@ class l10n_pf_account_vat_journal_items(models.TransientModel):
 			if (declaration.total_vat_payable - declaration.total_vat_deductible) > 0:
 				res.update({'credit_or_vat': declaration.net_vat_due})
 			elif (declaration.total_vat_payable - declaration.total_vat_deductible) < 0:
-				res.update({'credit_or_vat': declaration.vat_credit})
+				res.update({'credit_or_vat': declaration.type_simplified == 'annual' and declaration.surplus or declaration.vat_credit})
 		return res
 
 	def _prepare_move(self, cr, uid, decl_line, decl_line_nb, context=None):
+		if not decl_line.company_id.journal_id:
+			raise Warning('You cannot create journal items. Missing journal.')
 		return {
 			'journal_id': decl_line.company_id.journal_id.id,
 			'period_id': decl_line.period_to.id,
@@ -85,8 +88,6 @@ class l10n_pf_account_vat_journal_items(models.TransientModel):
 					ac_mv_line_obj.create(cr, uid, vals, context=context, check=False)
 			# Saisie du taux intermédiaire
 			elif field == 'intermediate_rate':
-				import pdb
-				pdb.set_trace()
 				montant = self.browse(cr, uid, ids, context=context).vat_due_intermediate_rate
 				account = company_obj.browse(cr, uid, comp_id, context=context).tax_intermediate_rate_ids and \
 						company_obj.browse(cr, uid, comp_id, context=context).tax_intermediate_rate_ids[0].account_collected_id.id or False
@@ -180,6 +181,8 @@ class l10n_pf_account_vat_journal_items(models.TransientModel):
 				montant = self.browse(cr, uid, ids, context=context).defferal_credit
 				account = company_obj.browse(cr, uid, comp_id, context=context).credit_id and \
 						company_obj.browse(cr, uid, comp_id, context=context).credit_id.id or False
+				if not account:
+					raise Warning('You cannot create journal items. Missing account credit report. Check your configuration.')
 				if account and montant != 0:
 					vals = {
 						'declaration_id': decl_id.id,
@@ -198,6 +201,8 @@ class l10n_pf_account_vat_journal_items(models.TransientModel):
 							company_obj.browse(cr, uid, comp_id, context=context).vat_id.id or False
 				account_credit = company_obj.browse(cr, uid, comp_id, context=context).credit_id and \
 							company_obj.browse(cr, uid, comp_id, context=context).credit_id.id or False
+				if not account_vat or not account_credit:
+					raise Warning('You cannot create journal items. Missing account credit report or vat. Check your configuration.')
 				# TVA
 				if difference > 0 and account_vat:
 					vals = {
@@ -215,7 +220,7 @@ class l10n_pf_account_vat_journal_items(models.TransientModel):
 						'declaration_id': decl_id.id,
 						'move_id': move_id,
 						'account_id': company_obj.browse(cr, uid, comp_id, context=context).credit_id.id,
-						'debit': abs(decl_id.vat_credit),
+						'debit': decl_id.type_simplified == 'annual' and decl_id.surplus or decl_id.vat_credit,
 						'credit': 0.0,
 						'name': decl_id.name
 					}

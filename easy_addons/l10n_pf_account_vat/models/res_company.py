@@ -37,3 +37,5 @@ class res_company(osv.osv):
 		'regime_vat': fields.selection([('simplified', 'Simplified regime'), ('real', 'Real regime')], 'Regime Vat'),
 		'type_vat': fields.selection([('cashing', 'Cashing vat'), ('bills', 'Bills vat')], 'Type vat'),
 	}
+
+	#TODO: Faire une fonction qui met à None type_vat et period_declaration si on est en régime simplifié

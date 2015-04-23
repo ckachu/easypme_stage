@@ -39,7 +39,7 @@ class l10n_pf_account_vat_declaration(models.Model):
 		today = datetime.now()
 		
 		# Cas d'une déclaration annuelle en régime simplifié effectué le mois de mars de l'année suivante
-		if company.regime_vat == 'simplified' and today.month == 3:
+		if (company.regime_vat == 'simplified' and today.month == 3) or (company.regime_vat == 'real' and today.month == 1):
 			fy = self.fiscalyear_past(cr, uid, context=context)
 		return fy
 
@@ -59,7 +59,7 @@ class l10n_pf_account_vat_declaration(models.Model):
 		fy = self.pool.get('account.fiscalyear').find(cr, uid, context=context)
 		
 		# Changer l'exercice si on est dans le cas de la déclaration annuelle en régime simplifié
-		if company.regime_vat == 'simplified' and today.month == 3:
+		if (company.regime_vat == 'simplified' and today.month == 3) or (company.regime_vat == 'real' and today.month == 1):
 			fy = self.fiscalyear_past(cr, uid, context=context)
 			
 		# Récupérer les périodes de l'exercice en cours
@@ -118,7 +118,7 @@ class l10n_pf_account_vat_declaration(models.Model):
 		fy = self.pool.get('account.fiscalyear').find(cr, uid, context=context)
 		
 		# Changer l'exercice si on est dans le cas de la déclaration annuelle en régime simplifié
-		if company.regime_vat == 'simplified' and today.month == 3:
+		if company.regime_vat == 'simplified' and today.month == 3 or (company.regime_vat == 'real' and today.month == 1):
 			fy = self.fiscalyear_past(cr, uid, context=context)
 		
 		# Récupérer les périodes de l'exercice en cours
@@ -188,7 +188,7 @@ class l10n_pf_account_vat_declaration(models.Model):
 			context = {}
 		for decl in self.browse(cr, uid, ids, context=context):
 			for field in ['exports_ids', 'others_ids', 'reduced_rate_ids', 'intermediate_rate_ids', 'normal_rate_ids', \
-			'immo_ids', 'others_goods_services_ids', 'sales_ids', 'services_ids', 'credit_ids', 'deposit']:
+			'immo_ids', 'others_goods_services_ids', 'sales_ids', 'services_ids', 'credit_ids', 'deposit', 'reimbursement']:
 				res = 0.0
 				period = self.pool.get('account.period')
 				special_period = period.search(cr, uid, [('fiscalyear_id.id','=', decl.fiscalyear.id), ('special', '=', True)])
@@ -210,7 +210,7 @@ class l10n_pf_account_vat_declaration(models.Model):
 					elif field == 'others_ids':
 						for i in (ac for ac in decl.company_id.others_ids if ac != None):
 							res = res + i.balance
-						decl.update({'account_other': res})
+						decl.update({'account_other': -res})
 					# Annuelle en régime simplifié OU Régime réel sur les factures
 					if (decl.type_simplified == 'annual') or (decl.company_vat_type == 'bills'):
 						if field == 'reduced_rate_ids':
@@ -268,7 +268,21 @@ class l10n_pf_account_vat_declaration(models.Model):
 							for index, obj in enumerate(my_list):
 								res = res + my_list[index].balance
 							decl.update({'vat_other_goods_services': res})
+						elif field == 'deposit':
+							if decl.type_simplified == 'annual':
+								search_ids = self.search(cr, uid, [('type_simplified','=','deposit'), ('fiscalyear', '=', decl.fiscalyear.id)])
+								for obj in self.browse(cr, uid, search_ids, context=context):
+									if obj.state == 'done':
+										decl.update({'deposit': obj.net_vat_due})
+						elif field == 'reimbursement':
+							if decl.type_simplified == 'annual':
+								search_ids = self.search(cr, uid, [('type_simplified','=','deposit'), ('fiscalyear', '=', decl.fiscalyear.id)])
+								for obj in self.browse(cr, uid, search_ids, context=context):
+									if obj.state == 'done':
+										decl.update({'obtained_reimbursement': obj.reimbursement}) 
 						elif field == 'credit_ids':
+							import pdb
+							pdb.set_trace()
 							# Récupérer les déclarations sur les factures et celles annuelles
 							search_ids = self.search(cr, uid, ['|', ('company_vat_type', '=', 'bills'), ('type_simplified', '=', 'annual')])
 							for obj in self.browse(cr, uid, search_ids, context=context):
@@ -289,20 +303,17 @@ class l10n_pf_account_vat_declaration(models.Model):
 									# Date de début de la période de fin de la déclaration i
 									d2 = datetime.strptime(obj.period_to.date_start, '%Y-%m-%d')
 									# Cas où on veut récupérer le report de crédit du T4 ou du M12 de l'exercice précédent
-									# TODO: à revoir
 									if str(d1.year) == str(d2.year + 1):
-										if ((str(d1.month) == str(d2.month - 11)) or (str(d1.month) == str(d2.month - 9))) and \
-											(obj.state == 'done') and (decl.company_regime == obj.company_regime) and \
-											(decl.company_vat_type == obj.company_vat_type):
+										if decl.period_declaration == 'month' and (str(d1.month) == str(d2.month - 11)) and (obj.state == 'done'):
 											decl.update({'defferal_credit': obj.credit_to_be_transferred})
-											print obj.credit_to_be_transferred
+										elif decl.period_declaration == 'trimester' and (str(d1.month) == str(d2.month - 9)) and (obj.state == 'done'):
+											decl.update({'defferal_credit': obj.credit_to_be_transferred})
 									# Autres cas
 									elif str(d1.year) == str(d2.year):
-										if ((str(d1.month - 1) == str(d2.month)) or (str(d1.month) == str(d2.month + 3))) and \
-											(obj.state == 'done') and (decl.company_regime == obj.company_regime) and \
-											(decl.company_vat_type == obj.company_vat_type):
+										if decl.period_declaration == 'month' and (str(d1.month - 1) == str(d2.month)) and (obj.state == 'done'):
 											decl.update({'defferal_credit': obj.credit_to_be_transferred})
-											print obj.credit_to_be_transferred
+										elif decl.period_declaration == 'trimester' and (str(d1.month) == str(d2.month + 3)) and (obj.state == 'done'):
+											decl.update({'defferal_credit': obj.credit_to_be_transferred})
 					# Régime réel sur les encaissements
 					elif decl.company_vat_type == 'cashing':
 						#Contexte pour calculer la balance au 1er jour de l'exercice
@@ -355,7 +366,7 @@ class l10n_pf_account_vat_declaration(models.Model):
 							# Calcul du montant de la TVA due de la prestation
 							res = decl.company_id.tax_intermediate_rate_ids and \
 								decl.company_id.currency_id.round((prestation * decl.company_id.tax_intermediate_rate_ids[0].amount) or 0.0) or 0.0
-							decl.update({'vat_due_intermediate_rate': res})
+							decl.update({'vat_due_intermediate_rate': -res})
 						elif field == 'immo_ids':
 							my_list = []
 							# On récupère tous les comptes qui se trouvent dans la Taxe
@@ -412,22 +423,18 @@ class l10n_pf_account_vat_declaration(models.Model):
 							res = res + my_list[index].balance
 						decl.update({'vat_immobilization': res})
 					elif field == 'credit_ids':
-						# TODO: A tester
 						# Récupérer les déclarations sur les factures et celles annuelles
-						search_ids = self.search(cr, uid, [('company_vat_type', '=', 'simplified'), ('type_simplified', '=', 'deposit')])
+						search_ids = self.search(cr, uid, [('type_simplified', '=', 'deposit')])
 						for obj in self.browse(cr, uid, search_ids, context=context):
 							# Date de début de la période de fin de la déclaration actuelle
 							d1 = datetime.strptime(decl.period_to.date_start, '%Y-%m-%d')
 							# Date de début de la période de fin de la déclaration i
 							d2 = datetime.strptime(obj.period_to.date_start, '%Y-%m-%d')
 							# Récupérer le crédit à reporter si la déclaration est validée
-							if (str(d1.year) == str(d2.year + 1)) and (obj.state == 'done') and (decl.company_regime == obj.company_regime):
-								decl.update({'defferal_credit': obj.credit_to_be_transferred})
-								print obj.credit_to_be_transferred
+							if (str(d1.year) == str(d2.year + 1)) and (obj.state == 'done'):
+								decl.update({'defferal_credit': obj.vat_credit})
 					decl.update({'state': 'simulate'})
 						
-					
-		
 		return True
 
 	## Cette fonction calcule le montant des bases hors TVA
@@ -466,9 +473,12 @@ class l10n_pf_account_vat_declaration(models.Model):
 	@api.one
 	@api.depends('total_vat_payable','total_vat_deductible','total_tax_payable','type_simplified','deposit','obtained_reimbursement')
 	def _compute_amount_vat(self):
+		# Différence pour l'acompte
 		diff1 = abs(self.total_tax_payable) - abs(self.total_vat_deductible)
+		# Différence pour l'annuelle et les réels
 		diff2 = abs(self.total_vat_payable) - abs(self.total_vat_deductible)
 
+		# Cas de l'acompte
 		if self.type_simplified == 'deposit':
 			if diff1 > 0:
 				self.net_vat_due = abs(self.total_tax_payable) - abs(self.total_vat_deductible)
@@ -476,6 +486,7 @@ class l10n_pf_account_vat_declaration(models.Model):
 			elif diff1 < 0:
 				self.vat_credit = abs(self.total_vat_deductible) - abs(self.total_tax_payable)
 				self.net_vat_due = 0.0
+		# Cas du régime réel
 		elif self.company_regime == 'real':
 			if diff2 > 0:
 				self.net_vat_due = abs(self.total_vat_payable) - abs(self.total_vat_deductible)
@@ -483,6 +494,7 @@ class l10n_pf_account_vat_declaration(models.Model):
 			elif diff2 < 0:
 				self.vat_credit = abs(self.total_vat_deductible) - abs(self.total_vat_payable)
 				self.net_vat_due = 0.0
+		# Cas de l'annuelle
 		elif self.type_simplified == 'annual':
 			# TVA A PAYER
 			if diff2 > 0:
@@ -494,7 +506,7 @@ class l10n_pf_account_vat_declaration(models.Model):
 				self.surplus = 0.0
 			# CREDIT
 			elif diff2 < 0:
-				self.difference_deductible_payable = diff2
+				self.difference_deductible_payable = -diff2
 				self.difference_payable_deductible = 0.0
 				self.total_difference_deposit = self.difference_deductible_payable + self.deposit
 				self.total_difference_reimbursement = self.difference_payable_deductible + self.obtained_reimbursement
@@ -527,77 +539,77 @@ class l10n_pf_account_vat_declaration(models.Model):
 			self.account_services = self.base_intermediate_rate
 
 	_columns = {
-		'name': fields.char('Declaration name', required=True, states={'done':[('readonly',True)]}),
-		'date_declaration': fields.date('Declaration date', states={'done':[('readonly',True)]}),
+		'name': fields.char('Declaration name', required=True, states={'done':[('readonly',True)], 'simulate':[('readonly',True)]}),
+		'date_declaration': fields.date('Declaration date', states={'done':[('readonly',True)], 'simulate':[('readonly',True)]}),
 		'account_id': fields.many2one('account.account', 'Account'),
 
-		'ntahiti': fields.char('No Tahiti', states={'done':[('readonly',True)]}),
-		'company_id': fields.many2one('res.company','Company',required=True, states={'done':[('readonly',True)]}),
-		'company_activity': fields.char('Activity', states={'done':[('readonly',True)]}),
-		'company_phone': fields.char('Telephone', states={'done':[('readonly',True)]}),
-		'company_street': fields.char('Street', states={'done':[('readonly',True)]}),
-		'company_city': fields.char('City', states={'done':[('readonly',True)]}),
-		'company_country': fields.char('Country', states={'done':[('readonly',True)]}),
-		'company_email': fields.char('Email', states={'done':[('readonly',True)]}),
-		'company_zip': fields.char('ZIP', states={'done':[('readonly',True)]}),
-		'company_bp': fields.char('BP', states={'done':[('readonly',True)]}),
-		'city_zip': fields.char('City ZIP', states={'done':[('readonly',True)]}),
-		'company_regime': fields.selection([('simplified', 'Simplified regime'),('real', 'Real regime')], 'Regime'),
-		'company_vat_type': fields.selection([('cashing', 'Cashing vat'), ('bills', 'Bills vat')], 'Type VAT'),
+		'ntahiti': fields.char('No Tahiti', states={'done':[('readonly',True)], 'simulate':[('readonly',True)]}),
+		'company_id': fields.many2one('res.company','Company',required=True, states={'done':[('readonly',True)], 'simulate':[('readonly',True)]}),
+		'company_activity': fields.char('Activity', states={'done':[('readonly',True)], 'simulate':[('readonly',True)]}),
+		'company_phone': fields.char('Telephone', states={'done':[('readonly',True)], 'simulate':[('readonly',True)]}),
+		'company_street': fields.char('Street', states={'done':[('readonly',True)], 'simulate':[('readonly',True)]}),
+		'company_city': fields.char('City', states={'done':[('readonly',True)], 'simulate':[('readonly',True)]}),
+		'company_country': fields.char('Country', states={'done':[('readonly',True)], 'simulate':[('readonly',True)]}),
+		'company_email': fields.char('Email', states={'done':[('readonly',True)], 'simulate':[('readonly',True)]}),
+		'company_zip': fields.char('ZIP', states={'done':[('readonly',True)], 'simulate':[('readonly',True)]}),
+		'company_bp': fields.char('BP', states={'done':[('readonly',True)], 'simulate':[('readonly',True)]}),
+		'city_zip': fields.char('City ZIP', states={'done':[('readonly',True)], 'simulate':[('readonly',True)]}),
+		'company_regime': fields.selection([('simplified', 'Simplified regime'),('real', 'Real regime')], 'Regime', states={'done':[('readonly',True)], 'simulate':[('readonly',True)]}),
+		'company_vat_type': fields.selection([('cashing', 'Cashing vat'), ('bills', 'Bills vat')], 'Type VAT', states={'done':[('readonly',True)], 'simulate':[('readonly',True)]}),
 		
 		'type_simplified': fields.selection([('deposit', 'Deposit in simplified regime'), ('annual', 'Annual in simplified regime')], 'Type simplified'),
 		
-		'period_declaration': fields.selection([('month', 'Month'), ('trimester', 'Trimester')], 'Declaration period'),
+		'period_declaration': fields.selection([('month', 'Month'), ('trimester', 'Trimester')], 'Declaration period', states={'done':[('readonly',True)], 'simulate':[('readonly',True)]}),
 
-		'user_id': fields.many2one('res.users','Responsible',required=True, states={'done':[('readonly',True)]}),
+		'user_id': fields.many2one('res.users','Responsible',required=True, states={'done':[('readonly',True)], 'simulate':[('readonly',True)]}),
 
-		'account_sales': fields.float('Sales', store=True, compute='_compute_amount_transaction', states={'done':[('readonly',True)]}),
-		'account_services': fields.float('Services', store=True, compute='_compute_amount_transaction', states={'done':[('readonly',True)]}),
-		'account_exports': fields.float('Exports', states={'done':[('readonly',True)]}),
-		'account_other': fields.float('Other', states={'done':[('readonly',True)]}),
+		'account_sales': fields.float('Sales', store=True, compute='_compute_amount_transaction', states={'done':[('readonly',True)], 'simulate':[('readonly',True)]}),
+		'account_services': fields.float('Services', store=True, compute='_compute_amount_transaction', states={'done':[('readonly',True)], 'simulate':[('readonly',True)]}),
+		'account_exports': fields.float('Exports', states={'done':[('readonly',True)], 'simulate':[('readonly',True)]}),
+		'account_other': fields.float('Other', states={'done':[('readonly',True)], 'simulate':[('readonly',True)]}),
 
-		'base_reduced_rate': fields.float('Base reduced rate', store=True, compute='_compute_amount_base', states={'done':[('readonly',True)]}),
-		'base_intermediate_rate': fields.float('Base intermediate rate', store=True, compute='_compute_amount_base', states={'done':[('readonly',True)]}),
-		'base_normal_rate': fields.float('Base normal rate', store=True, compute='_compute_amount_base', states={'done':[('readonly',True)]}),
-		'base_regularization_to_donate': fields.float('Base regularization to donate', states={'done':[('readonly',True)]}),
+		'base_reduced_rate': fields.float('Base reduced rate', store=True, compute='_compute_amount_base', states={'done':[('readonly',True)], 'simulate':[('readonly',True)]}),
+		'base_intermediate_rate': fields.float('Base intermediate rate', store=True, compute='_compute_amount_base', states={'done':[('readonly',True)], 'simulate':[('readonly',True)]}),
+		'base_normal_rate': fields.float('Base normal rate', store=True, compute='_compute_amount_base', states={'done':[('readonly',True)], 'simulate':[('readonly',True)]}),
+		'base_regularization_to_donate': fields.float('Base regularization to donate', states={'done':[('readonly',True)], 'simulate':[('readonly',True)]}),
 
-		'vat_due_reduced_rate': fields.float('Vat due reduced rate', states={'done':[('readonly',True)]}),
-		'vat_due_intermediate_rate': fields.float('Vat due intermediate rate', states={'done':[('readonly',True)]}),
-		'vat_due_normal_rate': fields.float('Vat due normal rate', states={'done':[('readonly',True)]}),
-		'vat_due_regularization_to_donate': fields.float('Vat due regularization to donate', states={'done':[('readonly',True)]}),
-		'total_vat_payable': fields.float('Total vat payable', store=True, compute='_compute_total_due', states={'done':[('readonly',True)]}),
+		'vat_due_reduced_rate': fields.float('Vat due reduced rate', states={'done':[('readonly',True)], 'simulate':[('readonly',True)]}),
+		'vat_due_intermediate_rate': fields.float('Vat due intermediate rate', states={'done':[('readonly',True)], 'simulate':[('readonly',True)]}),
+		'vat_due_normal_rate': fields.float('Vat due normal rate', states={'done':[('readonly',True)], 'simulate':[('readonly',True)]}),
+		'vat_due_regularization_to_donate': fields.float('Vat due regularization to donate', states={'done':[('readonly',True)], 'simulate':[('readonly',True)]}),
+		'total_vat_payable': fields.float('Total vat payable', store=True, compute='_compute_total_due', states={'done':[('readonly',True)], 'simulate':[('readonly',True)]}),
 
-		'vat_immobilization': fields.float('Vat immobilization', states={'done':[('readonly',True)]}),
-		'vat_other_goods_services': fields.float('Vat other goods and services', states={'done':[('readonly',True)]}),
-		'vat_regularization': fields.float('Regularization', states={'done':[('readonly',True)]}),
-		'defferal_credit': fields.float('Defferal credit', states={'done':[('readonly',True)]}),
-		'total_vat_deductible': fields.float('Total vat deductible', store=True, compute='_compute_total_deductible', states={'done':[('readonly',True)]}),
+		'vat_immobilization': fields.float('Vat immobilization', states={'done':[('readonly',True)], 'simulate':[('readonly',True)]}),
+		'vat_other_goods_services': fields.float('Vat other goods and services', states={'done':[('readonly',True)], 'simulate':[('readonly',True)]}),
+		'vat_regularization': fields.float('Regularization', states={'done':[('readonly',True)], 'simulate':[('readonly',True)]}),
+		'defferal_credit': fields.float('Defferal credit', states={'done':[('readonly',True)], 'simulate':[('readonly',True)]}),
+		'total_vat_deductible': fields.float('Total vat deductible', store=True, compute='_compute_total_deductible', states={'done':[('readonly',True)], 'simulate':[('readonly',True)]}),
 
-		'vat_credit': fields.float('Vat credit', store=True, compute='_compute_amount_vat', states={'done':[('readonly',True)]}),
+		'vat_credit': fields.float('Vat credit', store=True, compute='_compute_amount_vat', states={'done':[('readonly',True)], 'simulate':[('readonly',True)]}),
 		'reimbursement': fields.float('Reimbursement', states={'done':[('readonly',True)]}),
-		'credit_to_be_transferred': fields.float('Credit to be transferred', store=True, compute='_compute_credit_to_reported', states={'done':[('readonly',True)]}),
-		'net_vat_due': fields.float('Net vat due', store=True, compute='_compute_amount_vat',states={'done':[('readonly',True)]}),
+		'credit_to_be_transferred': fields.float('Credit to be transferred', store=True, compute='_compute_credit_to_reported', states={'done':[('readonly',True)], 'simulate':[('readonly',True)]}),
+		'net_vat_due': fields.float('Net vat due', store=True, compute='_compute_amount_vat', states={'done':[('readonly',True)], 'simulate':[('readonly',True)]}),
 
-		'excluding_vat_sales': fields.float('Excluding vat sales', states={'done':[('readonly',True)]}),
-		'excluding_vat_services': fields.float('Excluding vat services', states={'done':[('readonly',True)]}),
-		'tax_due_sales': fields.float('Tax due sales', store=True, compute='_compute_tax_due', states={'done':[('readonly',True)]}),
-		'tax_due_services': fields.float('Tax due services', store=True, compute='_compute_tax_due', states={'done':[('readonly',True)]}),
-		'total_tax_payable': fields.float('Total tax payable', store=True, compute='_compute_total_taxe_due', states={'done':[('readonly',True)]}),
+		'excluding_vat_sales': fields.float('Excluding vat sales', states={'done':[('readonly',True)], 'simulate':[('readonly',True)]}),
+		'excluding_vat_services': fields.float('Excluding vat services', states={'done':[('readonly',True)], 'simulate':[('readonly',True)]}),
+		'tax_due_sales': fields.float('Tax due sales', store=True, compute='_compute_tax_due', states={'done':[('readonly',True)], 'simulate':[('readonly',True)]}),
+		'tax_due_services': fields.float('Tax due services', store=True, compute='_compute_tax_due', states={'done':[('readonly',True)], 'simulate':[('readonly',True)]}),
+		'total_tax_payable': fields.float('Total tax payable', store=True, compute='_compute_total_taxe_due', states={'done':[('readonly',True)], 'simulate':[('readonly',True)]}),
 
-		'difference_deductible_payable': fields.float('Difference', store=True, compute='_compute_amount_vat', states={'done':[('readonly',True)]}),
-		'deposit': fields.float('Deposit', states={'done':[('readonly',True)]}),
-		'total_difference_deposit': fields.float('Total', store=True, compute='_compute_amount_vat', states={'done':[('readonly',True)]}),
-		'surplus': fields.float('Surplus', store=True, compute='_compute_amount_vat', states={'done':[('readonly',True)]}),
-		'difference_payable_deductible': fields.float('Difference', store=True, compute='_compute_amount_vat', states={'done':[('readonly',True)]}),
-		'obtained_reimbursement': fields.float('Reimbursement obtained', states={'done':[('readonly',True)]}),
-		'total_difference_reimbursement': fields.float('Total', store=True, compute='_compute_amount_vat', states={'done':[('readonly',True)]}),
+		'difference_deductible_payable': fields.float('Difference', store=True, compute='_compute_amount_vat', states={'done':[('readonly',True)], 'simulate':[('readonly',True)]}),
+		'deposit': fields.float('Deposit', states={'done':[('readonly',True)], 'simulate':[('readonly',True)]}),
+		'total_difference_deposit': fields.float('Total', store=True, compute='_compute_amount_vat', states={'done':[('readonly',True)], 'simulate':[('readonly',True)]}),
+		'surplus': fields.float('Surplus', store=True, compute='_compute_amount_vat', states={'done':[('readonly',True)], 'simulate':[('readonly',True)]}),
+		'difference_payable_deductible': fields.float('Difference', store=True, compute='_compute_amount_vat', states={'done':[('readonly',True)], 'simulate':[('readonly',True)]}),
+		'obtained_reimbursement': fields.float('Reimbursement obtained', states={'done':[('readonly',True)], 'simulate':[('readonly',True)]}),
+		'total_difference_reimbursement': fields.float('Total', store=True, compute='_compute_amount_vat', states={'done':[('readonly',True)], 'simulate':[('readonly',True)]}),
 
-		'date': fields.date('Signature Date', required=True, states={'done':[('readonly',True)]}),
-		'place': fields.char('Signature Place', required=True, states={'done':[('readonly',True)]}),
-		'means_payment': fields.selection([('check', 'Check'),('cash', 'Cash'),('transfert','Transfert')], 'Means of payment', states={'done':[('readonly',True)]}),
-		'fiscalyear': fields.many2one('account.fiscalyear', 'Fiscal year'),
-		'period_from': fields.many2one('account.period', 'Start period'),
-		'period_to': fields.many2one('account.period', 'End period'),
+		'date': fields.date('Signature Date', required=True, states={'done':[('readonly',True)], 'simulate':[('readonly',True)]}),
+		'place': fields.char('Signature Place', required=True, states={'done':[('readonly',True)], 'simulate':[('readonly',True)]}),
+		'means_payment': fields.selection([('check', 'Check'),('cash', 'Cash'),('transfert','Transfert')], 'Means of payment', states={'done':[('readonly',True)], 'simulate':[('readonly',True)]}),
+		'fiscalyear': fields.many2one('account.fiscalyear', 'Fiscal year', states={'done':[('readonly',True)], 'simulate':[('readonly',True)]}),
+		'period_from': fields.many2one('account.period', 'Start period', states={'done':[('readonly',True)], 'simulate':[('readonly',True)]}),
+		'period_to': fields.many2one('account.period', 'End period', states={'done':[('readonly',True)], 'simulate':[('readonly',True)]}),
 		'target_move': fields.selection([('posted', 'All Posted Entries'),('all', 'All Entries')], 'Target Moves'),
 
 		'state': fields.selection([('draft', 'Draft'), ('fill', 'Fill'), ('simulate', 'Simulate'), ('done', 'Done')], 'Status', required=True, copy=False),
@@ -645,7 +657,11 @@ class l10n_pf_account_vat_declaration(models.Model):
 	def validate(self, cr, uid, ids, context=None):
 		if context is None:
 			context = {}
-		return self.write(cr, uid, ids, {'state':'done'}, context)
+		declaration = self.browse(cr, uid, ids, context=context)
+		if declaration.journal_entry_id.state != 'posted' and declaration.type_simplified != 'deposit':
+			raise Warning(_('Vous devez comptabiliser les écritures avant de valider la déclaration.'))
+		elif declaration.journal_entry_id.state == 'posted' or declaration.type_simplified == 'deposit':
+			return self.write(cr, uid, ids, {'state':'done'}, context)
 
 	def cancel(self, cr, uid, ids, context=None):
 		account_move_obj = self.pool.get('account.move')
