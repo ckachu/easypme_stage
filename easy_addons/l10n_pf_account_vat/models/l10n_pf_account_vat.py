@@ -281,8 +281,6 @@ class l10n_pf_account_vat_declaration(models.Model):
 									if obj.state == 'done':
 										decl.update({'obtained_reimbursement': obj.reimbursement}) 
 						elif field == 'credit_ids':
-							import pdb
-							pdb.set_trace()
 							# Récupérer les déclarations sur les factures et celles annuelles
 							search_ids = self.search(cr, uid, ['|', ('company_vat_type', '=', 'bills'), ('type_simplified', '=', 'annual')])
 							for obj in self.browse(cr, uid, search_ids, context=context):
