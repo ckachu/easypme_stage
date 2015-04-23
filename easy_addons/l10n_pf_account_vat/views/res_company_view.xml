@@ -9,7 +9,12 @@
 				<xpath expr="/form/sheet/notebook/page[1]/group/group[1]/div[1]" position="after">
 					<field name="bp"/>
 					<field name="city_zip"/>
-				</xpath>	
+				</xpath>
+				<xpath expr="//group[@string='Fiscal Infos']" position="after">
+					<group string="Annexes">
+						<field name="signature" widget="image" class="oe_avatar"/>
+					</group>
+				</xpath>
 				<notebook position="inside">
 					<page string="Informations TVA" position="inside">
 						<separator string="Informations sur l'entreprise"/>
