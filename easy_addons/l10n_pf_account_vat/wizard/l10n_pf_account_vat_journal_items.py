@@ -10,8 +10,6 @@ class l10n_pf_account_vat_journal_items(models.TransientModel):
 	_name = "l10n.pf.account.vat.journal.items"
 	_description = "L10n Pf Account Vat Journal Items"
 
-	# TODO: Mettre une alerte si l'utilisateur ne choisit aucun compte pour les régul
-
 	## Champs
 	vat_due_reduced_rate = fields.Float(string="Vat due reduced rate", readonly=True)
 	vat_due_intermediate_rate = fields.Float(string="Vat due intermediate rate", readonly=True)
@@ -123,6 +121,8 @@ class l10n_pf_account_vat_journal_items(models.TransientModel):
 				montant = self.browse(cr, uid, ids, context=context).vat_due_regularization_to_donate
 				account = self.browse(cr, uid, ids, context=context) and \
 						self.browse(cr, uid, ids, context=context).account_regul_due.id or False
+				if not account:
+					raise Warning('Il n\'y a pas de compte pour la régularisation de la TVA à reverser.')
 				if account and montant != 0:
 					vals = {
 						'declaration_id': decl_id.id,
@@ -168,6 +168,8 @@ class l10n_pf_account_vat_journal_items(models.TransientModel):
 				montant = self.browse(cr, uid, ids, context=context).vat_regularization
 				account = self.browse(cr, uid, ids, context=context) and \
 						self.browse(cr, uid, ids, context=context).account_regul_deduc.id or False
+				if not account:
+					raise Warning('Il n\'y a pas de compte pour la régularisation de la TVA à déduire.')
 				if account and montant != 0:
 					vals = {
 						'declaration_id': decl_id.id,

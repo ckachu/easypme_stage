@@ -39,4 +39,11 @@ class res_company(osv.osv):
 		'signature': fields.binary('Signature'),
 	}
 
-	#TODO: Faire une fonction qui met à None type_vat et period_declaration si on est en régime simplifié
+	def on_change_regime_vat(self, cr, uid, ids, regime_vat, context=None):
+		values = {}
+		if regime_vat == 'simplified':
+			values = {
+				'type_vat': None,
+				'period_declaration': None,
+			}
+		return {'value': values}

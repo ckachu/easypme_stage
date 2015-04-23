@@ -28,7 +28,7 @@
 									</div>
 									<div>
 										<label for="regime_vat" string="VAT Company regime"/>	
-										<field name="regime_vat" string="Regime VAT"
+										<field name="regime_vat" string="Regime VAT" on_change="on_change_regime_vat(regime_vat)"
 											help='Choisisser le régime de l entreprise'/>
 									</div>
 									<div>
