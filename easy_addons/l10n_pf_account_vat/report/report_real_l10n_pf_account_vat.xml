@@ -383,8 +383,10 @@
                                     <tr style="height:30px;">
                                         <th colspan="4" style="text-align:center;width:51%;vertical-align:middle;text-decoration:underline;">MOYENS DE PAIEMENT</th>
                                         <th style="text-align:center;width:49%;vertical-align:middle;text-decoration:underline;">
-                                            Signature<br/>
-                                            <!--<img t-if="o.company_id.logo" t-att-src="'data:image/png;base64,%s' % o.company_id.logo" style="max-height: 45px;"/>-->
+                                            Signature
+                                            <div style="position: absolute; left:680px; top:740px;">
+												<img t-if="o.company_id.signature" t-att-src="'data:image/png;base64,%s' % o.company_id.signature" style="max-height: 80px;"/>
+											</div>
                                         </th>
                                     </tr>
                                 </thead>
