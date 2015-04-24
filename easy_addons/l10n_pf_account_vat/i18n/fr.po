@@ -866,7 +866,7 @@ msgstr "Journal"
 #. module: l10n_pf_account_vat
 #: field:l10n.pf.account.vat.declaration,journal_entry_id:0
 msgid "Journal Entry"
-msgstr "Journal des écritures comptables"
+msgstr "Ecriture comptable"
 
 #. module: l10n_pf_account_vat
 #: model:ir.model,name:l10n_pf_account_vat.model_account_move_line
