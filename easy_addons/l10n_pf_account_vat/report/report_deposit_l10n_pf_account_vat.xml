@@ -310,8 +310,8 @@
 										</tr>
 										<tr>
 											<td style="vertical-align:top;"><input type="checkbox" value="transfert"/></td>
-											<td><span style="margin-left:10px;">Virement bancaire (Préciser le N° TAHITI, la taxe payée et la période concernée</span><br/>
-												<span style="margin-left:10px;">sans omettre de déposer ou poster votre déclaration)</span></td>
+											<td><span style="margin-left:10px;">Virement bancaire (Préciser le N° TAHITI, la taxe payée et la période</span><br/>
+												<span style="margin-left:10px;">concernée sans omettre de déposer ou poster votre déclaration)</span></td>
 										</tr>
 									</t>
 									<t t-if="o.means_payment == 'cash'">
@@ -325,8 +325,8 @@
 										</tr>
 										<tr>
 											<td style="vertical-align:top;"><input type="checkbox" value="transfert"/></td>
-											<td><span style="margin-left:10px;">Virement bancaire (Préciser le N° TAHITI, la taxe payée et la période concernée</span><br/>
-												<span style="margin-left:10px;">sans omettre de déposer ou poster votre déclaration)</span></td>
+											<td><span style="margin-left:10px;">Virement bancaire (Préciser le N° TAHITI, la taxe payée et la période</span><br/>
+												<span style="margin-left:10px;">concernée sans omettre de déposer ou poster votre déclaration)</span></td>
 										</tr>
 									</t>
 									<t t-if="o.means_payment == 'transfert'">
@@ -340,8 +340,8 @@
 										</tr>
 										<tr>
 											<td style="vertical-align:top;"><input type="checkbox" value="transfert" checked="checked"/></td>
-											<td><span style="margin-left:10px;">Virement bancaire (Préciser le N° TAHITI, la taxe payée et la période concernée</span><br/>
-												<span style="margin-left:10px;">sans omettre de déposer ou poster votre déclaration)</span></td>
+											<td><span style="margin-left:10px;">Virement bancaire (Préciser le N° TAHITI, la taxe payée et la période</span><br/>
+												<span style="margin-left:10px;">concernée sans omettre de déposer ou poster votre déclaration)</span></td>
 										</tr>
 									</t>
 								</tbody>

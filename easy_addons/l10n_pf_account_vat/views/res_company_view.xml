@@ -29,17 +29,17 @@
 									<div>
 										<label for="regime_vat" string="VAT Company regime"/>	
 										<field name="regime_vat" string="Regime VAT" on_change="on_change_regime_vat(regime_vat)"
-											help='Choisisser le régime de l entreprise'/>
+											help='Choisissez le régime de l entreprise'/>
 									</div>
-									<div>
+									<div attrs="{'invisible':[('regime_vat','=','simplified')]}">
 										<label for="type_vat" string="VAT Company type"/>	
-										<field name="type_vat" string="Type VAT" attrs="{'invisible':[('regime_vat','=','simplified')]}"
-											help='Choisisser le type de TVA de l entreprise'/>
+										<field name="type_vat" string="Type VAT"
+											help='Choisissez le type de TVA de l entreprise'/>
 									</div>
-									<div>
+									<div attrs="{'invisible':[('regime_vat','=','simplified')]}">
 										<label for="period_declaration" string="Declaration period"/>
-										<field name="period_declaration" string="Declaration period" attrs="{'invisible':[('regime_vat', '=', 'simplified')]}"
-											help='Choisisser la période de déclaration'/>
+										<field name="period_declaration" string="Declaration period"
+											help='Choisissez la période de déclaration'/>
 									</div>
 								</div>
 							</div>
