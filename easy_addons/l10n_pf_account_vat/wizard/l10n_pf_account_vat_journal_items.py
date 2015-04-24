@@ -81,8 +81,8 @@ class l10n_pf_account_vat_journal_items(models.TransientModel):
 						'declaration_id': decl_id.id,
 						'move_id': move_id,
 						'account_id': company_obj.browse(cr, uid, comp_id, context=context).tax_reduced_rate_ids[0].account_collected_id.id,
-						'debit': montant > 0 and montant or 0.0,
-						'credit': montant < 0 and -montant or 0.0,
+						'debit': montant > 0 and montant or 0,
+						'credit': montant < 0 and -montant or 0,
 						'name': decl_id.name
 					}
 					ac_mv_line_obj.create(cr, uid, vals, context=context, check=False)
@@ -96,8 +96,8 @@ class l10n_pf_account_vat_journal_items(models.TransientModel):
 						'declaration_id': decl_id.id,
 						'move_id': move_id,
 						'account_id': company_obj.browse(cr, uid, comp_id, context=context).tax_intermediate_rate_ids[0].account_collected_id.id,
-						'debit': montant > 0 and montant or 0.0,
-						'credit': montant < 0 and -montant or 0.0,
+						'debit': montant > 0 and montant or 0,
+						'credit': montant < 0 and -montant or 0,
 						'name': decl_id.name
 					}
 					ac_mv_line_obj.create(cr, uid, vals, context=context, check=False)
@@ -111,8 +111,8 @@ class l10n_pf_account_vat_journal_items(models.TransientModel):
 						'declaration_id': decl_id.id,
 						'move_id': move_id,
 						'account_id': company_obj.browse(cr, uid, comp_id, context=context).tax_normal_rate_ids[0].account_collected_id.id,
-						'debit': montant > 0 and montant or 0.0,
-						'credit': montant < 0 and -montant or 0.0,
+						'debit': montant > 0 and montant or 0,
+						'credit': montant < 0 and -montant or 0,
 						'name': decl_id.name
 					}
 					ac_mv_line_obj.create(cr, uid, vals, context=context, check=False)
@@ -128,8 +128,8 @@ class l10n_pf_account_vat_journal_items(models.TransientModel):
 						'declaration_id': decl_id.id,
 						'move_id': move_id,
 						'account_id': self.browse(cr, uid, ids, context=context).account_regul_due.id,
-						'debit': montant > 0 and montant or 0.0,
-						'credit': montant < 0 and -montant or 0.0,
+						'debit': montant > 0 and montant or 0,
+						'credit': montant < 0 and -montant or 0,
 						'name': decl_id.name
 					}
 					ac_mv_line_obj.create(cr, uid, vals, context=context, check=False)
@@ -143,8 +143,8 @@ class l10n_pf_account_vat_journal_items(models.TransientModel):
 						'declaration_id': decl_id.id,
 						'move_id': move_id,
 						'account_id': company_obj.browse(cr, uid, comp_id, context=context).tax_immo_ids[0].account_collected_id.id,
-						'credit': montant > 0 and montant or 0.0,
-						'debit': montant < 0 and -montant or 0.0,
+						'credit': montant > 0 and montant or 0,
+						'debit': montant < 0 and -montant or 0,
 						'name': decl_id.name
 					}
 					ac_mv_line_obj.create(cr, uid, vals, context=context, check=False)
@@ -158,8 +158,8 @@ class l10n_pf_account_vat_journal_items(models.TransientModel):
 						'declaration_id': decl_id.id,
 						'move_id': move_id,
 						'account_id': company_obj.browse(cr, uid, comp_id, context=context).tax_others_goods_services_ids[0].account_collected_id.id,
-						'credit': montant > 0 and montant or 0.0,
-						'debit': montant < 0 and -montant or 0.0,
+						'credit': montant > 0 and montant or 0,
+						'debit': montant < 0 and -montant or 0,
 						'name': decl_id.name
 					}
 					ac_mv_line_obj.create(cr, uid, vals, context=context, check=False)
@@ -175,8 +175,8 @@ class l10n_pf_account_vat_journal_items(models.TransientModel):
 						'declaration_id': decl_id.id,
 						'move_id': move_id,
 						'account_id': self.browse(cr, uid, ids, context=context).account_regul_deduc.id,
-						'credit': montant > 0 and montant or 0.0,
-						'debit': montant < 0 and -montant or 0.0,
+						'credit': montant > 0 and montant or 0,
+						'debit': montant < 0 and -montant or 0,
 						'name': decl_id.name
 					}
 					ac_mv_line_obj.create(cr, uid, vals, context=context, check=False)
@@ -192,8 +192,8 @@ class l10n_pf_account_vat_journal_items(models.TransientModel):
 						'declaration_id': decl_id.id,
 						'move_id': move_id,
 						'account_id': company_obj.browse(cr, uid, comp_id, context=context).credit_id.id,
-						'credit': montant > 0 and montant or 0.0,
-						'debit': montant < 0 and -montant or 0.0,
+						'credit': montant > 0 and montant or 0,
+						'debit': montant < 0 and -montant or 0,
 						'name': decl_id.name
 					}
 					ac_mv_line_obj.create(cr, uid, vals, context=context, check=False)
@@ -214,7 +214,7 @@ class l10n_pf_account_vat_journal_items(models.TransientModel):
 						'move_id': move_id,
 						'account_id': company_obj.browse(cr, uid, comp_id, context=context).vat_id.id,
 						'credit': decl_id.type_simplified == 'annual' and decl_id.difference_payable_deductible or decl_id.net_vat_due,
-						'debit': 0.0,
+						'debit': 0,
 						'name': decl_id.name
 					}
 					ac_mv_line_obj.create(cr, uid, vals, context=context, check=False)
@@ -225,7 +225,7 @@ class l10n_pf_account_vat_journal_items(models.TransientModel):
 						'move_id': move_id,
 						'account_id': company_obj.browse(cr, uid, comp_id, context=context).credit_id.id,
 						'debit': decl_id.type_simplified == 'annual' and decl_id.difference_deductible_payable or decl_id.vat_credit,
-						'credit': 0.0,
+						'credit': 0,
 						'name': decl_id.name
 					}
 					ac_mv_line_obj.create(cr, uid, vals, context=context, check=False)
