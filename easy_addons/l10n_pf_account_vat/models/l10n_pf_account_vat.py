@@ -349,13 +349,12 @@ class l10n_pf_account_vat_declaration(models.Model):
 							for i in (ac for ac in self.browse(cr, uid, ids, context=ctx_open).company_id.customers_ids if ac != None):
 								compte_client_n_1 = compte_client_n_1 + i.balance
 							# Montant déjà déclaré
-							decl_ids = self.search(cr, uid, [])
+							decl_ids = self.search(cr, uid, [('fiscalyear', '=', decl.fiscalyear.id), ('state', '=', 'done')])
 							print decl_ids
 							for j in self.browse(cr, uid, decl_ids, context=context):
-								if (j.fiscalyear == decl.fiscalyear) and (j.state == 'done') and (j.company_regime == 'real') and (j.company_vat_type == 'cashing'):
-									deja_declare = deja_declare + j.vat_due_intermediate_rate
+								deja_declare = deja_declare + j.vat_due_intermediate_rate
 							# Calcul du montant TTC
-							ttc = compte_client_n_1 - chiffre_n - taux_inter_n - compte_client_n
+							ttc = -(compte_client_n_1 - chiffre_n - taux_inter_n - compte_client_n)
 							# Calcul du montant HT
 							ht = decl.company_id.tax_intermediate_rate_ids and \
 								decl.company_id.currency_id.round((ttc / (1 + decl.company_id.tax_intermediate_rate_ids[0].amount)) or 0.0) or 0.0
@@ -398,7 +397,6 @@ class l10n_pf_account_vat_declaration(models.Model):
 									(decl.company_vat_type == obj.company_vat_type):
 									decl.update({'defferal_credit': obj.credit_to_be_transferred})
 									print obj.credit_to_be_transferred
-					decl.update({'state': 'fill'})
 				# Cas régime simplifié (Acompte)
 				elif (decl.company_regime == 'simplified' and decl.type_simplified == 'deposit'):
 					if field == 'sales_ids':
@@ -431,8 +429,7 @@ class l10n_pf_account_vat_declaration(models.Model):
 							# Récupérer le crédit à reporter si la déclaration est validée
 							if (str(d1.year) == str(d2.year + 1)) and (obj.state == 'done'):
 								decl.update({'defferal_credit': obj.vat_credit})
-					decl.update({'state': 'simulate'})
-						
+		decl.update({'state': 'fill'})				
 		return True
 
 	## Cette fonction calcule le montant des bases hors TVA
@@ -552,17 +549,23 @@ class l10n_pf_account_vat_declaration(models.Model):
 		'company_zip': fields.char('ZIP', states={'done':[('readonly',True)], 'simulate':[('readonly',True)]}),
 		'company_bp': fields.char('BP', states={'done':[('readonly',True)], 'simulate':[('readonly',True)]}),
 		'city_zip': fields.char('City ZIP', states={'done':[('readonly',True)], 'simulate':[('readonly',True)]}),
-		'company_regime': fields.selection([('simplified', 'Simplified regime'),('real', 'Real regime')], 'Regime', states={'done':[('readonly',True)], 'simulate':[('readonly',True)]}),
-		'company_vat_type': fields.selection([('cashing', 'Cashing vat'), ('bills', 'Bills vat')], 'Type VAT', states={'done':[('readonly',True)], 'simulate':[('readonly',True)]}),
+		'company_regime': fields.selection([('simplified', 'Simplified regime'),('real', 'Real regime')], 'Regime', \
+							states={'done':[('readonly',True)], 'simulate':[('readonly',True)]}, required=True),
+		'company_vat_type': fields.selection([('cashing', 'Cashing vat'), ('bills', 'Bills vat')], 'Type VAT', \
+							states={'done':[('readonly',True)], 'simulate':[('readonly',True)]}),
 		
-		'type_simplified': fields.selection([('deposit', 'Deposit in simplified regime'), ('annual', 'Annual in simplified regime')], 'Type simplified'),
+		'type_simplified': fields.selection([('deposit', 'Deposit in simplified regime'), ('annual', 'Annual in simplified regime')], \
+							'Type simplified', states={'done':[('readonly',True)], 'simulate':[('readonly',True)]}),
 		
-		'period_declaration': fields.selection([('month', 'Month'), ('trimester', 'Trimester')], 'Declaration period', states={'done':[('readonly',True)], 'simulate':[('readonly',True)]}),
+		'period_declaration': fields.selection([('month', 'Month'), ('trimester', 'Trimester')], 'Declaration period', \
+								states={'done':[('readonly',True)], 'simulate':[('readonly',True)]}),
 
 		'user_id': fields.many2one('res.users','Responsible',required=True, states={'done':[('readonly',True)], 'simulate':[('readonly',True)]}),
 
-		'account_sales': fields.float('Sales', store=True, compute='_compute_amount_transaction', states={'done':[('readonly',True)], 'simulate':[('readonly',True)]}),
-		'account_services': fields.float('Services', store=True, compute='_compute_amount_transaction', states={'done':[('readonly',True)], 'simulate':[('readonly',True)]}),
+		'account_sales': fields.float('Sales', store=True, compute='_compute_amount_transaction', \
+							states={'done':[('readonly',True)], 'simulate':[('readonly',True)]}),
+		'account_services': fields.float('Services', store=True, compute='_compute_amount_transaction', \
+							states={'done':[('readonly',True)], 'simulate':[('readonly',True)]}),
 		'account_exports': fields.float('Exports', states={'done':[('readonly',True)], 'simulate':[('readonly',True)]}),
 		'account_other': fields.float('Other', states={'done':[('readonly',True)], 'simulate':[('readonly',True)]}),
 
@@ -640,6 +643,16 @@ class l10n_pf_account_vat_declaration(models.Model):
 				raise Warning(_('You cannot delete a declaration after it has been validated.'))
 		return super(l10n_pf_account_vat_declaration, self).unlink()
 
+	def cancel(self, cr, uid, ids, context=None):
+		account_move_obj = self.pool.get('account.move')
+		move_ids = []
+		for declaration in self.browse(cr, uid, ids, context=context):
+			if declaration.journal_entry_id:
+				move_ids.append(declaration.journal_entry_id.id)
+		if move_ids:
+			account_move_obj.button_cancel(cr, uid, move_ids, context=context)
+			account_move_obj.unlink(cr, uid, move_ids, context)
+
 	## Cette méthode met l'état de la déclaration à "Brouillon"
 	## et annuler les écritures comptables si elles ne sont pas comptabilisées
 	def set_to_draft(self, cr, uid, ids, context=None):
@@ -660,16 +673,6 @@ class l10n_pf_account_vat_declaration(models.Model):
 			raise Warning(_('Vous devez comptabiliser les écritures avant de valider la déclaration.'))
 		elif declaration.journal_entry_id.state == 'posted' or declaration.type_simplified == 'deposit':
 			return self.write(cr, uid, ids, {'state':'done'}, context)
-
-	def cancel(self, cr, uid, ids, context=None):
-		account_move_obj = self.pool.get('account.move')
-		move_ids = []
-		for declaration in self.browse(cr, uid, ids, context=context):
-			if declaration.journal_entry_id:
-				move_ids.append(declaration.journal_entry_id.id)
-		if move_ids:
-			account_move_obj.button_cancel(cr, uid, move_ids, context=context)
-			account_move_obj.unlink(cr, uid, move_ids, context)
 
 	## Cette méthode récupère les informations de l'entreprise
 	def on_change_company_id(self, cr, uid, ids, company_id, context=None):

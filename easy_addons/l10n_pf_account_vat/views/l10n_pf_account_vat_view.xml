@@ -11,13 +11,23 @@
 					<header>
 						<button name="%(action_l10n_pf_account_vat_journal_items)d" string="Simulate" type="action" 
 								attrs="{'invisible': ['|', ('type_simplified', '=', 'deposit'), ('state', 'in', ('draft', 'simulate', 'done'))]}"/>
+						
 						<button name="action_fill_declaration" states="draft" string="Fill declaration" 
 								type="object" context="{'fiscalyear':fiscalyear, 'period_from': period_from, 'period_to': period_to}"/>
+						
 						<button name="account_chart_open_window" states="simulate,done" string="Show account chart" type="object"/>
+						
 						<button name="validate" states="simulate" string="Validate" type="object"/>
+						
+						<button name="validate" string="Validate" type="object"
+								attrs="{'invisible': ['|', ('state', 'in', ('draft', 'done')), ('type_simplified', '!=', 'deposit')]}"/>
+						
 						<button name="set_to_draft" states="simulate,fill" string="Back to draft" type="object"/>
+						
 						<button name="set_to_draft" states="done" string="Cancel" type="object"  groups="account.group_account_manager"/> 
-						<field name="state" widget="statusbar" statusbar_visible="draft,fill,simulate,done"/>
+						
+						<field name="state" widget="statusbar"  statusbar_visible="draft,fill,simulate,done"/>
+						
 					</header>
 					<sheet>
 						<group>
@@ -29,13 +39,13 @@
 							<field name="user_id"/>
 						</group>
 						<group>
-							<field name="period_declaration" attrs="{'invisible': [('company_regime', '=', 'simplified')]}"/>
+							<field name="period_declaration" attrs="{'invisible': [('company_regime', '=', 'simplified')], 'required': [('company_regime', '=', 'real')]}"/>
 							<field name="company_regime"/>
-							<field name="company_vat_type" attrs="{'invisible': [('company_regime', '=', 'simplified')]}"/>
-							<field name="type_simplified" attrs="{'invisible':[('company_regime','=','real')]}"/>
+							<field name="company_vat_type" attrs="{'invisible': [('company_regime', '=', 'simplified')], 'required': [('company_regime', '=', 'real')]}"/>
+							<field name="type_simplified" attrs="{'invisible':[('company_regime','=','real')], 'required': [('company_regime', '=', 'simplified')]}"/>
 						</group>
 						<group>
-							<field name="journal_entry_id"/>
+							<field name="journal_entry_id" attrs="{'invisible':[('type_simplified','=','deposit')]}"/>
 						</group>
 						<notebook colspan="2">
 							<page string="General">
@@ -58,15 +68,15 @@
 										<field name="company_bp"/>
 										<field name="city_zip"/>
 										
-										<field name="fiscalyear" class="oe_inline"/>
-										<field name="period_from" class="oe_inline"/>
-										<field name="period_to" class="oe_inline"/>
+										<field name="fiscalyear" class="oe_inline" required="True"/>
+										<field name="period_from" class="oe_inline" required="True"/>
+										<field name="period_to" class="oe_inline" required="True"/>
 									</group>
 								</group>
 							</page>
 							<page string="Declaration">
 								<!-- Operations realisees -->
-								<separator string="OPERATIONS PERFORMED"/>
+								<separator string="OPERATIONS PERFORMED"  attrs="{'invisible': [('type_simplified', '=', 'deposit')]}"/>
 								<group>
 									<group>
 										<field name="account_sales" attrs="{'invisible': [('type_simplified', '=', 'deposit')]}"/>
