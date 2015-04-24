@@ -121,7 +121,7 @@ class l10n_pf_account_vat_journal_items(models.TransientModel):
 				montant = self.browse(cr, uid, ids, context=context).vat_due_regularization_to_donate
 				account = self.browse(cr, uid, ids, context=context) and \
 						self.browse(cr, uid, ids, context=context).account_regul_due.id or False
-				if not account:
+				if not account and montant != 0:
 					raise Warning('Il n\'y a pas de compte pour la régularisation de la TVA à reverser.')
 				if account and montant != 0:
 					vals = {
@@ -168,7 +168,7 @@ class l10n_pf_account_vat_journal_items(models.TransientModel):
 				montant = self.browse(cr, uid, ids, context=context).vat_regularization
 				account = self.browse(cr, uid, ids, context=context) and \
 						self.browse(cr, uid, ids, context=context).account_regul_deduc.id or False
-				if not account:
+				if not account and montant != 0:
 					raise Warning('Il n\'y a pas de compte pour la régularisation de la TVA à déduire.')
 				if account and montant != 0:
 					vals = {
@@ -213,7 +213,7 @@ class l10n_pf_account_vat_journal_items(models.TransientModel):
 						'declaration_id': decl_id.id,
 						'move_id': move_id,
 						'account_id': company_obj.browse(cr, uid, comp_id, context=context).vat_id.id,
-						'credit': decl_id.net_vat_due,
+						'credit': decl_id.type_simplified == 'annual' and decl_id.difference_payable_deductible or decl_id.net_vat_due,
 						'debit': 0.0,
 						'name': decl_id.name
 					}
@@ -224,7 +224,7 @@ class l10n_pf_account_vat_journal_items(models.TransientModel):
 						'declaration_id': decl_id.id,
 						'move_id': move_id,
 						'account_id': company_obj.browse(cr, uid, comp_id, context=context).credit_id.id,
-						'debit': decl_id.type_simplified == 'annual' and decl_id.surplus or decl_id.vat_credit,
+						'debit': decl_id.type_simplified == 'annual' and decl_id.difference_deductible_payable or decl_id.vat_credit,
 						'credit': 0.0,
 						'name': decl_id.name
 					}
