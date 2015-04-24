@@ -1458,7 +1458,7 @@ msgstr "TVA DEDUCTIBLE"
 #. module: l10n_pf_account_vat
 #: view:l10n.pf.account.vat.declaration:l10n_pf_account_vat.view_l10n_pf_account_vat_declaration_form
 msgid "VAT DUE"
-msgstr "TVA DUE"
+msgstr "TVA EXIGIBLE"
 
 #. module: l10n_pf_account_vat
 #: model:ir.ui.menu,name:l10n_pf_account_vat.sous_menu_l10n_pf_account_vat_declaration

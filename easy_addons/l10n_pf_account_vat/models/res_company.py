@@ -35,8 +35,6 @@ class res_company(osv.osv):
 		
 		'regime_vat': fields.selection([('simplified', 'Simplified regime'), ('real', 'Real regime')], 'Regime Vat'),
 		'type_vat': fields.selection([('cashing', 'Cashing vat'), ('bills', 'Bills vat')], 'Type vat'),
-		
-		'signature': fields.binary('Signature'),
 	}
 
 	def on_change_regime_vat(self, cr, uid, ids, regime_vat, context=None):

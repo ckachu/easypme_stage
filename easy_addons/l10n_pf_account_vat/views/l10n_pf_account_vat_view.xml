@@ -176,6 +176,7 @@
 					<field name="date_declaration"/>
 					<field name="name"/>
 					<field name="company_vat_type"/>
+					<field name="type_simplified"/>
 					<field name="company_regime"/>
 					<field name="vat_credit"/>
 					<field name="net_vat_due"/>
