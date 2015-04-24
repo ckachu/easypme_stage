@@ -469,25 +469,25 @@ class l10n_pf_account_vat_declaration(models.Model):
 	@api.depends('total_vat_payable','total_vat_deductible','total_tax_payable','type_simplified','deposit','obtained_reimbursement')
 	def _compute_amount_vat(self):
 		# Différence pour l'acompte
-		diff1 = abs(self.total_tax_payable) - abs(self.total_vat_deductible)
+		diff1 = self.total_tax_payable - self.total_vat_deductible
 		# Différence pour l'annuelle et les réels
-		diff2 = abs(self.total_vat_payable) - abs(self.total_vat_deductible)
+		diff2 = self.total_vat_payable - self.total_vat_deductible
 
 		# Cas de l'acompte
 		if self.type_simplified == 'deposit':
 			if diff1 > 0:
-				self.net_vat_due = abs(self.total_tax_payable) - abs(self.total_vat_deductible)
+				self.net_vat_due = self.total_tax_payable - self.total_vat_deductible
 				self.vat_credit = 0.0
 			elif diff1 < 0:
-				self.vat_credit = abs(self.total_vat_deductible) - abs(self.total_tax_payable)
+				self.vat_credit = self.total_vat_deductible - self.total_tax_payable
 				self.net_vat_due = 0.0
 		# Cas du régime réel
 		elif self.company_regime == 'real':
 			if diff2 > 0:
-				self.net_vat_due = abs(self.total_vat_payable) - abs(self.total_vat_deductible)
+				self.net_vat_due = self.total_vat_payable - self.total_vat_deductible
 				self.vat_credit = 0.0
 			elif diff2 < 0:
-				self.vat_credit = abs(self.total_vat_deductible) - abs(self.total_vat_payable)
+				self.vat_credit = self.total_vat_deductible - self.total_vat_payable
 				self.net_vat_due = 0.0
 		# Cas de l'annuelle
 		elif self.type_simplified == 'annual':

@@ -32,7 +32,7 @@
 						<field name="account_regul_deduc" domain="[('type','!=','view')]" nolabel="1"/>
 					</group>
 					<footer>
-						<button name="generate_journal_items" string="Generate" type="object" class="oe_highlight"/>
+						<button name="generate_journal_item" string="Generate" type="object" class="oe_highlight"/>
 						or
 						<button string="Cancel" class="oe_link" special="cancel"/>
 					</footer>

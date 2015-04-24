@@ -85,7 +85,7 @@ class l10n_pf_account_vat_journal_items(models.TransientModel):
 						'credit': montant < 0 and -montant or 0,
 						'name': decl_id.name
 					}
-					ac_mv_line_obj.create(cr, uid, vals, context=context, check=False)
+					ac_mv_line_obj.create(cr, uid, vals, context=context)
 			# Saisie du taux intermédiaire
 			elif field == 'intermediate_rate':
 				montant = self.browse(cr, uid, ids, context=context).vat_due_intermediate_rate
@@ -100,7 +100,7 @@ class l10n_pf_account_vat_journal_items(models.TransientModel):
 						'credit': montant < 0 and -montant or 0,
 						'name': decl_id.name
 					}
-					ac_mv_line_obj.create(cr, uid, vals, context=context, check=False)
+					ac_mv_line_obj.create(cr, uid, vals, context=context)
 			# Saisie du taux normal
 			elif field == 'normal_rate':
 				montant = self.browse(cr, uid, ids, context=context).vat_due_normal_rate
@@ -115,7 +115,7 @@ class l10n_pf_account_vat_journal_items(models.TransientModel):
 						'credit': montant < 0 and -montant or 0,
 						'name': decl_id.name
 					}
-					ac_mv_line_obj.create(cr, uid, vals, context=context, check=False)
+					ac_mv_line_obj.create(cr, uid, vals, context=context)
 			# Saisie de la régularisation de la TVA à reverser
 			elif field == 'regul_exigible':
 				montant = self.browse(cr, uid, ids, context=context).vat_due_regularization_to_donate
@@ -132,7 +132,7 @@ class l10n_pf_account_vat_journal_items(models.TransientModel):
 						'credit': montant < 0 and -montant or 0,
 						'name': decl_id.name
 					}
-					ac_mv_line_obj.create(cr, uid, vals, context=context, check=False)
+					ac_mv_line_obj.create(cr, uid, vals, context=context)
 			# Saisie de l'immobilisation
 			elif field == 'immo':
 				montant = self.browse(cr, uid, ids, context=context).vat_immobilization
@@ -147,7 +147,7 @@ class l10n_pf_account_vat_journal_items(models.TransientModel):
 						'debit': montant < 0 and -montant or 0,
 						'name': decl_id.name
 					}
-					ac_mv_line_obj.create(cr, uid, vals, context=context, check=False)
+					ac_mv_line_obj.create(cr, uid, vals, context=context)
 			# Saisie des autres biens et services
 			elif field == 'goods_services':
 				montant = self.browse(cr, uid, ids, context=context).vat_other_goods_services
@@ -162,7 +162,7 @@ class l10n_pf_account_vat_journal_items(models.TransientModel):
 						'debit': montant < 0 and -montant or 0,
 						'name': decl_id.name
 					}
-					ac_mv_line_obj.create(cr, uid, vals, context=context, check=False)
+					ac_mv_line_obj.create(cr, uid, vals, context=context)
 			# Saisie de la régularisation de la TVA à déduire
 			elif field == 'regul_deductible':
 				montant = self.browse(cr, uid, ids, context=context).vat_regularization
@@ -179,7 +179,7 @@ class l10n_pf_account_vat_journal_items(models.TransientModel):
 						'debit': montant < 0 and -montant or 0,
 						'name': decl_id.name
 					}
-					ac_mv_line_obj.create(cr, uid, vals, context=context, check=False)
+					ac_mv_line_obj.create(cr, uid, vals, context=context)
 			# Saisie du report de crédit
 			elif field == 'report_credit':
 				montant = self.browse(cr, uid, ids, context=context).defferal_credit
@@ -196,7 +196,7 @@ class l10n_pf_account_vat_journal_items(models.TransientModel):
 						'debit': montant < 0 and -montant or 0,
 						'name': decl_id.name
 					}
-					ac_mv_line_obj.create(cr, uid, vals, context=context, check=False)
+					ac_mv_line_obj.create(cr, uid, vals, context=context)
 			# Saisie du crédit de TVA en DEBIT
 			# Saisie de la TVA en CREDIT
 			elif field == 'vat':
@@ -217,7 +217,7 @@ class l10n_pf_account_vat_journal_items(models.TransientModel):
 						'debit': 0,
 						'name': decl_id.name
 					}
-					ac_mv_line_obj.create(cr, uid, vals, context=context, check=False)
+					ac_mv_line_obj.create(cr, uid, vals, context=context)
 				# Crédit de TVA
 				elif difference < 0 and account_credit:
 					vals = {
@@ -228,10 +228,10 @@ class l10n_pf_account_vat_journal_items(models.TransientModel):
 						'credit': 0,
 						'name': decl_id.name
 					}
-					ac_mv_line_obj.create(cr, uid, vals, context=context, check=False)
+					ac_mv_line_obj.create(cr, uid, vals, context=context)
 		return True
 
-	def generate_journal_items(self, cr, uid, ids, context=None):
+	def generate_journal_item(self, cr, uid, ids, context=None):
 		if context is None:
 			context = {}
 		declaration = self.pool.get('l10n.pf.account.vat.declaration')
