@@ -327,7 +327,6 @@ class l10n_pf_account_vat_declaration(models.Model):
                                     # Récupérer le crédit à reporter si la déclaration est validée
                                     if (str(d1.year) == str(d2.year + 1)) and (obj.state == 'done') and (decl.company_regime == obj.company_regime):
                                         decl.update({'defferal_credit': obj.credit_to_be_transferred})
-                                        print obj.credit_to_be_transferred
 
                                     # Cas régime réel sur les factures
                                 elif decl.company_vat_type == 'bills':
@@ -378,10 +377,8 @@ class l10n_pf_account_vat_declaration(models.Model):
                             for i in (tx for tx in self.browse(cr, uid, ids, context=ctx_n).company_id.tax_intermediate_rate_ids if tx is not None):
                                 my_list = my_list + list(i.account_collected_id) + list(i.account_paid_id)
 
-                            print my_list
                             # On supprime les doublons
                             my_list = list(set(my_list))
-                            print my_list
                             # On parcourt la liste des comptes triés pour avoir le total des balances
                             for index, obj in enumerate(my_list):
                                 taux_inter_n = taux_inter_n + my_list[index].balance
@@ -392,7 +389,6 @@ class l10n_pf_account_vat_declaration(models.Model):
 
                             # Montant déjà déclaré
                             decl_ids = self.search(cr, uid, [('fiscalyear', '=', decl.fiscalyear.id), ('state', '=', 'done')])
-                            print decl_ids
                             for j in self.browse(cr, uid, decl_ids, context=context):
                                 deja_declare = deja_declare + j.vat_due_intermediate_rate
 
@@ -437,7 +433,6 @@ class l10n_pf_account_vat_declaration(models.Model):
                             decl.update({'vat_other_goods_services': res})
                         elif field == 'credit_ids':
                             search_ids = self.search(cr, uid, [('company_regime', '=', 'real'), ('company_vat_type', '=', 'cashing')])
-                            print search_ids
                             for obj in self.browse(cr, uid, search_ids, context=context):
                                 d1 = datetime.strptime(decl.period_to.date_start, '%Y-%m-%d')
                                 d2 = datetime.strptime(obj.period_to.date_start, '%Y-%m-%d')
@@ -445,7 +440,6 @@ class l10n_pf_account_vat_declaration(models.Model):
                                    (obj.state == 'done') and (decl.company_regime == obj.company_regime) and \
                                    (decl.company_vat_type == obj.company_vat_type):
                                     decl.update({'defferal_credit': obj.credit_to_be_transferred})
-                                    print obj.credit_to_be_transferred
 
                 # Cas régime simplifié (Acompte)
                 elif (decl.company_regime == 'simplified' and decl.type_simplified == 'deposit'):
