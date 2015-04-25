@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
-from openerp.exceptions import except_orm, Warning, RedirectWarning
-from openerp import models, fields, api
+from openerp.exceptions import Warning
+from openerp import models, fields
 
 class l10n_pf_account_vat_journal_items(models.TransientModel):
 	"""
@@ -18,11 +18,11 @@ class l10n_pf_account_vat_journal_items(models.TransientModel):
 	vat_immobilization = fields.Float(string="Vat immobilization", readonly=True)
 	vat_other_goods_services = fields.Float(string="Vat other goods and services", readonly=True)
 	vat_regularization = fields.Float(string="Vat regularization to deduced", readonly=True)
-	defferal_credit = fields.Float(string="Defferal credit", readonly=True) 
+	defferal_credit = fields.Float(string="Defferal credit", readonly=True)
 	credit_or_vat = fields.Float(string="Credit or Vat", readonly=True)
 	account_regul_due = fields.Many2one('account.account', string="Account for regularization due")
 	account_regul_deduc = fields.Many2one('account.account', string="Account for regularization deductible")
-	
+
 	def default_get(self, cr, uid, fields, context=None):
 		if context is None:
 			context = {}
@@ -244,7 +244,7 @@ class l10n_pf_account_vat_journal_items(models.TransientModel):
 		move_name = declaration_line.name
 		move_vals = self._prepare_move(cr, uid, declaration_line, move_name, context=context)
 		move_id = am_obj.create(cr, uid, move_vals, context=context)
-		
+
 		self.enter_journal_items(cr, uid, ids, move_id, declaration_line, context=context)
 		declaration_line.write({'journal_entry_id': move_id})
 		return declaration_line.write({'state':'simulate'})

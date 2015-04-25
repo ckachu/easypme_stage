@@ -6,12 +6,12 @@
         Account, VAT, French Polynesia""",
 
     'description': """
-		Ce module permet d'automatiser les déclarations de TVA 
+		Ce module permet d'automatiser les déclarations de TVA
 		de la Polynésie Française.
-		TODO: 
+		TODO:
 		- Dispatcher les saisies des comptes
 		- MultiSociétés
-		
+
     """,
 
     'author': "EasyPME",

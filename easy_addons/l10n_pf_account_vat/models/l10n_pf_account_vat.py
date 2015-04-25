@@ -9,6 +9,7 @@ import openerp.addons.decimal_precision as dp
 from openerp.osv import fields, osv
 from openerp import models, api, _
 
+
 class l10n_pf_account_vat_declaration(models.Model):
 	_name = 'l10n.pf.account.vat.declaration'
 	_description = 'Vat declaration'
@@ -32,12 +33,12 @@ class l10n_pf_account_vat_declaration(models.Model):
 		company_obj = self.pool.get('res.company')
 		company_id = company_obj._company_default_get(cr, uid, context=context)
 		company = self.pool.get('res.company').browse(cr, uid, company_id, context=context)
-		
+
 		# Exercice de la date actuelle
-		fy = self.pool.get('account.fiscalyear').find(cr, uid, context=context)		
+		fy = self.pool.get('account.fiscalyear').find(cr, uid, context=context)
 		# Date actuelle
 		today = datetime.now()
-		
+
 		# Cas d'une déclaration annuelle en régime simplifié effectué le mois de mars de l'année suivante
 		if (company.regime_vat == 'simplified' and today.month == 3) or (company.regime_vat == 'real' and today.month == 1):
 			fy = self.fiscalyear_past(cr, uid, context=context)
@@ -47,7 +48,7 @@ class l10n_pf_account_vat_declaration(models.Model):
 	def _get_period_from(self, cr, uid, ids, context=None):
 		if context is None:
 			context = {}
-		
+
 		# Récupérer la compagnie
 		company_obj = self.pool.get('res.company')
 		company_id = company_obj._company_default_get(cr, uid, context=context)
@@ -57,18 +58,18 @@ class l10n_pf_account_vat_declaration(models.Model):
 
 		# Récupérer l'exercice fiscal
 		fy = self.pool.get('account.fiscalyear').find(cr, uid, context=context)
-		
+
 		# Changer l'exercice si on est dans le cas de la déclaration annuelle en régime simplifié
 		if (company.regime_vat == 'simplified' and today.month == 3) or (company.regime_vat == 'real' and today.month == 1):
 			fy = self.fiscalyear_past(cr, uid, context=context)
-			
+
 		# Récupérer les périodes de l'exercice en cours
 		period = self.pool.get('account.period')
 		periods = period.search(cr, uid, [('fiscalyear_id.id','=', fy), ('special', '=', False)])
 
 		res = 0
 		m_from = 0
-		
+
 		# Cas régime réel
 		if company.regime_vat == 'real':
 			# On détermine si la déclaration se fait en Janvier
@@ -101,12 +102,12 @@ class l10n_pf_account_vat_declaration(models.Model):
 			if (d_stop.month == m_from):
 				res = i.id
 		return res
-	
+
 	# Méthode qui retourne la période de fin selon le cas
 	def _get_period_to(self, cr, uid, ids, context=None):
 		if context is None:
 			context = {}
-		
+
 		# Récupérer la compagnie
 		company_obj = self.pool.get('res.company')
 		company_id = company_obj._company_default_get(cr, uid, context=context)
@@ -116,30 +117,30 @@ class l10n_pf_account_vat_declaration(models.Model):
 
 		# Récupérer l'exercice fiscal
 		fy = self.pool.get('account.fiscalyear').find(cr, uid, context=context)
-		
+
 		# Changer l'exercice si on est dans le cas de la déclaration annuelle en régime simplifié
 		if company.regime_vat == 'simplified' and today.month == 3 or (company.regime_vat == 'real' and today.month == 1):
 			fy = self.fiscalyear_past(cr, uid, context=context)
-		
+
 		# Récupérer les périodes de l'exercice en cours
 		period = self.pool.get('account.period')
 		periods = period.search(cr, uid, [('fiscalyear_id.id','=', fy), ('special', '=', False)])
-		
+
 		res = 0
 		# On détermine si la déclaration se fait en Janvier
 		first_month = False
 		if today.month == 1:
 			first_month = True
-		
+
 		if first_month:
 			m_to = today.month + 11
 		elif not first_month:
 			m_to = today.month - 1
-		
+
 		# Cas annuelle en régime simplifié
 		if company.regime_vat == 'simplified' and today.month == 3:
 			m_to = today.month + 9
-		
+
 		# Récupérer la bonne période
 		for i in period.browse(cr, uid, periods, context=context):
 			d_stop = datetime.strptime(i.date_stop, '%Y-%m-%d')
@@ -187,12 +188,12 @@ class l10n_pf_account_vat_declaration(models.Model):
 		if context is None:
 			context = {}
 		for decl in self.browse(cr, uid, ids, context=context):
-			for field in ['exports_ids', 'others_ids', 'reduced_rate_ids', 'intermediate_rate_ids', 'normal_rate_ids', \
+			for field in ['exports_ids', 'others_ids', 'reduced_rate_ids', 'intermediate_rate_ids', 'normal_rate_ids',
 			'immo_ids', 'others_goods_services_ids', 'sales_ids', 'services_ids', 'credit_ids', 'deposit', 'reimbursement']:
 				res = 0.0
 				period = self.pool.get('account.period')
 				special_period = period.search(cr, uid, [('fiscalyear_id.id','=', decl.fiscalyear.id), ('special', '=', True)])
-				#Contexte pour calculer les balances de l'année en cours	
+				#Contexte pour calculer les balances de l'année en cours
 				ctx_n = {
 					'fiscalyear': decl.fiscalyear.id,
 					'period_from': special_period[0],
@@ -279,7 +280,7 @@ class l10n_pf_account_vat_declaration(models.Model):
 								search_ids = self.search(cr, uid, [('type_simplified','=','deposit'), ('fiscalyear', '=', decl.fiscalyear.id)])
 								for obj in self.browse(cr, uid, search_ids, context=context):
 									if obj.state == 'done':
-										decl.update({'obtained_reimbursement': obj.reimbursement}) 
+										decl.update({'obtained_reimbursement': obj.reimbursement})
 						elif field == 'credit_ids':
 							# Récupérer les déclarations sur les factures et celles annuelles
 							search_ids = self.search(cr, uid, ['|', ('company_vat_type', '=', 'bills'), ('type_simplified', '=', 'annual')])
@@ -429,7 +430,7 @@ class l10n_pf_account_vat_declaration(models.Model):
 							# Récupérer le crédit à reporter si la déclaration est validée
 							if (str(d1.year) == str(d2.year + 1)) and (obj.state == 'done'):
 								decl.update({'defferal_credit': obj.vat_credit})
-		decl.update({'state': 'fill'})				
+		decl.update({'state': 'fill'})
 		return True
 
 	## Cette fonction calcule le montant des bases hors TVA
@@ -553,10 +554,10 @@ class l10n_pf_account_vat_declaration(models.Model):
 							states={'done':[('readonly',True)], 'simulate':[('readonly',True)]}, required=True),
 		'company_vat_type': fields.selection([('cashing', 'Cashing vat'), ('bills', 'Bills vat')], 'Type VAT', \
 							states={'done':[('readonly',True)], 'simulate':[('readonly',True)]}),
-		
+
 		'type_simplified': fields.selection([('deposit', 'Deposit in simplified regime'), ('annual', 'Annual in simplified regime')], \
 							'Type simplified', states={'done':[('readonly',True)], 'simulate':[('readonly',True)]}),
-		
+
 		'period_declaration': fields.selection([('month', 'Month'), ('trimester', 'Trimester')], 'Declaration period', \
 								states={'done':[('readonly',True)], 'simulate':[('readonly',True)]}),
 
@@ -616,7 +617,7 @@ class l10n_pf_account_vat_declaration(models.Model):
 		'state': fields.selection([('draft', 'Draft'), ('fill', 'Fill'), ('simulate', 'Simulate'), ('done', 'Done')], 'Status', required=True, copy=False),
 
 		'journal_entry_id': fields.many2one('account.move', 'Journal Entry', copy=False, readonly=True, index=True, help='Link to the automatically generated journal items'),
-		
+
 	}
 
 	_defaults = {
@@ -633,7 +634,7 @@ class l10n_pf_account_vat_declaration(models.Model):
 		'period_to': _get_period_to,
 		'type_simplified': _get_type_simplified,
 	}
-	
+
 	@api.multi
 	def unlink(self):
 		for declaration in self:

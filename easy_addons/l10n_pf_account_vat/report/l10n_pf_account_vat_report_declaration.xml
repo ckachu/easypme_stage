@@ -1,22 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <openerp>
-	<data>
-		<template id="report_declaration">
-			<t t-call="report.html_container">
-				<t t-foreach="docs" t-as="o">
-					<t t-if="o.type_simplified == 'deposit'">
-						<t t-call="l10n_pf_account_vat.report_deposit"/>
+    <data>
+        <template id="report_declaration">
+            <t t-call="report.html_container">
+                <t t-foreach="docs" t-as="o">
+                    <t t-if="o.company_regime == 'simplified' and o.type_simplified == 'deposit'">
+                        <t t-call="l10n_pf_account_vat.report_deposit"/>
                     </t>
-                    <t t-if="o.type_simplified == 'annual'">
-						<t t-call="l10n_pf_account_vat.report_annual"/>
+                    <t t-if="o.company_regime == 'simplified' and o.type_simplified == 'annual'">
+                        <t t-call="l10n_pf_account_vat.report_annual"/>
                     </t>
-                    
                     <t t-if="o.company_regime == 'real'">
-						<t t-call="l10n_pf_account_vat.report_real"/>
+                        <t t-call="l10n_pf_account_vat.report_real"/>
                     </t>
-				</t>
-			</t>
-		</template>
-	</data>
+                </t>
+            </t>
+        </template>
+    </data>
 </openerp>
 

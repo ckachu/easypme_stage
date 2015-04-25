@@ -1,54 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
 <openerp>
-	<data>
-		<record model="ir.ui.view" id="l10n_pf_account_vat_journal_items_form">
-			<field name="name">wizard.l10n.pf.account.vat.journal.items.form</field>
-			<field name="model">l10n.pf.account.vat.journal.items</field>
-			<field name="arch" type="xml">
-				<form string="Create Journal Items">
-					<separator string="Ecritures comptables"/>
-					<p>Voici les écritures comptables qui vont être générées:</p>
-					<group>
-						<field name="vat_due_reduced_rate" attrs="{'invisible':[('vat_due_reduced_rate', '==', 0)]}"/>
-						<field name="vat_due_intermediate_rate" attrs="{'invisible':[('vat_due_intermediate_rate', '==', 0)]}"/>
-						<field name="vat_due_normal_rate" attrs="{'invisible':[('vat_due_normal_rate', '==', 0)]}"/>
-						<field name="vat_due_regularization_to_donate" attrs="{'invisible':[('vat_due_regularization_to_donate', '==', 0)]}"/>
-					</group>
-					<group>
-						<field name="vat_immobilization" attrs="{'invisible':[('vat_immobilization', '==', 0)]}"/>
-						<field name="vat_other_goods_services" attrs="{'invisible':[('vat_other_goods_services', '==', 0)]}"/>
-						<field name="vat_regularization" attrs="{'invisible':[('vat_regularization', '==', 0)]}"/>
-						<field name="defferal_credit" attrs="{'invisible':[('defferal_credit', '==', 0)]}"/>
-					</group>
-					<group>
-						<field name="credit_or_vat"/>
-					</group>
-					<group attrs="{'invisible':[('vat_due_regularization_to_donate', '==', 0)]}">
-						<p>Dans quel compte voulez-vous mettre la régularisation de la TVA exigible?</p>
-						<field name="account_regul_due" domain="[('type','!=','view')]" nolabel="1"/>
-					</group>
-					<group attrs="{'invisible':[('vat_regularization', '==', 0)]}">
-						<p>Dans quel compte voulez-vous mettre la régularisation de la TVA déductible?</p>
-						<field name="account_regul_deduc" domain="[('type','!=','view')]" nolabel="1"/>
-					</group>
-					<footer>
-						<button name="generate_journal_item" string="Generate" type="object" class="oe_highlight"/>
-						or
-						<button string="Cancel" class="oe_link" special="cancel"/>
-					</footer>
-				</form>
-			</field>
-		</record>
-		
-		<record id="action_l10n_pf_account_vat_journal_items" model="ir.actions.act_window">
-			<field name="name">Create Journal Items</field>
-			<field name="res_model">l10n.pf.account.vat.journal.items</field>
-			<field name="type">ir.actions.act_window</field>
-			<field name="view_type">form</field>
-			<field name="view_mode">form</field>
-			<field name="view_id" ref="l10n_pf_account_vat_journal_items_form"/>
-			<field name="target">new</field>
-		</record>
-	</data>
+    <data>
+        <record model="ir.ui.view" id="l10n_pf_account_vat_journal_items_form">
+            <field name="name">wizard.l10n.pf.account.vat.journal.items.form</field>
+            <field name="model">l10n.pf.account.vat.journal.items</field>
+            <field name="arch" type="xml">
+                <form string="Create Journal Items">
+                    <separator string="Ecritures comptables"/>
+                    <p>Voici les écritures comptables qui vont être générées:</p>
+                    <group>
+                        <field name="vat_due_reduced_rate" attrs="{'invisible':[('vat_due_reduced_rate', '==', 0)]}"/>
+                        <field name="vat_due_intermediate_rate" attrs="{'invisible':[('vat_due_intermediate_rate', '==', 0)]}"/>
+                        <field name="vat_due_normal_rate" attrs="{'invisible':[('vat_due_normal_rate', '==', 0)]}"/>
+                        <field name="vat_due_regularization_to_donate" attrs="{'invisible':[('vat_due_regularization_to_donate', '==', 0)]}"/>
+                    </group>
+                    <group>
+                        <field name="vat_immobilization" attrs="{'invisible':[('vat_immobilization', '==', 0)]}"/>
+                        <field name="vat_other_goods_services" attrs="{'invisible':[('vat_other_goods_services', '==', 0)]}"/>
+                        <field name="vat_regularization" attrs="{'invisible':[('vat_regularization', '==', 0)]}"/>
+                        <field name="defferal_credit" attrs="{'invisible':[('defferal_credit', '==', 0)]}"/>
+                    </group>
+                    <group>
+                        <field name="credit_or_vat"/>
+                    </group>
+                    <group attrs="{'invisible':[('vat_due_regularization_to_donate', '==', 0)]}">
+                        <p>Dans quel compte voulez-vous mettre la régularisation de la TVA exigible?</p>
+                        <field name="account_regul_due" domain="[('type','!=','view')]" nolabel="1"/>
+                    </group>
+                    <group attrs="{'invisible':[('vat_regularization', '==', 0)]}">
+                        <p>Dans quel compte voulez-vous mettre la régularisation de la TVA déductible?</p>
+                        <field name="account_regul_deduc" domain="[('type','!=','view')]" nolabel="1"/>
+                    </group>
+                    <footer>
+                        <button name="generate_journal_item" string="Generate" type="object" class="oe_highlight"/>
+                        or
+                        <button string="Cancel" class="oe_link" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_l10n_pf_account_vat_journal_items" model="ir.actions.act_window">
+            <field name="name">Create Journal Items</field>
+            <field name="res_model">l10n.pf.account.vat.journal.items</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="l10n_pf_account_vat_journal_items_form"/>
+            <field name="target">new</field>
+        </record>
+    </data>
 </openerp>
 

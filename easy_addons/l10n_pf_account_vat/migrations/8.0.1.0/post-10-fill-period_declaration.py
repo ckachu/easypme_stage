@@ -1,13 +1,11 @@
 # -*- coding: utf-8 -*-
 
 import logging
-import pooler
+from openerp import pooler
 
 __name__="Mise a jour de la periode de declaration s il est vide"
 _logger = logging.getLogger('l10n_pf_account_vat')
 def migrate(cr,v):
-    import pdb
-    pdb.set_trace()
     pool = pooler.get_pool(cr.dbname)
     user_obj = pool.get('res.users')
     uid = 1
@@ -19,9 +17,10 @@ def migrate(cr,v):
 
     #On recupere la valeur de period_declaration dans res.company
     company_obj = pool.get('res.company')
-    period_dec = company_obj.browse(cr, uid, uid, context=context).period_declaration
+    company_id = company_obj._company_default_get(cr, uid, context=context)
+    period_dec = company_obj.browse(cr, uid, company_id, context=context).period_declaration
 
     #On met la valeur dans le champ vide de toutes les déclarations
-    for i in declaration_obj.browse(cr, uid, declaration_ids, context=context):
-        i.write(cr, uid, uid, {'period_declaration': period_dec}, context=context)
+    for decl in declaration_obj.browse(cr, uid, declaration_ids, context=context):
+        decl.write({'period_declaration': period_dec})
 
