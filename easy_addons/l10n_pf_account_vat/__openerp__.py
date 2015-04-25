@@ -32,6 +32,7 @@
         'views/res_company_view.xml',
         'views/account_move_line_view.xml',
         'report/l10n_pf_account_vat_report.xml',
+        'report/l10n_pf_account_vat_report_declaration.xml',
         'report/report_deposit_l10n_pf_account_vat.xml',
         'report/report_annual_l10n_pf_account_vat.xml',
         'report/report_real_l10n_pf_account_vat.xml',

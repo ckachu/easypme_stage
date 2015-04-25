@@ -200,7 +200,7 @@ class l10n_pf_account_vat_journal_items(models.TransientModel):
 			# Saisie du crédit de TVA en DEBIT
 			# Saisie de la TVA en CREDIT
 			elif field == 'vat':
-				difference = abs(decl_id.total_vat_payable) - abs(decl_id.total_vat_deductible)
+				difference = decl_id.total_vat_payable - decl_id.total_vat_deductible
 				account_vat = company_obj.browse(cr, uid, comp_id, context=context).vat_id and \
 							company_obj.browse(cr, uid, comp_id, context=context).vat_id.id or False
 				account_credit = company_obj.browse(cr, uid, comp_id, context=context).credit_id and \

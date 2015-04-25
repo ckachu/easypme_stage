@@ -2,34 +2,12 @@
 <openerp>
 	<data>		
 		<report
-            id="l10n_pf_account_vat_declaration_deposit_report"
+            id="l10n_pf_account_vat_declaration_report"
             model="l10n.pf.account.vat.declaration"
             report_type="qweb-pdf"
-            string="Deposit simplified regime declaration"
-            name="l10n_pf_account_vat.report_deposit"
-            file="l10n_pf_account_vat.report_deposit"
-            attachment_use="True"
-            attachment="(object.state in ('done')) and ((object.name or '').replace('/','')+'.pdf')"
-        />
-        
-        <report
-            id="l10n_pf_account_vat_declaration_annual_report"
-            model="l10n.pf.account.vat.declaration"
-            report_type="qweb-pdf"
-            string="Annual simplfied regime declaration"
-            name="l10n_pf_account_vat.report_annual"
-            file="l10n_pf_account_vat.report_annual"
-            attachment_use="True"
-            attachment="(object.state in ('done')) and ((object.name or '').replace('/','')+'.pdf')"
-        />
-        
-        <report
-            id="l10n_pf_account_vat_declaration_real_report"
-            model="l10n.pf.account.vat.declaration"
-            report_type="qweb-pdf"
-            string="Real regime declaration"
-            name="l10n_pf_account_vat.report_real"
-            file="l10n_pf_account_vat.report_real"
+            string="VAT Declaration"
+            name="l10n_pf_account_vat.report_declaration"
+            file="l10n_pf_account_vat.report_declaration"
             attachment_use="True"
             attachment="(object.state in ('done')) and ((object.name or '').replace('/','')+'.pdf')"
         />
